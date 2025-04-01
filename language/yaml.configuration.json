@@ -1,6 +1,6 @@
 {
-    "yaml.schemas": {
-      "https://json.schemastore.org/package.json": "/*.yaml",
-      "https://json.schemastore.org/github-workflow.json": "/.github/workflows/*.yaml"
-    }
+  "yaml.schemas": {
+    "https://json.schemastore.org/package.json": "/*.yaml",
+    "https://json.schemastore.org/github-workflow.json": "/.github/workflows/*.yaml"
+  }
 }

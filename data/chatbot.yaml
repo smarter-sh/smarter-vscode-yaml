@@ -1,7 +1,8 @@
 apiVersion: smarter.sh/v1
 kind: Chatbot
 metadata:
-  description: AI agent that creates a bespoke invitation letter based on a salesforce.com
+  description:
+    AI agent that creates a bespoke invitation letter based on a salesforce.com
     export file for a customer prospect.
   name: netec-demo
   version: 1.0.0
@@ -11,14 +12,15 @@ spec:
     appAssistant: Kent
     appBackgroundImageUrl: null
     appExamplePrompts:
-    - paste the contents of a salesforce.com json export file into the text prompt
-      below.
+      - paste the contents of a salesforce.com json export file into the text prompt
+        below.
     appFileAttachment: false
     appInfoUrl: null
     appLogoUrl: /static/querium/querium-logo-white-transparent.png
     appName: Netec Demo
     appPlaceholder: Paste your JSON export data here
-    appWelcomeMessage: This is an example AI agent that converts a fictitious salesforce.com
+    appWelcomeMessage:
+      This is an example AI agent that converts a fictitious salesforce.com
       export file into a 'hand written' invitation letter to a customer prospect of
       the wealth management department of a large Mexican bank.
     customDomain: null

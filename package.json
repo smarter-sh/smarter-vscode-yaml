@@ -1,60 +1,66 @@
 {
-    "name": "smarter-manifest-extension",
-    "displayName": "Smarter Manifest Extension",
-    "description": "Enhanced support for Smarter manifest files with syntax validation, semantic checking, and auto-completion.",
-    "version": "0.0.1",
-    "publisher": "Querium, Corp.",
-    "engines": {
-      "vscode": "^1.75.0"
-    },
-    "categories": [
-      "Programming Languages",
-      "Linters"
+  "name": "smarter-manifest-extension",
+  "displayName": "Smarter Manifest Extension",
+  "description": "Enhanced support for Smarter manifest files with syntax validation, semantic checking, and auto-completion.",
+  "version": "0.0.1",
+  "publisher": "Querium, Corp.",
+  "engines": {
+    "vscode": "^1.75.0"
+  },
+  "categories": [
+    "Programming Languages",
+    "Linters"
+  ],
+  "activationEvents": [],
+  "main": "./dist/extension.js",
+  "contributes": {
+    "languages": [
+      {
+        "id": "yaml",
+        "aliases": [
+          "YAML",
+          "yaml"
+        ],
+        "extensions": [
+          ".yaml",
+          ".yml"
+        ],
+        "configuration": "./language/yaml.configuration.json"
+      }
     ],
-    "activationEvents": [],
-    "main": "./dist/extension.js",
-    "contributes": {
-      "languages": [
-        {
-          "id": "yaml",
-          "aliases": ["YAML", "yaml"],
-          "extensions": [".yaml", ".yml"],
-          "configuration": "./language/yaml.configuration.json"
-        }
-      ],
-      "grammars": [
-        {
-          "language": "yaml",
-          "scopeName": "source.yaml",
-          "path": "./language/yaml.tmLanguage.json"
-        }
-      ],
-      "configuration": {
-        "type": "object",
-        "title": "YAML Manifest Extension",
-        "properties": {
-          "yaml.schemas": {
-            "type": "object",
-            "description": "Associate schemas to YAML files.",
-            "default": {}
-          }
+    "grammars": [
+      {
+        "language": "yaml",
+        "scopeName": "source.yaml",
+        "path": "./language/yaml.tmLanguage.json"
+      }
+    ],
+    "configuration": {
+      "type": "object",
+      "title": "YAML Manifest Extension",
+      "properties": {
+        "yaml.schemas": {
+          "type": "object",
+          "description": "Associate schemas to YAML files.",
+          "default": {}
         }
       }
-    },
-    "scripts": {
-      "build": "tsc -p ./",
-      "watch": "tsc -watch -p ./",
-      "prepublish": "echo 'Prepublish step skipped.'",
-      "start": "npx vscode-debugger --extensionDevelopmentPath=.",
-      "package": "vsce package"
-    },
-    "devDependencies": {
-      "@types/node": "^22.13.17",
-      "typescript": "^5.8.2",
-      "vscode": "^1.1.37",
-      "vsce": "^2.15.0"
-    },
-    "dependencies": {
-      "js-yaml": "^4.1.0"
     }
+  },
+  "scripts": {
+    "build": "tsc -p ./",
+    "watch": "tsc -watch -p ./",
+    "prepublish": "echo 'Prepublish step skipped.'",
+    "start": "npx vscode-debugger --extensionDevelopmentPath=.",
+    "package": "vsce package"
+  },
+  "devDependencies": {
+    "@types/node": "^22.13.17",
+    "typescript": "^5.8.2",
+    "vscode": "^1.1.37",
+    "vsce": "^2.15.0"
+  },
+  "dependencies": {
+    "js-yaml": "^4.1.0"
   }
+}

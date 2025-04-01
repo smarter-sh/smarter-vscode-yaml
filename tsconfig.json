@@ -1,13 +1,12 @@
 {
-    "compilerOptions": {
-      "target": "ES6",                          // Specify ECMAScript target version
-      "module": "CommonJS",                     // Specify module code generation
-      "strict": true,                           // Enable all strict type-checking options
-      "esModuleInterop": true,                  // Enable compatibility with CommonJS and ES Modules
-      "skipLibCheck": true,                     // Skip type checking of declaration files
-      "forceConsistentCasingInFileNames": true  // Ensure consistent casing in file names
-    },
-    "include": ["src/**/*"],                    // Include all TypeScript files in the src folder
-    "exclude": ["node_modules", "dist"]         // Exclude node_modules and dist folders
-  }
-  
+  "compilerOptions": {
+    "target": "ES6",
+    "module": "CommonJS",
+    "strict": true,
+    "esModuleInterop": true,
+    "skipLibCheck": true,
+    "forceConsistentCasingInFileNames": true
+  },
+  "include": ["src/**/*"],
+  "exclude": ["node_modules", "dist"]
+}

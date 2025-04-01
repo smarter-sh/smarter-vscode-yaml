@@ -38,7 +38,9 @@ init:
 	$(PYTHON) -m venv venv && \
 	$(ACTIVATE_VENV) && \
 	PIP_CACHE_DIR=.pypi_cache $(PIP) install --upgrade pip && \
-	PIP_CACHE_DIR=.pypi_cache $(PIP) install -r requirements/local.txt
+	PIP_CACHE_DIR=.pypi_cache $(PIP) install -r requirements/local.txt && \
+	pre-commit install && \
+	pre-commit autoupdate
 
 # Run tests
 test:
@@ -59,4 +61,3 @@ deploy:
 clean:
 	@echo "Cleaning up..."
 	rm -rf $(DIST_DIR)
-	

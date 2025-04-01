@@ -26,3 +26,4 @@ You can configure the extension by adding the following settings to your `settin
     "path/to/your/schema.json": "*.yaml"
   }
 }
+```
