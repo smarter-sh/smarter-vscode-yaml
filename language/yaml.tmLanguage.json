@@ -1,0 +1,30 @@
+{
+    "scopeName": "source.yaml",
+    "name": "YAML",
+    "patterns": [
+      {
+        "include": "#basic-structures"
+      }
+    ],
+    "repository": {
+      "basic-structures": {
+        "patterns": [
+          {
+            "match": "^(\\s*)(-)(\\s+)",
+            "captures": {
+              "1": { "name": "punctuation.whitespace.yaml" },
+              "2": { "name": "punctuation.definition.sequence.item.yaml" },
+              "3": { "name": "whitespace.yaml" }
+            }
+          },
+          {
+            "match": ":",
+            "name": "punctuation.separator.key-value.yaml"
+          }
+        ]
+      }
+    },
+    "fileTypes": ["yaml", "yml"],
+    "uuid": "123e4567-e89b-12d3-a456-426614174000"
+  }
+  
