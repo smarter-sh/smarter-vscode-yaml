@@ -1,10 +1,26 @@
-# Variables
+SHELL := /bin/bash
 PROJECT_NAME := smarter-vscode-yaml
 SRC_DIR := src
 DIST_DIR := dist
-
-# Default target
 .DEFAULT_GOAL := help
+
+export PATH := /usr/local/bin:$(PATH)
+export
+
+ifeq ($(OS),Windows_NT)
+    PYTHON := python.exe
+    ACTIVATE_VENV := venv\Scripts\activate
+else
+    PYTHON := python3.12
+    ACTIVATE_VENV := source venv/bin/activate
+endif
+PIP := $(PYTHON) -m pip
+
+ifneq ("$(wildcard .env)","")
+else
+	@touch .env
+endif
+include .env
 
 # Help target
 help:
@@ -17,7 +33,12 @@ help:
 # Initialize the project
 init:
 	@echo "Initializing the project..."
-	npm install
+	npm install && \
+	mkdir -p .pypi_cache && \
+	$(PYTHON) -m venv venv && \
+	$(ACTIVATE_VENV) && \
+	PIP_CACHE_DIR=.pypi_cache $(PIP) install --upgrade pip && \
+	PIP_CACHE_DIR=.pypi_cache $(PIP) install -r requirements/local.txt
 
 # Run tests
 test:

@@ -44,7 +44,7 @@
     "scripts": {
       "build": "tsc -p ./",
       "watch": "tsc -watch -p ./",
-      "prepublish": "npm run build",
+      "prepublish": "echo 'Prepublish step skipped.'",
       "start": "npx vscode-debugger --extensionDevelopmentPath=.",
       "package": "vsce package"
     },
