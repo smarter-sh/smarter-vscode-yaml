@@ -1,0 +1,15 @@
+# Exclude unnecessary files from the extension package
+
+node_modules/**
+.vscode/**
+dist/**
+out/**
+*.ts
+*.map
+*.log
+test/**
+coverage/**
+.git/**
+.DS_Store
+README.md
+CHANGELOG.md
