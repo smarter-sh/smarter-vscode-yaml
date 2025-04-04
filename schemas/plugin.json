@@ -1,0 +1,386 @@
+{
+  "$defs": {
+    "HttpRequest": {
+      "description": "Smarter API Manifest generic HTTP request model.",
+      "properties": {
+        "host": {
+          "description": "a valid internet domain name",
+          "title": "Host",
+          "type": "string"
+        },
+        "port": {
+          "default": 80,
+          "description": "a valid http port number: 0 thru 65,535. Default is 80",
+          "exclusiveMaximum": 65535,
+          "exclusiveMinimum": 0,
+          "title": "Port",
+          "type": "integer"
+        },
+        "endpoint": {
+          "description": "a valid http url",
+          "title": "Endpoint",
+          "type": "string"
+        },
+        "method": {
+          "default": "GET",
+          "description": "any valid http method: GET, POST, PUT, DELETE. Default is GET",
+          "title": "Method",
+          "type": "string"
+        },
+        "headers": {
+          "anyOf": [
+            {
+              "type": "object"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "a valid http header dict",
+          "title": "Headers"
+        },
+        "body": {
+          "anyOf": [
+            {
+              "type": "object"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "The http request body",
+          "title": "Body"
+        }
+      },
+      "required": ["host", "endpoint"],
+      "title": "HttpRequest",
+      "type": "object"
+    },
+    "SAMPluginMetadata": {
+      "description": "Smarter API Plugin Manifest - Metadata class.",
+      "properties": {
+        "name": {
+          "description": "The name of the manifest resource",
+          "title": "Name",
+          "type": "string"
+        },
+        "description": {
+          "description": "The description of the manifest resource",
+          "title": "Description",
+          "type": "string"
+        },
+        "version": {
+          "description": "The version of the manifest",
+          "title": "Version",
+          "type": "string"
+        },
+        "tags": {
+          "anyOf": [
+            {
+              "items": {
+                "type": "string"
+              },
+              "type": "array"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "The tags of the manifest",
+          "title": "Tags"
+        },
+        "annotations": {
+          "anyOf": [
+            {
+              "items": {
+                "type": "string"
+              },
+              "type": "array"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "The annotations of the manifest",
+          "title": "Annotations"
+        },
+        "pluginClass": {
+          "description": "Plugin.metadata.pluginClass: The class of the Plugin. Must be one of [static, api, sql]",
+          "title": "Pluginclass",
+          "type": "string"
+        }
+      },
+      "required": ["name", "description", "version", "pluginClass"],
+      "title": "SAMPluginMetadata",
+      "type": "object"
+    },
+    "SAMPluginSpec": {
+      "description": "Smarter API Plugin Manifest Plugin.spec",
+      "properties": {
+        "selector": {
+          "$ref": "#/$defs/SAMPluginSpecSelector",
+          "description": "Plugin.spec.selector[obj]: the selector logic to use for the Plugin"
+        },
+        "prompt": {
+          "$ref": "#/$defs/SAMPluginSpecPrompt",
+          "description": "Plugin.spec.prompt[obj]: the LLM prompt engineering to apply to the Plugin"
+        },
+        "data": {
+          "$ref": "#/$defs/SAMPluginSpecData",
+          "description": "Plugin.spec.data[obj]: the json data returned by the Plugin. This should be one of the following kinds: [static, api, sql]"
+        }
+      },
+      "required": ["selector", "prompt", "data"],
+      "title": "SAMPluginSpec",
+      "type": "object"
+    },
+    "SAMPluginSpecData": {
+      "description": "Smarter API Plugin Manifest Plugin.spec.data",
+      "properties": {
+        "description": {
+          "description": "Plugin.spec.data.description[str]: A narrative description of the Plugin features that is provided to the LLM as part of a tool_chain dict",
+          "title": "Description",
+          "type": "string"
+        },
+        "staticData": {
+          "anyOf": [
+            {
+              "type": "object"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "Plugin.spec.data.staticData[obj]: The static data returned by the Plugin when the class is static. LLMs are adept at understanding the context of json data structures. Try to provide granular and specific data elements.",
+          "title": "Staticdata"
+        },
+        "sqlData": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/SAMPluginSpecDataSql"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "Plugin.spec.data.sqlData[obj]: The SQL connection and query to use for the Plugin return data when the class is sql"
+        },
+        "apiData": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/HttpRequest"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "Plugin.spec.data.apiData[obj]: The rest API connection and endpoint to use for the Plugin return data when the class is api"
+        }
+      },
+      "required": ["description"],
+      "title": "SAMPluginSpecData",
+      "type": "object"
+    },
+    "SAMPluginSpecDataSql": {
+      "description": "Smarter API Plugin Manifest Plugin.spec.data.sqlData",
+      "properties": {
+        "connection": {
+          "description": "Plugin.spec.data.sqlData.connection[obj]: an sql server connection",
+          "title": "Connection",
+          "type": "string"
+        },
+        "parameters": {
+          "anyOf": [
+            {
+              "type": "object"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "Plugin.spec.data.sqlData.parameters[obj]: a dictionary of parameters to use in the SQL query. Example: {company_id: int}",
+          "title": "Parameters"
+        },
+        "sqlQuery": {
+          "description": "Plugin.spec.data.sqlData.sql[str]: a valid SQL query. Example: SELECT * FROM customers WHERE id = 100;",
+          "title": "Sqlquery",
+          "type": "string"
+        },
+        "testValues": {
+          "anyOf": [
+            {
+              "type": "object"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "Plugin.spec.data.sqlData.test_values[obj]: a dictionary of test values to use in the SQL query. Example: {company_id: 100}",
+          "title": "Testvalues"
+        },
+        "limit": {
+          "anyOf": [
+            {
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "Plugin.spec.data.sqlData.limit[int]: an optional limit to the number of rows returned by the SQL query. Example: 100",
+          "title": "Limit"
+        }
+      },
+      "required": ["connection", "sqlQuery"],
+      "title": "SAMPluginSpecDataSql",
+      "type": "object"
+    },
+    "SAMPluginSpecPrompt": {
+      "description": "Smarter API Plugin Manifest - Spec - Prompt class.",
+      "properties": {
+        "provider": {
+          "default": "openai",
+          "description": "Plugin.spec.prompt.provider[str]. Optional. The provider of the LLM. Defaults to openai. The provider is the vendor name for the LLM service that will be used to generate the prompt response.",
+          "title": "Provider",
+          "type": "string"
+        },
+        "systemRole": {
+          "description": "Plugin.spec.prompt.systemRole[str]. Required. The system role that the Plugin will use for the LLM text completion prompt. Be verbose and specific. Ensure that systemRole accurately conveys to the LLM how you want it to use the Plugin data that is returned.",
+          "title": "Systemrole",
+          "type": "string"
+        },
+        "model": {
+          "default": "gpt-4o-mini",
+          "description": "Plugin.spec.prompt.model[str] Optional. The model of the Plugin. Defaults to gpt-4o-mini. Must be one of: [o1, o1-mini, o1-preview, gpt-4o, gpt-4o-mini, chatgpt-4o-latest, gpt-4, gpt-4-turbo, gpt-4-32k, gpt-4-32k-0613, gpt-4-1106-preview, gpt-4-0613, gpt-4-turbo-2024-04-09, gpt-4-turbo-preview, gpt-4-0125-preview, gpt-4-0314, gpt-3.5-turbo, gpt-3.5-turbo-0613, gpt-3.5-turbo-16k, gpt-3.5-turbo-16k-0613, gpt-3.5-turbo-1106, gpt-3.5-turbo-instruct, o1-preview, o1-mini]",
+          "title": "Model",
+          "type": "string"
+        },
+        "temperature": {
+          "default": 0.5,
+          "description": "Plugin.spec.prompt.temperature[float] Optional. The temperature of the Plugin. Defaults to 0.5. Should be between 0 and 1.0. The higher the temperature, the more creative the response. The lower the temperature, the more predictable the response.",
+          "gte": 0,
+          "lte": 1.0,
+          "title": "Temperature",
+          "type": "number"
+        },
+        "maxTokens": {
+          "default": 2048,
+          "description": "Plugin.spec.prompt.maxTokens[int]. Optional. The maxTokens of the Plugin. Defaults to 2048. The maximum number of tokens the LLM should generate in the prompt response. ",
+          "exclusiveMinimum": 0,
+          "title": "Maxtokens",
+          "type": "integer"
+        }
+      },
+      "required": ["systemRole"],
+      "title": "SAMPluginSpecPrompt",
+      "type": "object"
+    },
+    "SAMPluginSpecSelector": {
+      "description": "Smarter API Plugin Manifest - Spec - Selector class.",
+      "properties": {
+        "directive": {
+          "description": "Plugin.spec.selector.directive[str]: Required. the kind of selector directive to use for the Plugin. Must be one of: [searchTerms, always, llm]",
+          "title": "Directive",
+          "type": "string"
+        },
+        "searchTerms": {
+          "anyOf": [
+            {
+              "items": {
+                "type": "string"
+              },
+              "type": "array"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "Plugin.spec.selector.searchTerms[list]. Optional. The keyword search terms to use when the Plugin directive is searchTerms. Keywords are most effective when constrained to 1 or 2 words each and lists are limited to a few dozen items.",
+          "title": "Searchterms"
+        }
+      },
+      "required": ["directive"],
+      "title": "SAMPluginSpecSelector",
+      "type": "object"
+    },
+    "SAMPluginStatus": {
+      "description": "Smarter API Plugin Manifest - Status class.",
+      "properties": {
+        "account_number": {
+          "default": null,
+          "description": "Plugin.status.account_number: The account owner of this Plugin. Read only.",
+          "title": "Account Number",
+          "type": "string"
+        },
+        "username": {
+          "default": null,
+          "description": "Plugin.status.account_number: The Smarter user who created this Plugin. Read only.",
+          "title": "Username",
+          "type": "string"
+        },
+        "created": {
+          "default": null,
+          "description": "Plugin.status.created: The date in which this Plugin was created. Read only.",
+          "format": "date-time",
+          "title": "Created",
+          "type": "string"
+        },
+        "modified": {
+          "default": null,
+          "description": "Plugin.status.modified: The date in which this Plugin was most recently changed. Read only.",
+          "format": "date-time",
+          "title": "Modified",
+          "type": "string"
+        }
+      },
+      "title": "SAMPluginStatus",
+      "type": "object"
+    }
+  },
+  "description": "Smarter API Manifest - Plugin",
+  "properties": {
+    "apiVersion": {
+      "description": "apiVersion[String]: Required. The API version of the AbstractSAMBase.",
+      "title": "Apiversion",
+      "type": "string"
+    },
+    "kind": {
+      "description": "kind[String]: Required. The kind of resource described by the manifest.",
+      "title": "Kind",
+      "type": "string"
+    },
+    "metadata": {
+      "$ref": "#/$defs/SAMPluginMetadata",
+      "description": "Plugin.metadata[obj]: Required, the Plugin metadata."
+    },
+    "spec": {
+      "$ref": "#/$defs/SAMPluginSpec",
+      "description": "Plugin.spec[obj]: Required, the Plugin specification."
+    },
+    "status": {
+      "anyOf": [
+        {
+          "$ref": "#/$defs/SAMPluginStatus"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "description": "Plugin.status[obj]: Optional, Read-only. Stateful status information about the Plugin."
+    }
+  },
+  "required": ["apiVersion", "kind", "metadata", "spec", "status"],
+  "title": "SAMPlugin",
+  "type": "object"
+}

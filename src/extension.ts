@@ -1,22 +1,27 @@
+import Ajv, { ErrorObject } from "ajv";
 import * as vscode from "vscode";
 import * as path from "path";
 import * as fs from "fs";
 
-export function activate(context: vscode.ExtensionContext) {
-  console.log("YAML Manifest Extension is now active!");
+// Declare diagnosticCollection at the top level
+let diagnosticCollection: vscode.DiagnosticCollection;
 
-  // Register a YAML diagnostics provider for syntax and semantic validation
-  const diagnosticCollection =
-    vscode.languages.createDiagnosticCollection("yaml");
+export function activate(context: vscode.ExtensionContext) {
+  console.log("Smarter YAML Manifest Extension is now active.");
+
+  // Initialize the diagnostic collection
+  diagnosticCollection = vscode.languages.createDiagnosticCollection("yaml");
   context.subscriptions.push(diagnosticCollection);
 
   vscode.workspace.onDidChangeTextDocument((event) => {
+    console.log("Document changed");
     if (event.document.languageId === "yaml") {
       validateYaml(event.document, diagnosticCollection);
     }
   });
 
   vscode.workspace.onDidOpenTextDocument((document) => {
+    console.log("Document opened");
     if (document.languageId === "yaml") {
       validateYaml(document, diagnosticCollection);
     }
@@ -42,22 +47,23 @@ export function activate(context: vscode.ExtensionContext) {
 }
 
 export function deactivate() {
-  console.log("YAML Manifest Extension is now deactivated.");
+  console.log("Smarter YAML Manifest Extension is now deactivated.");
 }
 
 function validateYaml(
   document: vscode.TextDocument,
   diagnosticCollection: vscode.DiagnosticCollection,
 ) {
+  console.log("Validating YAML document...");
   const diagnostics: vscode.Diagnostic[] = [];
   const text = document.getText();
 
   try {
-    // Basic YAML syntax validation
     const yaml = require("js-yaml");
+    const ajv = new Ajv();
     const parsedYaml = yaml.load(text);
 
-    // Check for the `apiVersion` field
+    console.log("Checking for apiVersion...");
     if (!parsedYaml || parsedYaml.apiVersion !== "smarter.sh/v1") {
       const line = text
         .split("\n")
@@ -76,11 +82,63 @@ function validateYaml(
       );
     }
 
-    // Add semantic validation here (e.g., schema validation)
-    const schemaPath = path.join(__dirname, "../schemas/chatbot-schema.json");
-    if (fs.existsSync(schemaPath)) {
-      const schema = JSON.parse(fs.readFileSync(schemaPath, "utf8"));
-      // Perform schema validation (use a library like ajv if needed)
+    console.log("Checking for kind...");
+    if (parsedYaml && parsedYaml.kind) {
+      const kind = parsedYaml.kind;
+      const schemaPath = path.join(
+        __dirname,
+        `../schemas/${kind.toLowerCase()}.json`,
+      );
+
+      if (fs.existsSync(schemaPath)) {
+        const schema = JSON.parse(fs.readFileSync(schemaPath, "utf8"));
+        const validate = ajv.compile(schema);
+
+        if (!validate(parsedYaml)) {
+          validate.errors?.forEach((error: ErrorObject) => {
+            const range = new vscode.Range(0, 0, 0, 1); // Default range
+            diagnostics.push(
+              new vscode.Diagnostic(
+                range,
+                `Schema validation error: ${error.message}`,
+                vscode.DiagnosticSeverity.Error,
+              ),
+            );
+          });
+        }
+      } else {
+        const line = text
+          .split("\n")
+          .findIndex((line) => line.trim().startsWith("kind"));
+        const range =
+          line >= 0
+            ? new vscode.Range(line, 0, line, text.split("\n")[line].length)
+            : new vscode.Range(0, 0, 0, 1);
+
+        diagnostics.push(
+          new vscode.Diagnostic(
+            range,
+            `Schema for kind '${kind}' not found.`,
+            vscode.DiagnosticSeverity.Warning,
+          ),
+        );
+      }
+    } else {
+      const line = text
+        .split("\n")
+        .findIndex((line) => line.trim().startsWith("kind"));
+      const range =
+        line >= 0
+          ? new vscode.Range(line, 0, line, text.split("\n")[line].length)
+          : new vscode.Range(0, 0, 0, 1);
+
+      diagnostics.push(
+        new vscode.Diagnostic(
+          range,
+          "Missing 'kind' field in the manifest.",
+          vscode.DiagnosticSeverity.Error,
+        ),
+      );
     }
   } catch (error) {
     if (error instanceof Error) {

@@ -2,8 +2,9 @@
   "name": "smarter-manifest-extension",
   "displayName": "Smarter Manifest Extension",
   "description": "Enhanced support for Smarter manifest files with syntax validation, semantic checking, and auto-completion.",
-  "version": "0.0.1",
-  "publisher": "Querium, Corp.",
+  "version": "0.0.2",
+  "icon": "images/logo.png",
+  "publisher": "Smarter",
   "engines": {
     "vscode": "^1.75.0"
   },
@@ -11,7 +12,10 @@
     "Programming Languages",
     "Linters"
   ],
-  "activationEvents": [],
+  "activationEvents": [
+    "workspaceContains:**/*.yaml",
+    "workspaceContains:**/*.yml"
+  ],
   "main": "./dist/extension.js",
   "contributes": {
     "languages": [
@@ -61,10 +65,11 @@
   "devDependencies": {
     "@types/node": "^22.13.17",
     "typescript": "^5.8.2",
-    "vscode": "^1.1.37",
-    "vsce": "^2.15.0"
+    "vsce": "^2.15.0",
+    "vscode": "^1.1.37"
   },
   "dependencies": {
+    "ajv": "^8.17.1",
     "js-yaml": "^4.1.0"
   }
 }

@@ -37,14 +37,14 @@ spec:
   functions: []
   plugins: []
 status:
-  created: "2025-03-25T14:28:42.963623+00:00"
+  created: "2025-03-25T14:28:42.96+00:00"
   customUrl: null
   defaultHost: netec-demo.3141-5926-5359.api.smarter.sh
   defaultUrl: https://netec-demo.3141-5926-5359.api.smarter.sh/
   deployed: true
   dnsVerificationStatus: Verified
   hostname: netec-demo.3141-5926-5359.api.smarter.sh
-  modified: "2025-03-28T16:38:04.812883+00:00"
+  modified: "2025-03-28T16:38:04.81+00:00"
   sandboxHost: platform.smarter.sh/api/v1/chatbots/36/
   sandboxUrl: https://platform.smarter.sh/api/v1/chatbots/36/
   scheme: https

@@ -1,0 +1,201 @@
+{
+  "$defs": {
+    "SAMUserMetadata": {
+      "description": "Smarter API User Manifest - Metadata class.",
+      "properties": {
+        "name": {
+          "description": "The name of the manifest resource",
+          "title": "Name",
+          "type": "string"
+        },
+        "description": {
+          "description": "The description of the manifest resource",
+          "title": "Description",
+          "type": "string"
+        },
+        "version": {
+          "description": "The version of the manifest",
+          "title": "Version",
+          "type": "string"
+        },
+        "tags": {
+          "anyOf": [
+            {
+              "items": {
+                "type": "string"
+              },
+              "type": "array"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "The tags of the manifest",
+          "title": "Tags"
+        },
+        "annotations": {
+          "anyOf": [
+            {
+              "items": {
+                "type": "string"
+              },
+              "type": "array"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "The annotations of the manifest",
+          "title": "Annotations"
+        },
+        "username": {
+          "description": "Plugin.metadata.username[str]. Required. The Django username of the user.",
+          "title": "Username",
+          "type": "string"
+        }
+      },
+      "required": ["name", "description", "version", "username"],
+      "title": "SAMUserMetadata",
+      "type": "object"
+    },
+    "SAMUserSpec": {
+      "description": "Smarter API User Manifest User.spec",
+      "properties": {
+        "config": {
+          "$ref": "#/$defs/SAMUserSpecConfig",
+          "description": "Plugin.spec.config[object]. The configuration for the Plugin."
+        }
+      },
+      "required": ["config"],
+      "title": "SAMUserSpec",
+      "type": "object"
+    },
+    "SAMUserSpecConfig": {
+      "description": "Smarter API User Manifest User.spec.config",
+      "properties": {
+        "firstName": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "Plugin.spec.configuration.firstName[str]. Optional. The first name of the Plugin.",
+          "title": "Firstname"
+        },
+        "lastName": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "Plugin.spec.configuration.lastName[str]. Optional. The last name of the Plugin.",
+          "title": "Lastname"
+        },
+        "email": {
+          "description": "Plugin.spec.configuration.email[str]. The email address of the Plugin.",
+          "title": "Email",
+          "type": "string"
+        },
+        "isStaff": {
+          "anyOf": [
+            {
+              "type": "boolean"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": false,
+          "description": "Plugin.spec.configuration.isStaff[bool]. Optional. Designates whether the Plugin has admin permissions.",
+          "title": "Isstaff"
+        },
+        "isActive": {
+          "description": "Plugin.spec.configuration.isActive[bool]. Designates whether this Plugin should be treated as active.",
+          "title": "Isactive",
+          "type": "boolean"
+        }
+      },
+      "required": ["email", "isActive"],
+      "title": "SAMUserSpecConfig",
+      "type": "object"
+    },
+    "SAMUserStatus": {
+      "description": "Smarter API User Manifest - Status class.",
+      "properties": {
+        "account_number": {
+          "default": null,
+          "description": "Plugin.status.account_number: The account owner of this Plugin. Read only.",
+          "title": "Account Number",
+          "type": "string"
+        },
+        "username": {
+          "default": null,
+          "description": "Plugin.status.account_number: The Smarter user who created this Plugin. Read only.",
+          "title": "Username",
+          "type": "string"
+        },
+        "created": {
+          "default": null,
+          "description": "Plugin.status.created: The date in which this Plugin was created. Read only.",
+          "format": "date-time",
+          "title": "Created",
+          "type": "string"
+        },
+        "modified": {
+          "default": null,
+          "description": "Plugin.status.modified: The date in which this Plugin was most recently changed. Read only.",
+          "format": "date-time",
+          "title": "Modified",
+          "type": "string"
+        }
+      },
+      "title": "SAMUserStatus",
+      "type": "object"
+    }
+  },
+  "description": "Smarter API Manifest - User",
+  "properties": {
+    "apiVersion": {
+      "description": "apiVersion[String]: Required. The API version of the AbstractSAMBase.",
+      "title": "Apiversion",
+      "type": "string"
+    },
+    "kind": {
+      "description": "kind[String]: Required. The kind of resource described by the manifest.",
+      "title": "Kind",
+      "type": "string"
+    },
+    "metadata": {
+      "$ref": "#/$defs/SAMUserMetadata",
+      "description": "Plugin.metadata[obj]: Required, the Plugin metadata."
+    },
+    "spec": {
+      "$ref": "#/$defs/SAMUserSpec",
+      "description": "Plugin.spec[obj]: Required, the Plugin specification."
+    },
+    "status": {
+      "anyOf": [
+        {
+          "$ref": "#/$defs/SAMUserStatus"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "description": "Plugin.status[obj]: Optional, Read-only. Stateful status information about the Plugin."
+    }
+  },
+  "required": ["apiVersion", "kind", "metadata", "spec", "status"],
+  "title": "SAMUser",
+  "type": "object"
+}

@@ -52,8 +52,12 @@ build:
 	@echo "Building the project..."
 	npm run build
 
+# https://marketplace.visualstudio.com/manage/publishers/Smarter?auth_redirect=True
 package:
-	@echo "Packaging the project..."
+	@echo "Packaging the project..." && \
+	rm -rf node_modules dist  && \
+	npm install && \
+	npm run build && \
 	npm run package
 
 package-list:

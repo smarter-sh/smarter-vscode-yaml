@@ -1,0 +1,134 @@
+{
+  "$defs": {
+    "SAMChatMetadata": {
+      "description": "Smarter API Chat Manifest - Metadata class.",
+      "properties": {
+        "name": {
+          "description": "The name of the manifest resource",
+          "title": "Name",
+          "type": "string"
+        },
+        "description": {
+          "description": "The description of the manifest resource",
+          "title": "Description",
+          "type": "string"
+        },
+        "version": {
+          "description": "The version of the manifest",
+          "title": "Version",
+          "type": "string"
+        },
+        "tags": {
+          "anyOf": [
+            {
+              "items": {
+                "type": "string"
+              },
+              "type": "array"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "The tags of the manifest",
+          "title": "Tags"
+        },
+        "annotations": {
+          "anyOf": [
+            {
+              "items": {
+                "type": "string"
+              },
+              "type": "array"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "The annotations of the manifest",
+          "title": "Annotations"
+        }
+      },
+      "required": ["name", "description", "version"],
+      "title": "SAMChatMetadata",
+      "type": "object"
+    },
+    "SAMChatSpecConfig": {
+      "description": "Smarter API Chat Manifest Chat.spec.config",
+      "properties": {},
+      "title": "SAMChatSpecConfig",
+      "type": "object"
+    },
+    "SAMChatStatus": {
+      "description": "Smarter API Chat Manifest - Status class.",
+      "properties": {
+        "created": {
+          "anyOf": [
+            {
+              "format": "date-time",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "description": "Plugin.status.created: The date in which this Plugin was created. Read only.",
+          "title": "Created"
+        },
+        "modified": {
+          "anyOf": [
+            {
+              "format": "date-time",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "description": "Plugin.status.modified: The date in which this Plugin was most recently changed. Read only.",
+          "title": "Modified"
+        }
+      },
+      "required": ["created", "modified"],
+      "title": "SAMChatStatus",
+      "type": "object"
+    }
+  },
+  "description": "Smarter API Manifest - Chat",
+  "properties": {
+    "apiVersion": {
+      "description": "apiVersion[String]: Required. The API version of the AbstractSAMBase.",
+      "title": "Apiversion",
+      "type": "string"
+    },
+    "kind": {
+      "description": "kind[String]: Required. The kind of resource described by the manifest.",
+      "title": "Kind",
+      "type": "string"
+    },
+    "metadata": {
+      "$ref": "#/$defs/SAMChatMetadata",
+      "description": "Plugin.metadata[obj]: Required, the Plugin metadata."
+    },
+    "spec": {
+      "$ref": "#/$defs/SAMChatSpecConfig",
+      "description": "Plugin.spec[obj]: Required, the Plugin specification."
+    },
+    "status": {
+      "anyOf": [
+        {
+          "$ref": "#/$defs/SAMChatStatus"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "description": "Plugin.status[obj]: Optional, Read-only. Stateful status information about the Plugin."
+    }
+  },
+  "required": ["apiVersion", "kind", "metadata", "spec", "status"],
+  "title": "SAMChat",
+  "type": "object"
+}

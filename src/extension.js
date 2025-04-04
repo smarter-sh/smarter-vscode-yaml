@@ -107,7 +107,11 @@ function validateYaml(document, diagnosticCollection) {
     const yaml = require("js-yaml");
     const parsedYaml = yaml.load(text);
     // Check for the `apiVersion` field
-    if (!parsedYaml || parsedYaml.apiVersion !== "smarter.sh/v1") {
+    if (
+      !parsedYaml ||
+      typeof parsedYaml.apiVersion !== "string" ||
+      parsedYaml.apiVersion !== "smarter.sh/v1"
+    ) {
       const line = text
         .split("\n")
         .findIndex((line) => line.trim().startsWith("apiVersion"));

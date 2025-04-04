@@ -1,5 +1,6 @@
 # Exclude unnecessary files from the extension package
 
+tests
 venv
 node_modules/**
 .pypi_cache

@@ -1,0 +1,134 @@
+{
+  "$defs": {
+    "SAMChatPluginUsageMetadata": {
+      "description": "Smarter API ChatPluginUsage Manifest - Metadata class.",
+      "properties": {
+        "name": {
+          "description": "The name of the manifest resource",
+          "title": "Name",
+          "type": "string"
+        },
+        "description": {
+          "description": "The description of the manifest resource",
+          "title": "Description",
+          "type": "string"
+        },
+        "version": {
+          "description": "The version of the manifest",
+          "title": "Version",
+          "type": "string"
+        },
+        "tags": {
+          "anyOf": [
+            {
+              "items": {
+                "type": "string"
+              },
+              "type": "array"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "The tags of the manifest",
+          "title": "Tags"
+        },
+        "annotations": {
+          "anyOf": [
+            {
+              "items": {
+                "type": "string"
+              },
+              "type": "array"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "The annotations of the manifest",
+          "title": "Annotations"
+        }
+      },
+      "required": ["name", "description", "version"],
+      "title": "SAMChatPluginUsageMetadata",
+      "type": "object"
+    },
+    "SAMChatPluginUsageSpecConfig": {
+      "description": "Smarter API ChatPluginUsage Manifest ChatPluginUsage.spec.config",
+      "properties": {},
+      "title": "SAMChatPluginUsageSpecConfig",
+      "type": "object"
+    },
+    "SAMChatPluginUsageStatus": {
+      "description": "Smarter API ChatPluginUsage Manifest - Status class.",
+      "properties": {
+        "created": {
+          "anyOf": [
+            {
+              "format": "date-time",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "description": "Plugin.status.created: The date in which this Plugin was created. Read only.",
+          "title": "Created"
+        },
+        "modified": {
+          "anyOf": [
+            {
+              "format": "date-time",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "description": "Plugin.status.modified: The date in which this Plugin was most recently changed. Read only.",
+          "title": "Modified"
+        }
+      },
+      "required": ["created", "modified"],
+      "title": "SAMChatPluginUsageStatus",
+      "type": "object"
+    }
+  },
+  "description": "Smarter API Manifest - ChatPluginUsage",
+  "properties": {
+    "apiVersion": {
+      "description": "apiVersion[String]: Required. The API version of the AbstractSAMBase.",
+      "title": "Apiversion",
+      "type": "string"
+    },
+    "kind": {
+      "description": "kind[String]: Required. The kind of resource described by the manifest.",
+      "title": "Kind",
+      "type": "string"
+    },
+    "metadata": {
+      "$ref": "#/$defs/SAMChatPluginUsageMetadata",
+      "description": "Plugin.metadata[obj]: Required, the Plugin metadata."
+    },
+    "spec": {
+      "$ref": "#/$defs/SAMChatPluginUsageSpecConfig",
+      "description": "Plugin.spec[obj]: Required, the Plugin specification."
+    },
+    "status": {
+      "anyOf": [
+        {
+          "$ref": "#/$defs/SAMChatPluginUsageStatus"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "description": "Plugin.status[obj]: Optional, Read-only. Stateful status information about the Plugin."
+    }
+  },
+  "required": ["apiVersion", "kind", "metadata", "spec", "status"],
+  "title": "SAMChatPluginUsage",
+  "type": "object"
+}

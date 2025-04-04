@@ -1,0 +1,220 @@
+{
+  "$defs": {
+    "SAMAccountMetadata": {
+      "description": "Smarter API Account Manifest - Metadata class.",
+      "properties": {
+        "name": {
+          "description": "The name of the manifest resource",
+          "title": "Name",
+          "type": "string"
+        },
+        "description": {
+          "description": "The description of the manifest resource",
+          "title": "Description",
+          "type": "string"
+        },
+        "version": {
+          "description": "The version of the manifest",
+          "title": "Version",
+          "type": "string"
+        },
+        "tags": {
+          "anyOf": [
+            {
+              "items": {
+                "type": "string"
+              },
+              "type": "array"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "The tags of the manifest",
+          "title": "Tags"
+        },
+        "annotations": {
+          "anyOf": [
+            {
+              "items": {
+                "type": "string"
+              },
+              "type": "array"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "The annotations of the manifest",
+          "title": "Annotations"
+        },
+        "accountNumber": {
+          "description": "Plugin.metadata.accountNumber[str]. Your preassigned 12-digit account number for your Smarter Plugin in the format ####-####-####. Read only.",
+          "title": "Accountnumber",
+          "type": "string"
+        }
+      },
+      "required": ["name", "description", "version", "accountNumber"],
+      "title": "SAMAccountMetadata",
+      "type": "object"
+    },
+    "SAMAccountSpec": {
+      "description": "Smarter API Account Manifest Account.spec",
+      "properties": {
+        "config": {
+          "$ref": "#/$defs/SAMAccountSpecConfig",
+          "description": "Plugin.spec.config[object]. The configuration for the Plugin."
+        }
+      },
+      "required": ["config"],
+      "title": "SAMAccountSpec",
+      "type": "object"
+    },
+    "SAMAccountSpecConfig": {
+      "description": "Smarter API Account Manifest Account.spec.config",
+      "properties": {
+        "companyName": {
+          "description": "Plugin.spec.configuration.companyName[str]. The legal entity of your Smarter Plugin for invoicing and legal correspondence.",
+          "title": "Companyname",
+          "type": "string"
+        },
+        "phoneNumber": {
+          "description": "Plugin.spec.configuration.phoneNumber[str]. The primary phone number for the Plugin.",
+          "title": "Phonenumber",
+          "type": "string"
+        },
+        "address1": {
+          "description": "Plugin.spec.configuration.address1[str]. The primary address for the Plugin.",
+          "title": "Address1",
+          "type": "string"
+        },
+        "address2": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "Plugin.spec.configuration.address2[str]. Optional. The secondary address for the Plugin.",
+          "title": "Address2"
+        },
+        "city": {
+          "description": "Plugin.spec.configuration.city[str]. The city for the Plugin.",
+          "title": "City",
+          "type": "string"
+        },
+        "state": {
+          "description": "Plugin.spec.configuration.state[str]. The state for the Plugin.",
+          "title": "State",
+          "type": "string"
+        },
+        "postalCode": {
+          "description": "Plugin.spec.configuration.postalCode[str]. The postal code for the Plugin.",
+          "title": "Postalcode",
+          "type": "string"
+        },
+        "country": {
+          "description": "Plugin.spec.configuration.country[str]. The country for the Plugin.",
+          "title": "Country",
+          "type": "string"
+        },
+        "language": {
+          "description": "Plugin.spec.configuration.language[str]. The primary language for the Plugin.",
+          "title": "Language",
+          "type": "string"
+        },
+        "timezone": {
+          "description": "Plugin.spec.configuration.timezone[str]. The primary timezone for the Plugin.",
+          "title": "Timezone",
+          "type": "string"
+        },
+        "currency": {
+          "description": "Plugin.spec.configuration.currency[str]. The primary currency for the Plugin.",
+          "title": "Currency",
+          "type": "string"
+        }
+      },
+      "required": [
+        "companyName",
+        "phoneNumber",
+        "address1",
+        "city",
+        "state",
+        "postalCode",
+        "country",
+        "language",
+        "timezone",
+        "currency"
+      ],
+      "title": "SAMAccountSpecConfig",
+      "type": "object"
+    },
+    "SAMAccountStatus": {
+      "description": "Smarter API Account Manifest - Status class.",
+      "properties": {
+        "adminAccount": {
+          "default": null,
+          "description": "Plugin.status.adminAccount: The designated Smarter admin user for this Plugin. Read only.",
+          "title": "Adminaccount",
+          "type": "string"
+        },
+        "created": {
+          "default": null,
+          "description": "Plugin.status.created: The date in which this Plugin was created. Read only.",
+          "format": "date-time",
+          "title": "Created",
+          "type": "string"
+        },
+        "modified": {
+          "default": null,
+          "description": "Plugin.status.modified: The date in which this Plugin was most recently changed. Read only.",
+          "format": "date-time",
+          "title": "Modified",
+          "type": "string"
+        }
+      },
+      "title": "SAMAccountStatus",
+      "type": "object"
+    }
+  },
+  "description": "Smarter API Manifest - Account",
+  "properties": {
+    "apiVersion": {
+      "description": "apiVersion[String]: Required. The API version of the AbstractSAMBase.",
+      "title": "Apiversion",
+      "type": "string"
+    },
+    "kind": {
+      "description": "kind[String]: Required. The kind of resource described by the manifest.",
+      "title": "Kind",
+      "type": "string"
+    },
+    "metadata": {
+      "$ref": "#/$defs/SAMAccountMetadata",
+      "description": "Plugin.metadata[obj]: Required, the Plugin metadata."
+    },
+    "spec": {
+      "$ref": "#/$defs/SAMAccountSpec",
+      "description": "Plugin.spec[obj]: Required, the Plugin specification."
+    },
+    "status": {
+      "anyOf": [
+        {
+          "$ref": "#/$defs/SAMAccountStatus"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "description": "Plugin.status[obj]: Optional, Read-only. Stateful status information about the Plugin."
+    }
+  },
+  "required": ["apiVersion", "kind", "metadata", "spec", "status"],
+  "title": "SAMAccount",
+  "type": "object"
+}
