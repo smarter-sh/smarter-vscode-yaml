@@ -1,8 +1,17 @@
 # Exclude unnecessary files from the extension package
 
+venv
 node_modules/**
+.pypi_cache
 .vscode/**
-dist/**
+.github
+.env
+.gitignore
+.mergify.yml
+.pre-commit-config.yaml
+Makefile
+requirements
+codespell.txt
 out/**
 *.ts
 *.map
@@ -11,5 +20,3 @@ test/**
 coverage/**
 .git/**
 .DS_Store
-README.md
-CHANGELOG.md

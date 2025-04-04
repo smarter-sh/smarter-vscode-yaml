@@ -55,7 +55,26 @@ function validateYaml(
   try {
     // Basic YAML syntax validation
     const yaml = require("js-yaml");
-    yaml.load(text);
+    const parsedYaml = yaml.load(text);
+
+    // Check for the `apiVersion` field
+    if (!parsedYaml || parsedYaml.apiVersion !== "smarter.sh/v1") {
+      const line = text
+        .split("\n")
+        .findIndex((line) => line.trim().startsWith("apiVersion"));
+      const range =
+        line >= 0
+          ? new vscode.Range(line, 0, line, text.split("\n")[line].length)
+          : new vscode.Range(0, 0, 0, 1);
+
+      diagnostics.push(
+        new vscode.Diagnostic(
+          range,
+          "Missing or invalid 'apiVersion'. Expected 'smarter.sh/v1'.",
+          vscode.DiagnosticSeverity.Error,
+        ),
+      );
+    }
 
     // Add semantic validation here (e.g., schema validation)
     const schemaPath = path.join(__dirname, "../schemas/chatbot-schema.json");
@@ -64,16 +83,20 @@ function validateYaml(
       // Perform schema validation (use a library like ajv if needed)
     }
   } catch (error) {
-    const line = error.mark?.line || 0;
-    const column = error.mark?.column || 0;
-    const range = new vscode.Range(line, column, line, column + 1);
-    diagnostics.push(
-      new vscode.Diagnostic(
-        range,
-        error.message,
-        vscode.DiagnosticSeverity.Error,
-      ),
-    );
+    if (error instanceof Error) {
+      const line = (error as any).mark?.line || 0;
+      const column = (error as any).mark?.column || 0;
+      const range = new vscode.Range(line, column, line, column + 1);
+      diagnostics.push(
+        new vscode.Diagnostic(
+          range,
+          error.message,
+          vscode.DiagnosticSeverity.Error,
+        ),
+      );
+    } else {
+      console.error("An unknown error occurred:", error);
+    }
   }
 
   diagnosticCollection.set(document.uri, diagnostics);

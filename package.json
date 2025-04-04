@@ -47,6 +47,10 @@
       }
     }
   },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/smarter-sh/smarter-vscode-yaml.git"
+  },
   "scripts": {
     "build": "tsc -p ./",
     "watch": "tsc -watch -p ./",

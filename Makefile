@@ -52,6 +52,12 @@ build:
 	@echo "Building the project..."
 	npm run build
 
+package:
+	@echo "Packaging the project..."
+	npm run package
+
+package-list:
+	vsce ls
 # Deploy the project
 deploy:
 	@echo "Deploying the project..."
