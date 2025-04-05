@@ -1,10 +1,10 @@
 {
-  "name": "smarter-manifest-extension",
-  "displayName": "Smarter Manifest Extension",
-  "description": "Enhanced support for Smarter manifest files with syntax validation, semantic checking, and auto-completion.",
-  "version": "0.0.2",
+  "name": "smarter-manifest",
+  "displayName": "Smarter Manifest",
+  "description": "Enhanced support for Smarter YAML manifest files with syntax validation, semantic checking, and auto-completion.",
+  "version": "0.0.3",
   "icon": "images/logo.png",
-  "publisher": "Smarter",
+  "publisher": "Querium",
   "engines": {
     "vscode": "^1.75.0"
   },

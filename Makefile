@@ -52,7 +52,8 @@ build:
 	@echo "Building the project..."
 	npm run build
 
-# https://marketplace.visualstudio.com/manage/publishers/Smarter?auth_redirect=True
+# https://marketplace.visualstudio.com/manage/publishers/smarter-sh
+# https://marketplace.visualstudio.com/manage/publishers/smarter-sh/extensions/smarter-manifest-extension/hub
 package:
 	@echo "Packaging the project..." && \
 	rm -rf node_modules dist  && \

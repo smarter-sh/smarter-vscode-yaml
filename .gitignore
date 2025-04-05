@@ -1,6 +1,6 @@
 # application data
 # -------------------------------------
-smarter-manifest-extension*
+smarter-manifest*
 celerybeat-schedule
 mysql-data
 db.sqlite3
