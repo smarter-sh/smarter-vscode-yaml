@@ -53,7 +53,12 @@ export function activate(context: vscode.ExtensionContext) {
 
 function isSmarterManifest(document: vscode.TextDocument): boolean {
   const text = document.getText();
-  return text.startsWith("apiVersion: smarter.sh/v1");
+  const yaml = require("js-yaml");
+  const parsedYaml = yaml.load(text);
+  if (parsedYaml && parsedYaml.apiVersion == "smarter.sh/v1") {
+    return true;
+  }
+  return false;
 }
 
 export function deactivate() {
@@ -70,43 +75,36 @@ function validateYaml(
 
   try {
     const yaml = require("js-yaml");
-    const ajv = new Ajv();
+    const ajv = new Ajv({ allErrors: true, strict: false });
     const parsedYaml = yaml.load(text);
-
-    console.log("Checking for apiVersion...");
-    if (!parsedYaml || parsedYaml.apiVersion !== "smarter.sh/v1") {
-      const line = text
-        .split("\n")
-        .findIndex((line) => line.trim().startsWith("apiVersion"));
-      const range =
-        line >= 0
-          ? new vscode.Range(line, 0, line, text.split("\n")[line].length)
-          : new vscode.Range(0, 0, 0, 1);
-
-      diagnostics.push(
-        new vscode.Diagnostic(
-          range,
-          "Missing or invalid 'apiVersion'. Expected 'smarter.sh/v1'.",
-          vscode.DiagnosticSeverity.Error,
-        ),
-      );
-    }
 
     console.log("Checking for kind...");
     if (parsedYaml && parsedYaml.kind) {
       const kind = parsedYaml.kind;
+      console.log(`Checking for schema for kind: ${kind}`);
       const schemaPath = path.join(
         __dirname,
         `../schemas/${kind.toLowerCase()}.json`,
       );
-
+      console.log(`Schema path: ${schemaPath}`);
       if (fs.existsSync(schemaPath)) {
         const schema = JSON.parse(fs.readFileSync(schemaPath, "utf8"));
         const validate = ajv.compile(schema);
+        console.log("Validating YAML document against schema...");
 
         if (!validate(parsedYaml)) {
           validate.errors?.forEach((error: ErrorObject) => {
-            const range = new vscode.Range(0, 0, 0, 1); // Default range
+            const errorPath = error.instancePath.split("/").slice(1); // Remove leading slash
+            const line = text
+              .split("\n")
+              .findIndex((line) =>
+                line.includes(errorPath[0] ?? error.message ?? ""),
+              );
+            const range =
+              line >= 0
+                ? new vscode.Range(line, 0, line, text.split("\n")[line].length)
+                : new vscode.Range(0, 0, 0, 1);
+
             diagnostics.push(
               new vscode.Diagnostic(
                 range,

@@ -44,7 +44,12 @@
     "@types/node": "^22.13.17",
     "typescript": "^5.8.2",
     "vsce": "^2.15.0",
-    "vscode": "^1.1.37"
+    "vscode": "^1.1.37",
+    "@semantic-release/changelog": "^6.0.3",
+    "@semantic-release/commit-analyzer": "^13.0.0",
+    "@semantic-release/git": "^10.0.1",
+    "@semantic-release/github": "^11.0.1",
+    "@semantic-release/release-notes-generator": "^14.0.1"
   },
   "dependencies": {
     "ajv": "^8.17.1",

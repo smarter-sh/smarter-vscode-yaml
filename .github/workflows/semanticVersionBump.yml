@@ -1,11 +1,11 @@
 ---
 #------------------------------------------------------------------------------
 # Lawrence McDaniel - https://lawrencemcdaniel.com
-# Version Bump Workflow
+# Version Bump Workflow for VS Code Extension
 #
-# Calculate the version of the 'next' branch based on semantic-release rules.
-# Compares the existing value of __version__.py to the calculated value.
-# If they are different, it will update __version__.py and push the changes
+# Calculate the version of the 'main' branch based on semantic-release rules.
+# Compares the existing value in package.json to the calculated value.
+# If they are different, it will update package.json and push the changes
 # to the main branch.
 #------------------------------------------------------------------------------
 name: Semantic Version Bump
@@ -14,33 +14,22 @@ on:
   workflow_dispatch:
   push:
     branches:
-      - lpm0073
       - main
-      - alpha
-      - beta
-      - test
-      - next
-      - next-major
 
 jobs:
-  bump-version-next:
+  bump-version:
     runs-on: ubuntu-latest
-    env:
-      VERSION_FILE: __version__.py
-      PACKAGE_PATH: ${{ github.workspace }}/smarter/smarter/
 
     steps:
-      - uses: actions/checkout@v4
+      - name: Checkout repository
+        uses: actions/checkout@v4
         with:
           persist-credentials: false
-
-      - name: Set up Python
-        uses: actions/setup-python@v5
 
       - name: Setup Node.js environment
         uses: actions/setup-node@v4
 
-      - name: Install npm dependencies
+      - name: Install dependencies
         run: npm install
 
       - name: Fetch latest GitHub release version
@@ -50,59 +39,32 @@ jobs:
           LATEST_RELEASE=${LATEST_RELEASE#v}  # Remove 'v' from the beginning of the version
           echo "LATEST_RELEASE=$LATEST_RELEASE" >> $GITHUB_ENV
 
-      - name: Get current version
+      - name: Get current version from package.json
         id: current_version
         run: |
-          cd ${{ env.PACKAGE_PATH }}
-          CURRENT_VERSION=$(python -c 'from __version__ import __version__; print(__version__)')
+          CURRENT_VERSION=$(node -p "require('./package.json').version")
           echo "CURRENT_VERSION=$CURRENT_VERSION" >> $GITHUB_ENV
 
-      - name: Sync __version__.py with latest GitHub release
-        if: env.CURRENT_VERSION != env.LATEST_RELEASE
-        run: |
-          if python -c 'import sys; sys.exit(0 if "${{ env.CURRENT_VERSION }}" < "${{ env.LATEST_RELEASE }}" else 1)'; then
-            echo "# DO NOT EDIT." >> ${{ env.VERSION_FILE }}
-            echo "# Managed via automated CI/CD in .github/workflows/semanticVersionBump.yml." >> ${{ env.VERSION_FILE }}
-            echo "__version__ = \"${{ env.LATEST_RELEASE }}\"" >>  ${{ env.VERSION_FILE }}
-            git config --local user.email "action@github.com"
-            git config --local user.name "GitHub Action"
-            git add ${{ env.VERSION_FILE }}
-            git commit -m "chore: [gh] Sync __version__.py with latest GitHub release ${{ env.LATEST_RELEASE }} [skip ci]"
-            git push https://${{ secrets.PAT }}@github.com/${{ github.repository }}.git HEAD:${{ github.ref }}
-          fi
-        env:
-          VERSION_FILE: ${{ env.PACKAGE_PATH }}${{ env.VERSION_FILE }}
-
-      - name: Get current version and calculate next version
+      - name: Calculate next version
         id: version
         run: |
-          cd ${{ env.PACKAGE_PATH }}
-          CURRENT_VERSION=$(python -c 'from __version__ import __version__; print(__version__)')
-          cd ${{ github.workspace }}/
-          NEXT_VERSION=$(npx semantic-release --dry-run --no-ci  | awk '/The next release version is/{print $NF}')
+          NEXT_VERSION=$(npx semantic-release --dry-run --no-ci | awk '/The next release version is/{print $NF}')
           NEXT_VERSION=${NEXT_VERSION:-$CURRENT_VERSION}
           VERSION_CHANGED=$([ "$CURRENT_VERSION" != "$NEXT_VERSION" ] && echo "true" || echo "false")
-          echo "CURRENT_VERSION=$CURRENT_VERSION" >> $GITHUB_ENV
           echo "NEXT_VERSION=$NEXT_VERSION" >> $GITHUB_ENV
           echo "VERSION_CHANGED=$VERSION_CHANGED" >> $GITHUB_ENV
         env:
           GITHUB_TOKEN: ${{ secrets.PAT }}
 
-      - name: Update __version__.py
+      - name: Update package.json version
         if: env.VERSION_CHANGED == 'true'
-        id: update_version
         run: |
-          cd ${{ env.PACKAGE_PATH }}
-          echo "# DO NOT EDIT." > ${{ env.VERSION_FILE }}
-          echo "# Managed via automated CI/CD in .github/workflows/semanticVersionBump.yml." >> ${{ env.VERSION_FILE }}
-          echo "__version__ = \"${{ env.NEXT_VERSION }}\"" >>  ${{ env.VERSION_FILE }}
+          npm version ${{ env.NEXT_VERSION }} --no-git-tag-version
           git config --local user.email "action@github.com"
           git config --local user.name "GitHub Action"
-          git add ${{ env.VERSION_FILE }}
-          git commit -m "chore: [gh] Update __version__.py to ${{ env.NEXT_VERSION }} [skip ci]"
+          git add package.json
+          git commit -m "chore: [gh] Update package.json to version ${{ env.NEXT_VERSION }} [skip ci]"
           git push https://${{ secrets.PAT }}@github.com/${{ github.repository }}.git HEAD:${{ github.ref }}
         env:
-          VERSION_FILE: ${{ env.PACKAGE_PATH }}${{ env.VERSION_FILE }}
-          GITHUB_TOKEN: ${{ secrets.PAT }}
           NEXT_VERSION: ${{ env.NEXT_VERSION }}
           VERSION_CHANGED: ${{ env.VERSION_CHANGED }}
