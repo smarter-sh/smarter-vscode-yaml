@@ -2,7 +2,7 @@
   "name": "smarter-manifest",
   "displayName": "Smarter Manifest",
   "description": "Enhanced support for Smarter YAML manifest files with syntax validation, semantic checking, and auto-completion.",
-  "version": "0.0.3",
+  "version": "0.0.4",
   "icon": "images/logo.png",
   "publisher": "Querium",
   "engines": {
@@ -13,32 +13,10 @@
     "Linters"
   ],
   "activationEvents": [
-    "workspaceContains:**/*.yaml",
-    "workspaceContains:**/*.yml"
+    "onLanguage:yaml"
   ],
   "main": "./dist/extension.js",
   "contributes": {
-    "languages": [
-      {
-        "id": "yaml",
-        "aliases": [
-          "YAML",
-          "yaml"
-        ],
-        "extensions": [
-          ".yaml",
-          ".yml"
-        ],
-        "configuration": "./language/yaml.configuration.json"
-      }
-    ],
-    "grammars": [
-      {
-        "language": "yaml",
-        "scopeName": "source.yaml",
-        "path": "./language/yaml.tmLanguage.json"
-      }
-    ],
     "configuration": {
       "type": "object",
       "title": "YAML Manifest Extension",

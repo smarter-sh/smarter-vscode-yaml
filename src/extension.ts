@@ -13,16 +13,17 @@ export function activate(context: vscode.ExtensionContext) {
   diagnosticCollection = vscode.languages.createDiagnosticCollection("yaml");
   context.subscriptions.push(diagnosticCollection);
 
-  vscode.workspace.onDidChangeTextDocument((event) => {
-    console.log("Document changed");
-    if (event.document.languageId === "yaml") {
-      validateYaml(event.document, diagnosticCollection);
+  vscode.workspace.onDidOpenTextDocument((document) => {
+    if (document.languageId === "yaml" && isSmarterManifest(document)) {
+      console.log("Validating Smarter Manifest YAML document...");
+      validateYaml(document, diagnosticCollection);
     }
   });
 
-  vscode.workspace.onDidOpenTextDocument((document) => {
-    console.log("Document opened");
-    if (document.languageId === "yaml") {
+  vscode.workspace.onDidChangeTextDocument((event) => {
+    const document = event.document;
+    if (document.languageId === "yaml" && isSmarterManifest(document)) {
+      console.log("Re-validating Smarter Manifest YAML document...");
       validateYaml(document, diagnosticCollection);
     }
   });
@@ -32,6 +33,10 @@ export function activate(context: vscode.ExtensionContext) {
     { language: "yaml", scheme: "file" },
     {
       provideCompletionItems(document, position) {
+        if (!isSmarterManifest(document)) {
+          return []; // Skip completion for non-Smarter Manifest YAML files
+        }
+
         const keywords = ["apiVersion", "kind", "metadata", "spec", "status"];
         return keywords.map(
           (keyword) =>
@@ -44,6 +49,11 @@ export function activate(context: vscode.ExtensionContext) {
     },
   );
   context.subscriptions.push(completionProvider);
+}
+
+function isSmarterManifest(document: vscode.TextDocument): boolean {
+  const text = document.getText();
+  return text.startsWith("apiVersion: smarter.sh/v1");
 }
 
 export function deactivate() {
