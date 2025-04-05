@@ -43,8 +43,12 @@ jobs:
               'main'
             ]
           extra_plugins: |
-            @semantic-release/git
-            @semantic-release/changelog # Ensure only these plugins are used
+            '@semantic-release/commit-analyzer',
+            '@semantic-release/release-notes-generator',
+            '@semantic-release/changelog',
+            '@semantic-release/git',
+            '@semantic-release/github'
+
         env:
           GIT_COMMITTER_NAME: github-actions[bot]
           GIT_COMMITTER_EMAIL: github-actions[bot]@users.noreply.github.com
