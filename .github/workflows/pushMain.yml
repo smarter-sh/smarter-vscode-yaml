@@ -40,22 +40,11 @@ jobs:
         with:
           branches: |
             [
-              '+([0-9])?(.{+([0-9]),x}).x',
-              'main',
-              'next',
-              'next-major',
-              {
-                name: 'beta',
-                prerelease: true
-              },
-              {
-                name: 'alpha',
-                prerelease: true
-              }
+              'main'
             ]
           extra_plugins: |
             @semantic-release/git
-            @semantic-release/changelog
+            @semantic-release/changelog # Ensure only these plugins are used
         env:
           GIT_COMMITTER_NAME: github-actions[bot]
           GIT_COMMITTER_EMAIL: github-actions[bot]@users.noreply.github.com
