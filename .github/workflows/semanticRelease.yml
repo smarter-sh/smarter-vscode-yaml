@@ -3,7 +3,7 @@
 # - Create a semantical release
 # - Merge main into next, alpha, beta, and next-major
 #---------------------------------------------------------
-name: Push to main
+name: Semantic Release
 
 on:
   workflow_dispatch:
