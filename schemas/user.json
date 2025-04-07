@@ -51,7 +51,7 @@
           "title": "Annotations"
         },
         "username": {
-          "description": "Plugin.metadata.username[str]. Required. The Django username of the user.",
+          "description": "User.metadata.username[str]. Required. The Django username of the user.",
           "title": "Username",
           "type": "string"
         }
@@ -65,7 +65,7 @@
       "properties": {
         "config": {
           "$ref": "#/$defs/SAMUserSpecConfig",
-          "description": "Plugin.spec.config[object]. The configuration for the Plugin."
+          "description": "User.spec.config[object]. The configuration for the User."
         }
       },
       "required": ["config"],
@@ -85,7 +85,7 @@
             }
           ],
           "default": null,
-          "description": "Plugin.spec.configuration.firstName[str]. Optional. The first name of the Plugin.",
+          "description": "User.spec.configuration.firstName[str]. Optional. The first name of the User.",
           "title": "Firstname"
         },
         "lastName": {
@@ -98,11 +98,11 @@
             }
           ],
           "default": null,
-          "description": "Plugin.spec.configuration.lastName[str]. Optional. The last name of the Plugin.",
+          "description": "User.spec.configuration.lastName[str]. Optional. The last name of the User.",
           "title": "Lastname"
         },
         "email": {
-          "description": "Plugin.spec.configuration.email[str]. The email address of the Plugin.",
+          "description": "User.spec.configuration.email[str]. The email address of the User.",
           "title": "Email",
           "type": "string"
         },
@@ -116,11 +116,11 @@
             }
           ],
           "default": false,
-          "description": "Plugin.spec.configuration.isStaff[bool]. Optional. Designates whether the Plugin has admin permissions.",
+          "description": "User.spec.configuration.isStaff[bool]. Optional. Designates whether the User has admin permissions.",
           "title": "Isstaff"
         },
         "isActive": {
-          "description": "Plugin.spec.configuration.isActive[bool]. Designates whether this Plugin should be treated as active.",
+          "description": "User.spec.configuration.isActive[bool]. Designates whether this User should be treated as active.",
           "title": "Isactive",
           "type": "boolean"
         }
@@ -134,26 +134,26 @@
       "properties": {
         "account_number": {
           "default": null,
-          "description": "Plugin.status.account_number: The account owner of this Plugin. Read only.",
+          "description": "User.status.account_number: The account owner of this User. Read only.",
           "title": "Account Number",
           "type": "string"
         },
         "username": {
           "default": null,
-          "description": "Plugin.status.account_number: The Smarter user who created this Plugin. Read only.",
+          "description": "User.status.account_number: The Smarter user who created this User. Read only.",
           "title": "Username",
           "type": "string"
         },
         "created": {
           "default": null,
-          "description": "Plugin.status.created: The date in which this Plugin was created. Read only.",
+          "description": "User.status.created: The date in which this User was created. Read only.",
           "format": "date-time",
           "title": "Created",
           "type": "string"
         },
         "modified": {
           "default": null,
-          "description": "Plugin.status.modified: The date in which this Plugin was most recently changed. Read only.",
+          "description": "User.status.modified: The date in which this User was most recently changed. Read only.",
           "format": "date-time",
           "title": "Modified",
           "type": "string"
@@ -177,11 +177,11 @@
     },
     "metadata": {
       "$ref": "#/$defs/SAMUserMetadata",
-      "description": "Plugin.metadata[obj]: Required, the Plugin metadata."
+      "description": "User.metadata[obj]: Required, the User metadata."
     },
     "spec": {
       "$ref": "#/$defs/SAMUserSpec",
-      "description": "Plugin.spec[obj]: Required, the Plugin specification."
+      "description": "User.spec[obj]: Required, the User specification."
     },
     "status": {
       "anyOf": [
@@ -192,7 +192,7 @@
           "type": "null"
         }
       ],
-      "description": "Plugin.status[obj]: Optional, Read-only. Stateful status information about the Plugin."
+      "description": "User.status[obj]: Optional, Read-only. Stateful status information about the User."
     }
   },
   "required": ["apiVersion", "kind", "metadata", "spec", "status"],

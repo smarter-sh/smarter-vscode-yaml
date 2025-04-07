@@ -74,7 +74,7 @@
               "type": "null"
             }
           ],
-          "description": "Plugin.status.created: The date in which this Plugin was created. Read only.",
+          "description": "ChatToolCall.status.created: The date in which this ChatToolCall was created. Read only.",
           "title": "Created"
         },
         "modified": {
@@ -87,7 +87,7 @@
               "type": "null"
             }
           ],
-          "description": "Plugin.status.modified: The date in which this Plugin was most recently changed. Read only.",
+          "description": "ChatToolCall.status.modified: The date in which this ChatToolCall was most recently changed. Read only.",
           "title": "Modified"
         }
       },
@@ -110,11 +110,11 @@
     },
     "metadata": {
       "$ref": "#/$defs/SAMChatToolCallMetadata",
-      "description": "Plugin.metadata[obj]: Required, the Plugin metadata."
+      "description": "ChatToolCall.metadata[obj]: Required, the ChatToolCall metadata."
     },
     "spec": {
       "$ref": "#/$defs/SAMChatToolCallSpecConfig",
-      "description": "Plugin.spec[obj]: Required, the Plugin specification."
+      "description": "ChatToolCall.spec[obj]: Required, the ChatToolCall specification."
     },
     "status": {
       "anyOf": [
@@ -125,7 +125,7 @@
           "type": "null"
         }
       ],
-      "description": "Plugin.status[obj]: Optional, Read-only. Stateful status information about the Plugin."
+      "description": "ChatToolCall.status[obj]: Optional, Read-only. Stateful status information about the ChatToolCall."
     }
   },
   "required": ["apiVersion", "kind", "metadata", "spec", "status"],

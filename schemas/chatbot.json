@@ -4,12 +4,12 @@
       "description": "Smarter API Chatbot Manifest Chatbot.spec.config.customDomain",
       "properties": {
         "aws_hosted_zone_id": {
-          "description": "Plugin.spec.configuration.customDomain.aws_hosted_zone_id[str]. Required. The AWS hosted zone ID.",
+          "description": "ChatBot.spec.configuration.customDomain.aws_hosted_zone_id[str]. Required. The AWS hosted zone ID.",
           "title": "Aws Hosted Zone Id",
           "type": "string"
         },
         "domain_name": {
-          "description": "Plugin.spec.configuration.customDomain.domain_name[str]. Required. The domain name.",
+          "description": "ChatBot.spec.configuration.customDomain.domain_name[str]. Required. The domain name.",
           "title": "Domain Name",
           "type": "string"
         }
@@ -78,7 +78,7 @@
       "properties": {
         "config": {
           "$ref": "#/$defs/SAMChatbotSpecConfig",
-          "description": "Plugin.spec.config[object]. The configuration for the Plugin."
+          "description": "ChatBot.spec.config[object]. The configuration for the ChatBot."
         },
         "plugins": {
           "anyOf": [
@@ -93,7 +93,7 @@
             }
           ],
           "default": null,
-          "description": "Plugin.spec.searchTerms[list]. Optional. The Plugins to add to the Plugin.",
+          "description": "ChatBot.spec.searchTerms[list]. Optional. The Plugins to add to the ChatBot.",
           "title": "Plugins"
         },
         "functions": {
@@ -109,7 +109,7 @@
             }
           ],
           "default": null,
-          "description": "Plugin.spec.functions[list]. Optional. The built-in Smarter Functions to add to the Plugin.",
+          "description": "ChatBot.spec.functions[list]. Optional. The built-in Smarter Functions to add to the ChatBot.",
           "title": "Functions"
         },
         "apiKey": {
@@ -122,7 +122,7 @@
             }
           ],
           "default": null,
-          "description": "Plugin.spec.api_key[str]. Optional. The name of the API key that this chatbot uses for authentication.",
+          "description": "ChatBot.spec.api_key[str]. Optional. The name of the API key that this chatbot uses for authentication.",
           "title": "Apikey"
         }
       },
@@ -143,7 +143,7 @@
             }
           ],
           "default": null,
-          "description": "Plugin.spec.configuration.subdomain[str]. Optional. The subdomain to use for the chatbot.",
+          "description": "ChatBot.spec.configuration.subdomain[str]. Optional. The subdomain to use for the chatbot.",
           "title": "Subdomain"
         },
         "customDomain": {
@@ -156,11 +156,11 @@
             }
           ],
           "default": null,
-          "description": "Plugin.spec.configuration.custom_domain[str]. Optional. The custom domain to use for the chatbot."
+          "description": "ChatBot.spec.configuration.custom_domain[str]. Optional. The custom domain to use for the chatbot."
         },
         "deployed": {
           "default": false,
-          "description": "Plugin.spec.configuration.deployed[bool]. Required. Whether the chatbot is deployed.",
+          "description": "ChatBot.spec.configuration.deployed[bool]. Required. Whether the chatbot is deployed.",
           "title": "Deployed",
           "type": "boolean"
         },
@@ -174,7 +174,7 @@
             }
           ],
           "default": null,
-          "description": "Plugin.spec.configuration.provider[str]. Optional. The provider to use for the chatbot. Default: openai.",
+          "description": "ChatBot.spec.configuration.provider[str]. Optional. The provider to use for the chatbot. Default: openai.",
           "title": "Provider"
         },
         "defaultModel": {
@@ -187,7 +187,7 @@
             }
           ],
           "default": null,
-          "description": "Plugin.spec.configuration.default_model[str]. Optional. The default model to use for the chatbot.",
+          "description": "ChatBot.spec.configuration.default_model[str]. Optional. The default model to use for the chatbot.",
           "title": "Defaultmodel"
         },
         "defaultSystemRole": {
@@ -200,7 +200,7 @@
             }
           ],
           "default": null,
-          "description": "Plugin.spec.configuration.default_system_role[str]. Optional. The default system prompt to use for the chatbot.",
+          "description": "ChatBot.spec.configuration.default_system_role[str]. Optional. The default system prompt to use for the chatbot.",
           "title": "Defaultsystemrole"
         },
         "defaultTemperature": {
@@ -213,7 +213,7 @@
             }
           ],
           "default": null,
-          "description": "Plugin.spec.configuration.default_temperature[float]. Optional. The default temperature to use for the chatbot.",
+          "description": "ChatBot.spec.configuration.default_temperature[float]. Optional. The default temperature to use for the chatbot.",
           "title": "Defaulttemperature"
         },
         "defaultMaxTokens": {
@@ -226,7 +226,7 @@
             }
           ],
           "default": null,
-          "description": "Plugin.spec.configuration.default_max_tokens[int]. Optional. The default max tokens to use for the chatbot.",
+          "description": "ChatBot.spec.configuration.default_max_tokens[int]. Optional. The default max tokens to use for the chatbot.",
           "title": "Defaultmaxtokens"
         },
         "appName": {
@@ -239,7 +239,7 @@
             }
           ],
           "default": null,
-          "description": "Plugin.spec.configuration.app_name[str]. Optional. The name of the chatbot.",
+          "description": "ChatBot.spec.configuration.app_name[str]. Optional. The name of the chatbot.",
           "title": "Appname"
         },
         "appAssistant": {
@@ -252,7 +252,7 @@
             }
           ],
           "default": null,
-          "description": "Plugin.spec.configuration.app_assistant[str]. Optional. The assistant name of the chatbot.",
+          "description": "ChatBot.spec.configuration.app_assistant[str]. Optional. The assistant name of the chatbot.",
           "title": "Appassistant"
         },
         "appWelcomeMessage": {
@@ -265,7 +265,7 @@
             }
           ],
           "default": null,
-          "description": "Plugin.spec.configuration.app_welcome_message[str]. Optional. The welcome message of the chatbot.",
+          "description": "ChatBot.spec.configuration.app_welcome_message[str]. Optional. The welcome message of the chatbot.",
           "title": "Appwelcomemessage"
         },
         "appExamplePrompts": {
@@ -281,7 +281,7 @@
             }
           ],
           "default": null,
-          "description": "Plugin.spec.configuration.app_example_prompts[list]. Optional. The example prompts of the chatbot.",
+          "description": "ChatBot.spec.configuration.app_example_prompts[list]. Optional. The example prompts of the chatbot.",
           "title": "Appexampleprompts"
         },
         "appPlaceholder": {
@@ -294,7 +294,7 @@
             }
           ],
           "default": null,
-          "description": "Plugin.spec.configuration.app_placeholder[str]. Optional. The placeholder of the chatbot.",
+          "description": "ChatBot.spec.configuration.app_placeholder[str]. Optional. The placeholder of the chatbot.",
           "title": "Appplaceholder"
         },
         "appInfoUrl": {
@@ -307,7 +307,7 @@
             }
           ],
           "default": null,
-          "description": "Plugin.spec.configuration.app_info_url[str]. Optional. The info URL of the chatbot.",
+          "description": "ChatBot.spec.configuration.app_info_url[str]. Optional. The info URL of the chatbot.",
           "title": "Appinfourl"
         },
         "appBackgroundImageUrl": {
@@ -320,7 +320,7 @@
             }
           ],
           "default": null,
-          "description": "Plugin.spec.configuration.app_background_image_url[str]. Optional. The background image URL of the chatbot.",
+          "description": "ChatBot.spec.configuration.app_background_image_url[str]. Optional. The background image URL of the chatbot.",
           "title": "Appbackgroundimageurl"
         },
         "appLogoUrl": {
@@ -333,7 +333,7 @@
             }
           ],
           "default": null,
-          "description": "Plugin.spec.configuration.app_logo_url[str]. Optional. The logo URL of the chatbot.",
+          "description": "ChatBot.spec.configuration.app_logo_url[str]. Optional. The logo URL of the chatbot.",
           "title": "Applogourl"
         },
         "appFileAttachment": {
@@ -346,7 +346,7 @@
             }
           ],
           "default": null,
-          "description": "Plugin.spec.configuration.app_file_attachment[bool]. Optional. Whether the chatbot supports file attachment.",
+          "description": "ChatBot.spec.configuration.app_file_attachment[bool]. Optional. Whether the chatbot supports file attachment.",
           "title": "Appfileattachment"
         }
       },
@@ -358,26 +358,26 @@
       "properties": {
         "account_number": {
           "default": null,
-          "description": "Plugin.status.account_number: The account owner of this Plugin. Read only.",
+          "description": "ChatBot.status.account_number: The account owner of this ChatBot. Read only.",
           "title": "Account Number",
           "type": "string"
         },
         "username": {
           "default": null,
-          "description": "Plugin.status.account_number: The Smarter user who created this Plugin. Read only.",
+          "description": "ChatBot.status.account_number: The Smarter user who created this ChatBot. Read only.",
           "title": "Username",
           "type": "string"
         },
         "created": {
           "default": null,
-          "description": "Plugin.status.created: The date in which this Plugin was created. Read only.",
+          "description": "ChatBot.status.created: The date in which this ChatBot was created. Read only.",
           "format": "date-time",
           "title": "Created",
           "type": "string"
         },
         "modified": {
           "default": null,
-          "description": "Plugin.status.modified: The date in which this Plugin was most recently changed. Read only.",
+          "description": "ChatBot.status.modified: The date in which this ChatBot was most recently changed. Read only.",
           "format": "date-time",
           "title": "Modified",
           "type": "string"
@@ -401,11 +401,11 @@
     },
     "metadata": {
       "$ref": "#/$defs/SAMChatbotMetadata",
-      "description": "Plugin.metadata[obj]: Required, the Plugin metadata."
+      "description": "ChatBot.metadata[obj]: Required, the ChatBot metadata."
     },
     "spec": {
       "$ref": "#/$defs/SAMChatbotSpec",
-      "description": "Plugin.spec[obj]: Required, the Plugin specification."
+      "description": "ChatBot.spec[obj]: Required, the ChatBot specification."
     },
     "status": {
       "anyOf": [
@@ -416,7 +416,7 @@
           "type": "null"
         }
       ],
-      "description": "Plugin.status[obj]: Optional, Read-only. Stateful status information about the Plugin."
+      "description": "ChatBot.status[obj]: Optional, Read-only. Stateful status information about the ChatBot."
     }
   },
   "required": ["apiVersion", "kind", "metadata", "spec", "status"],

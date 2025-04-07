@@ -74,7 +74,7 @@
               "type": "null"
             }
           ],
-          "description": "Plugin.status.created: The date in which this Plugin was created. Read only.",
+          "description": "ChatHistory.status.created: The date in which this ChatHistory was created. Read only.",
           "title": "Created"
         },
         "modified": {
@@ -87,7 +87,7 @@
               "type": "null"
             }
           ],
-          "description": "Plugin.status.modified: The date in which this Plugin was most recently changed. Read only.",
+          "description": "ChatHistory.status.modified: The date in which this ChatHistory was most recently changed. Read only.",
           "title": "Modified"
         }
       },
@@ -110,11 +110,11 @@
     },
     "metadata": {
       "$ref": "#/$defs/SAMChatHistoryMetadata",
-      "description": "Plugin.metadata[obj]: Required, the Plugin metadata."
+      "description": "ChatHistory.metadata[obj]: Required, the ChatHistory metadata."
     },
     "spec": {
       "$ref": "#/$defs/SAMChatHistorySpecConfig",
-      "description": "Plugin.spec[obj]: Required, the Plugin specification."
+      "description": "ChatHistory.spec[obj]: Required, the ChatHistory specification."
     },
     "status": {
       "anyOf": [
@@ -125,7 +125,7 @@
           "type": "null"
         }
       ],
-      "description": "Plugin.status[obj]: Optional, Read-only. Stateful status information about the Plugin."
+      "description": "ChatHistory.status[obj]: Optional, Read-only. Stateful status information about the ChatHistory."
     }
   },
   "required": ["apiVersion", "kind", "metadata", "spec", "status"],

@@ -51,7 +51,7 @@
           "title": "Annotations"
         },
         "accountNumber": {
-          "description": "Plugin.metadata.accountNumber[str]. Your preassigned 12-digit account number for your Smarter Plugin in the format ####-####-####. Read only.",
+          "description": "Account.metadata.accountNumber[str]. Your preassigned 12-digit account number for your Smarter Account in the format ####-####-####. Read only.",
           "title": "Accountnumber",
           "type": "string"
         }
@@ -65,7 +65,7 @@
       "properties": {
         "config": {
           "$ref": "#/$defs/SAMAccountSpecConfig",
-          "description": "Plugin.spec.config[object]. The configuration for the Plugin."
+          "description": "Account.spec.config[object]. The configuration for the Account."
         }
       },
       "required": ["config"],
@@ -76,17 +76,17 @@
       "description": "Smarter API Account Manifest Account.spec.config",
       "properties": {
         "companyName": {
-          "description": "Plugin.spec.configuration.companyName[str]. The legal entity of your Smarter Plugin for invoicing and legal correspondence.",
+          "description": "Account.spec.configuration.companyName[str]. The legal entity of your Smarter Account for invoicing and legal correspondence.",
           "title": "Companyname",
           "type": "string"
         },
         "phoneNumber": {
-          "description": "Plugin.spec.configuration.phoneNumber[str]. The primary phone number for the Plugin.",
+          "description": "Account.spec.configuration.phoneNumber[str]. The primary phone number for the Account.",
           "title": "Phonenumber",
           "type": "string"
         },
         "address1": {
-          "description": "Plugin.spec.configuration.address1[str]. The primary address for the Plugin.",
+          "description": "Account.spec.configuration.address1[str]. The primary address for the Account.",
           "title": "Address1",
           "type": "string"
         },
@@ -100,41 +100,41 @@
             }
           ],
           "default": null,
-          "description": "Plugin.spec.configuration.address2[str]. Optional. The secondary address for the Plugin.",
+          "description": "Account.spec.configuration.address2[str]. Optional. The secondary address for the Account.",
           "title": "Address2"
         },
         "city": {
-          "description": "Plugin.spec.configuration.city[str]. The city for the Plugin.",
+          "description": "Account.spec.configuration.city[str]. The city for the Account.",
           "title": "City",
           "type": "string"
         },
         "state": {
-          "description": "Plugin.spec.configuration.state[str]. The state for the Plugin.",
+          "description": "Account.spec.configuration.state[str]. The state for the Account.",
           "title": "State",
           "type": "string"
         },
         "postalCode": {
-          "description": "Plugin.spec.configuration.postalCode[str]. The postal code for the Plugin.",
+          "description": "Account.spec.configuration.postalCode[str]. The postal code for the Account.",
           "title": "Postalcode",
           "type": "string"
         },
         "country": {
-          "description": "Plugin.spec.configuration.country[str]. The country for the Plugin.",
+          "description": "Account.spec.configuration.country[str]. The country for the Account.",
           "title": "Country",
           "type": "string"
         },
         "language": {
-          "description": "Plugin.spec.configuration.language[str]. The primary language for the Plugin.",
+          "description": "Account.spec.configuration.language[str]. The primary language for the Account.",
           "title": "Language",
           "type": "string"
         },
         "timezone": {
-          "description": "Plugin.spec.configuration.timezone[str]. The primary timezone for the Plugin.",
+          "description": "Account.spec.configuration.timezone[str]. The primary timezone for the Account.",
           "title": "Timezone",
           "type": "string"
         },
         "currency": {
-          "description": "Plugin.spec.configuration.currency[str]. The primary currency for the Plugin.",
+          "description": "Account.spec.configuration.currency[str]. The primary currency for the Account.",
           "title": "Currency",
           "type": "string"
         }
@@ -159,20 +159,20 @@
       "properties": {
         "adminAccount": {
           "default": null,
-          "description": "Plugin.status.adminAccount: The designated Smarter admin user for this Plugin. Read only.",
+          "description": "Account.status.adminAccount: The designated Smarter admin user for this Account. Read only.",
           "title": "Adminaccount",
           "type": "string"
         },
         "created": {
           "default": null,
-          "description": "Plugin.status.created: The date in which this Plugin was created. Read only.",
+          "description": "Account.status.created: The date in which this Account was created. Read only.",
           "format": "date-time",
           "title": "Created",
           "type": "string"
         },
         "modified": {
           "default": null,
-          "description": "Plugin.status.modified: The date in which this Plugin was most recently changed. Read only.",
+          "description": "Account.status.modified: The date in which this Account was most recently changed. Read only.",
           "format": "date-time",
           "title": "Modified",
           "type": "string"
@@ -196,11 +196,11 @@
     },
     "metadata": {
       "$ref": "#/$defs/SAMAccountMetadata",
-      "description": "Plugin.metadata[obj]: Required, the Plugin metadata."
+      "description": "Account.metadata[obj]: Required, the Account metadata."
     },
     "spec": {
       "$ref": "#/$defs/SAMAccountSpec",
-      "description": "Plugin.spec[obj]: Required, the Plugin specification."
+      "description": "Account.spec[obj]: Required, the Account specification."
     },
     "status": {
       "anyOf": [
@@ -211,7 +211,7 @@
           "type": "null"
         }
       ],
-      "description": "Plugin.status[obj]: Optional, Read-only. Stateful status information about the Plugin."
+      "description": "Account.status[obj]: Optional, Read-only. Stateful status information about the Account."
     }
   },
   "required": ["apiVersion", "kind", "metadata", "spec", "status"],

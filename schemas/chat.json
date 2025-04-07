@@ -74,7 +74,7 @@
               "type": "null"
             }
           ],
-          "description": "Plugin.status.created: The date in which this Plugin was created. Read only.",
+          "description": "Chat.status.created: The date in which this Chat was created. Read only.",
           "title": "Created"
         },
         "modified": {
@@ -87,7 +87,7 @@
               "type": "null"
             }
           ],
-          "description": "Plugin.status.modified: The date in which this Plugin was most recently changed. Read only.",
+          "description": "Chat.status.modified: The date in which this Chat was most recently changed. Read only.",
           "title": "Modified"
         }
       },
@@ -110,11 +110,11 @@
     },
     "metadata": {
       "$ref": "#/$defs/SAMChatMetadata",
-      "description": "Plugin.metadata[obj]: Required, the Plugin metadata."
+      "description": "Chat.metadata[obj]: Required, the Chat metadata."
     },
     "spec": {
       "$ref": "#/$defs/SAMChatSpecConfig",
-      "description": "Plugin.spec[obj]: Required, the Plugin specification."
+      "description": "Chat.spec[obj]: Required, the Chat specification."
     },
     "status": {
       "anyOf": [
@@ -125,7 +125,7 @@
           "type": "null"
         }
       ],
-      "description": "Plugin.status[obj]: Optional, Read-only. Stateful status information about the Plugin."
+      "description": "Chat.status[obj]: Optional, Read-only. Stateful status information about the Chat."
     }
   },
   "required": ["apiVersion", "kind", "metadata", "spec", "status"],

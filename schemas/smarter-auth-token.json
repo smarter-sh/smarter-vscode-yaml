@@ -60,7 +60,7 @@
       "properties": {
         "config": {
           "$ref": "#/$defs/SAMSmarterAuthTokenSpecConfig",
-          "description": "Plugin.spec.config[object]. The configuration for the Plugin."
+          "description": "AuthToken.spec.config[object]. The configuration for the AuthToken."
         }
       },
       "required": ["config"],
@@ -72,12 +72,12 @@
       "properties": {
         "isActive": {
           "default": false,
-          "description": "Plugin.spec.configuration.isActive[bool]. Required. Whether the Plugin is activated.",
+          "description": "AuthToken.spec.configuration.isActive[bool]. Required. Whether the AuthToken is activated.",
           "title": "Isactive",
           "type": "boolean"
         },
         "username": {
-          "description": "Plugin.spec.configuration.username[str]. The Smarter username to which this Plugin is attached.",
+          "description": "AuthToken.spec.configuration.username[str]. The Smarter username to which this AuthToken is attached.",
           "title": "Username",
           "type": "string"
         }
@@ -99,7 +99,7 @@
               "type": "null"
             }
           ],
-          "description": "Plugin.status.created: The date in which this Plugin was created. Read only.",
+          "description": "AuthToken.status.created: The date in which this AuthToken was created. Read only.",
           "title": "Created"
         },
         "modified": {
@@ -112,7 +112,7 @@
               "type": "null"
             }
           ],
-          "description": "Plugin.status.modified: The date in which this Plugin was most recently changed. Read only.",
+          "description": "AuthToken.status.modified: The date in which this AuthToken was most recently changed. Read only.",
           "title": "Modified"
         },
         "lastUsedAt": {
@@ -125,7 +125,7 @@
               "type": "null"
             }
           ],
-          "description": "Plugin.status.modified: The date in which this Plugin was most recently used for authentication. Read only.",
+          "description": "AuthToken.status.modified: The date in which this AuthToken was most recently used for authentication. Read only.",
           "title": "Lastusedat"
         }
       },
@@ -148,11 +148,11 @@
     },
     "metadata": {
       "$ref": "#/$defs/SAMSmarterAuthTokenMetadata",
-      "description": "Plugin.metadata[obj]: Required, the Plugin metadata."
+      "description": "AuthToken.metadata[obj]: Required, the AuthToken metadata."
     },
     "spec": {
       "$ref": "#/$defs/SAMSmarterAuthTokenSpec",
-      "description": "Plugin.spec[obj]: Required, the Plugin specification."
+      "description": "AuthToken.spec[obj]: Required, the AuthToken specification."
     },
     "status": {
       "anyOf": [
@@ -163,7 +163,7 @@
           "type": "null"
         }
       ],
-      "description": "Plugin.status[obj]: Optional, Read-only. Stateful status information about the Plugin."
+      "description": "AuthToken.status[obj]: Optional, Read-only. Stateful status information about the AuthToken."
     }
   },
   "required": ["apiVersion", "kind", "metadata", "spec", "status"],
