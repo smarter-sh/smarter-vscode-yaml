@@ -1,7 +1,7 @@
 import Ajv, { ErrorObject } from "ajv";
 import addFormats from "ajv-formats"; // Import the formats plugin
 import * as vscode from "vscode";
-import getSchemaForKind from "./schema";
+import { getSchemaForKind } from "./schema";
 
 export default async function validateYaml(
   document: vscode.TextDocument,

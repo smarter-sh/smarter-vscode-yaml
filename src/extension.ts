@@ -1,6 +1,6 @@
 import * as vscode from "vscode";
 import validateYaml from "./validate";
-import getSchemaForKind from "./schema";
+import { getSchemaForKind, findPropertyInSchema } from "./schema";
 
 // Declare diagnosticCollection at the top level
 let diagnosticCollection: vscode.DiagnosticCollection;
@@ -119,6 +119,80 @@ export function activate(context: vscode.ExtensionContext) {
     },
   );
   context.subscriptions.push(completionProvider);
+
+  const hoverProvider = vscode.languages.registerHoverProvider(
+    { language: "yaml", scheme: "file" },
+    {
+      provideHover(document, position) {
+        console.log("Hover invoked at position:", position);
+
+        const yaml = require("js-yaml");
+        const text = document.getText();
+        const parsedYaml = yaml.load(text);
+
+        // Get the word under the cursor
+        const range = document.getWordRangeAtPosition(position);
+        const word = range ? document.getText(range) : null;
+
+        if (!word || !parsedYaml) {
+          console.error(
+            "No word found under cursor or YAML document is invalid.",
+          );
+          return null;
+        }
+
+        console.log("Hovering over word:", word);
+
+        // Fetch the schema for the document
+        const kind = parsedYaml?.kind;
+        if (!kind) {
+          console.error("No 'kind' field found in the YAML document.");
+          return null;
+        }
+
+        return getSchemaForKind(kind).then((schema) => {
+          if (!schema || !schema.properties) {
+            console.error(`Schema for kind '${kind}' not found.`);
+            return null;
+          }
+
+          // Split the word into a path and traverse the schema
+          const path = word.split(".");
+          const propertyDetails = findPropertyInSchema(word, schema, path);
+          if (!propertyDetails) {
+            console.error(
+              `Property '${word}' not found in schema for kind '${kind}'.`,
+            );
+            return null;
+          }
+
+          console.log(
+            `Hover details for property '${word}':`,
+            propertyDetails.description || "No description available.",
+          );
+
+          // Build the hover content
+          const markdownString = new vscode.MarkdownString();
+          markdownString.appendMarkdown(
+            `**${propertyDetails.title || word}**\n\n`,
+          );
+          markdownString.appendMarkdown(
+            `${propertyDetails.description || "No description available."}\n\n`,
+          );
+          if (propertyDetails.examples) {
+            markdownString.appendMarkdown(`**Examples:**\n`);
+            propertyDetails.examples.forEach((example: string) => {
+              markdownString.appendMarkdown(`- \`${example}\`\n`);
+            });
+          }
+
+          return new vscode.Hover(markdownString, range);
+        });
+      },
+    },
+  );
+
+  context.subscriptions.push(hoverProvider);
 }
 
 function isSmarterManifest(document: vscode.TextDocument): boolean {

@@ -13,17 +13,91 @@ interface Schema {
     [key: string]: {
       type?: string;
       description?: string;
+      title?: string;
       examples?: string[];
       properties?: Schema["properties"];
+      anyOf?: Array<{ type?: string; $ref?: string }>;
+      default?: any;
+      $ref?: string;
+      required?: string[];
+      format?: string;
     };
   };
+  required?: string[];
+  $defs?: {
+    [key: string]: Schema;
+  };
+  title?: string;
+  description?: string;
+  type?: string;
 }
 
 const schemaCache = new Map<string, object>();
 
-export default async function getSchemaForKind(
-  kind: string,
-): Promise<Schema | null> {
+export function findPropertyInSchema(
+  property: string,
+  schema: any,
+  path: string[] = [],
+  currentPath: string = "",
+): any {
+  console.log(
+    `findPropertyInSchema() called with property: '${property}', currentPath: '${currentPath}'`,
+  );
+
+  if (!schema) {
+    console.error("Invalid schema.");
+    return null;
+  }
+
+  // Check if the property exists at the current level
+  if (schema.properties && schema.properties[property]) {
+    console.log(
+      `Property '${property}' found at path: '${currentPath}${property}'`,
+    );
+    return {
+      ...schema.properties[property],
+      fullPath: `${currentPath}${property}`,
+    };
+  }
+
+  // If the schema has a $ref, resolve it and continue searching
+  if (schema.$ref) {
+    const refPath = schema.$ref.replace("#/$defs/", "");
+    console.log(`Resolving $ref: '${schema.$ref}'`);
+    const refSchema = schema.$defs?.[refPath];
+    if (!refSchema) {
+      console.error(`$ref '${schema.$ref}' could not be resolved.`);
+      return null;
+    }
+    return findPropertyInSchema(property, refSchema, path, currentPath);
+  }
+
+  // Recurse into child keys of the current schema
+  if (schema.properties) {
+    for (const key of Object.keys(schema.properties)) {
+      console.log(
+        `Descending into child key: '${key}' at path: '${currentPath}${key}.'`,
+      );
+      const childSchema = schema.properties[key];
+      const result = findPropertyInSchema(
+        property,
+        childSchema,
+        path,
+        `${currentPath}${key}.`,
+      );
+      if (result) {
+        return result;
+      }
+    }
+  }
+
+  console.log(
+    `Property '${property}' not found at current path: '${currentPath}'. Backtracking...`,
+  );
+  return null;
+}
+
+export async function getSchemaForKind(kind: string): Promise<Schema | null> {
   if (schemaCache.has(kind)) {
     return schemaCache.get(kind) || null;
   }
