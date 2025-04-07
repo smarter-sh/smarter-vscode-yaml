@@ -2,7 +2,7 @@
   "name": "smarter-manifest",
   "displayName": "Smarter Manifest",
   "description": "Enhanced support for Smarter YAML manifest files with syntax validation, semantic checking, and auto-completion.",
-  "version": "0.0.4",
+  "version": "0.1.0",
   "icon": "images/logo.png",
   "publisher": "Querium",
   "engines": {
@@ -47,7 +47,7 @@
     "@semantic-release/github": "^11.0.1",
     "@semantic-release/release-notes-generator": "^14.0.1",
     "@types/node": "^22.13.17",
-    "@types/vscode": "^1.99.0",
+    "@types/vscode": "^1.75.0",
     "@vscode/test-electron": "^2.4.1",
     "@vscode/vsce": "^3.3.2",
     "typescript": "^5.8.2"
