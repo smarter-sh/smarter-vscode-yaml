@@ -1,7 +1,6 @@
-import Ajv, { ErrorObject } from "ajv";
 import * as vscode from "vscode";
-import * as path from "path";
-import * as fs from "fs";
+import validateYaml from "./validate";
+import getSchemaForKind from "./schema";
 
 // Declare diagnosticCollection at the top level
 let diagnosticCollection: vscode.DiagnosticCollection;
@@ -13,18 +12,22 @@ export function activate(context: vscode.ExtensionContext) {
   diagnosticCollection = vscode.languages.createDiagnosticCollection("yaml");
   context.subscriptions.push(diagnosticCollection);
 
-  vscode.workspace.onDidOpenTextDocument((document) => {
+  vscode.workspace.onDidOpenTextDocument(async (document) => {
     if (document.languageId === "yaml" && isSmarterManifest(document)) {
-      console.log("Validating Smarter Manifest YAML document...");
-      validateYaml(document, diagnosticCollection);
+      console.log(
+        "onDidOpenTextDocument() validating Smarter Manifest YAML document...",
+      );
+      await validateYaml(document, diagnosticCollection);
     }
   });
 
-  vscode.workspace.onDidChangeTextDocument((event) => {
+  vscode.workspace.onDidChangeTextDocument(async (event) => {
     const document = event.document;
     if (document.languageId === "yaml" && isSmarterManifest(document)) {
-      console.log("Re-validating Smarter Manifest YAML document...");
-      validateYaml(document, diagnosticCollection);
+      console.log(
+        "onDidChangeTextDocument() re-validating Smarter Manifest YAML document...",
+      );
+      await validateYaml(document, diagnosticCollection);
     }
   });
 
@@ -32,19 +35,86 @@ export function activate(context: vscode.ExtensionContext) {
   const completionProvider = vscode.languages.registerCompletionItemProvider(
     { language: "yaml", scheme: "file" },
     {
-      provideCompletionItems(document, position) {
+      provideCompletionItems: async function (document, position) {
+        console.log("provideCompletionItems() called.");
         if (!isSmarterManifest(document)) {
+          console.log(
+            "provideCompletionItems() - Not a Smarter Manifest YAML document.",
+          );
           return []; // Skip completion for non-Smarter Manifest YAML files
         }
-
-        const keywords = ["apiVersion", "kind", "metadata", "spec", "status"];
-        return keywords.map(
-          (keyword) =>
-            new vscode.CompletionItem(
-              keyword,
-              vscode.CompletionItemKind.Keyword,
-            ),
+        console.log(
+          "provideCompletionItems() - Validating Smarter Manifest YAML document...",
         );
+
+        const yaml = require("js-yaml");
+        const text = document.getText();
+        const parsedYaml = yaml.load(text);
+
+        // Extract the `kind` field to determine the schema
+        const kind = parsedYaml?.kind;
+        if (!kind) {
+          console.error("No 'kind' field found in the YAML document.");
+          return []; // No `kind` field, no schema-based completions
+        }
+        console.log(`provideCompletionItems() - Kind found: ${kind}`);
+
+        // Fetch the schema for the given kind
+        const schema = await getSchemaForKind(kind);
+        if (!schema) {
+          console.error(`Schema for kind '${kind}' not found.`);
+          return []; // No schema found for the given kind
+        }
+
+        // Helper function to recursively generate completion items
+        function generateCompletionItems(
+          properties: any,
+          parentKey: string = "",
+        ): vscode.CompletionItem[] {
+          console.log(
+            "generateCompletionItems() called:",
+            properties,
+            parentKey,
+          );
+          return Object.keys(properties).flatMap((property) => {
+            const propertyDetails = properties[property];
+            const fullKey = parentKey ? `${parentKey}.${property}` : property;
+
+            const completionItem = new vscode.CompletionItem(
+              property,
+              vscode.CompletionItemKind.Property,
+            );
+
+            // Add details like description, type, and examples
+            completionItem.detail = propertyDetails.type;
+            completionItem.documentation = propertyDetails.description;
+            if (propertyDetails.examples) {
+              completionItem.documentation += `\nExamples: ${propertyDetails.examples.join(", ")}`;
+            }
+            completionItem.insertText = property;
+
+            // Recursively process nested properties
+            const nestedItems = propertyDetails.properties
+              ? generateCompletionItems(propertyDetails.properties, fullKey)
+              : [];
+
+            console.log(
+              "generateCompletionItems() property details for:",
+              property,
+              propertyDetails,
+            );
+            return [completionItem, ...nestedItems];
+          });
+        }
+        // Generate completion items for all levels
+        const completionItems = generateCompletionItems(
+          schema.properties || {},
+        );
+        console.log(
+          "Completion items generated based on schema properties:",
+          completionItems,
+        );
+        return completionItems;
       },
     },
   );
@@ -54,116 +124,23 @@ export function activate(context: vscode.ExtensionContext) {
 function isSmarterManifest(document: vscode.TextDocument): boolean {
   const text = document.getText();
   const yaml = require("js-yaml");
-  const parsedYaml = yaml.load(text);
-  if (parsedYaml && parsedYaml.apiVersion == "smarter.sh/v1") {
-    return true;
-  }
-  return false;
-}
-
-export function deactivate() {
-  console.log("Smarter YAML Manifest Extension is now deactivated.");
-}
-
-function validateYaml(
-  document: vscode.TextDocument,
-  diagnosticCollection: vscode.DiagnosticCollection,
-) {
-  console.log("Validating YAML document...");
-  const diagnostics: vscode.Diagnostic[] = [];
-  const text = document.getText();
 
   try {
-    const yaml = require("js-yaml");
-    const ajv = new Ajv({ allErrors: true, strict: false });
     const parsedYaml = yaml.load(text);
-
-    console.log("Checking for kind...");
-    if (parsedYaml && parsedYaml.kind) {
-      const kind = parsedYaml.kind;
-      console.log(`Checking for schema for kind: ${kind}`);
-      const schemaPath = path.join(
-        __dirname,
-        `../schemas/${kind.toLowerCase()}.json`,
-      );
-      console.log(`Schema path: ${schemaPath}`);
-      if (fs.existsSync(schemaPath)) {
-        const schema = JSON.parse(fs.readFileSync(schemaPath, "utf8"));
-        const validate = ajv.compile(schema);
-        console.log("Validating YAML document against schema...");
-
-        if (!validate(parsedYaml)) {
-          validate.errors?.forEach((error: ErrorObject) => {
-            const errorPath = error.instancePath.split("/").slice(1); // Remove leading slash
-            const line = text
-              .split("\n")
-              .findIndex((line) =>
-                line.includes(errorPath[0] ?? error.message ?? ""),
-              );
-            const range =
-              line >= 0
-                ? new vscode.Range(line, 0, line, text.split("\n")[line].length)
-                : new vscode.Range(0, 0, 0, 1);
-
-            diagnostics.push(
-              new vscode.Diagnostic(
-                range,
-                `Schema validation error: ${error.message}`,
-                vscode.DiagnosticSeverity.Error,
-              ),
-            );
-          });
-        }
-      } else {
-        const line = text
-          .split("\n")
-          .findIndex((line) => line.trim().startsWith("kind"));
-        const range =
-          line >= 0
-            ? new vscode.Range(line, 0, line, text.split("\n")[line].length)
-            : new vscode.Range(0, 0, 0, 1);
-
-        diagnostics.push(
-          new vscode.Diagnostic(
-            range,
-            `Schema for kind '${kind}' not found.`,
-            vscode.DiagnosticSeverity.Warning,
-          ),
-        );
-      }
-    } else {
-      const line = text
-        .split("\n")
-        .findIndex((line) => line.trim().startsWith("kind"));
-      const range =
-        line >= 0
-          ? new vscode.Range(line, 0, line, text.split("\n")[line].length)
-          : new vscode.Range(0, 0, 0, 1);
-
-      diagnostics.push(
-        new vscode.Diagnostic(
-          range,
-          "Missing 'kind' field in the manifest.",
-          vscode.DiagnosticSeverity.Error,
-        ),
-      );
+    if (parsedYaml && parsedYaml.apiVersion === "smarter.sh/v1") {
+      console.log("isSmarterManifest() - is a Smarter Manifest YAML document.");
+      return true;
     }
+    console.log(
+      "isSmarterManifest() - is NOT a Smarter Manifest YAML document.",
+    );
+    return false;
   } catch (error) {
     if (error instanceof Error) {
-      const line = (error as any).mark?.line || 0;
-      const column = (error as any).mark?.column || 0;
-      const range = new vscode.Range(line, column, line, column + 1);
-      diagnostics.push(
-        new vscode.Diagnostic(
-          range,
-          error.message,
-          vscode.DiagnosticSeverity.Error,
-        ),
-      );
+      console.error("Error parsing YAML document:", error.message);
     } else {
-      console.error("An unknown error occurred:", error);
+      console.error("Unknown error occurred while parsing YAML document.");
     }
+    return false;
   }
-
-  diagnosticCollection.set(document.uri, diagnostics);
 }
