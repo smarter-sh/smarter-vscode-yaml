@@ -56,7 +56,7 @@ build:
 # https://marketplace.visualstudio.com/manage/publishers/smarter-sh/extensions/smarter-manifest-extension/hub
 package:
 	@echo "Packaging the project..." && \
-	rm -rf node_modules dist  && \
+	rm -rf node_modules dist package-lock.json && \
 	npm install && \
 	npm run build && \
 	npm run package

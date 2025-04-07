@@ -1,8 +1,23 @@
-# Exclude unnecessary files from the extension package
+# Include all runtime dependencies
+!node_modules/**
 
+# Exclude dev dependencies
+node_modules/@types/**
+node_modules/typescript/**
+node_modules/@vscode/**
+
+# Exclude source files
+src/**
+
+# Exclude test files
+test/**
+
+# Exclude TypeScript config
+tsconfig.json
+
+# Exclude other unnecessary files from the extension package
 tests
 venv
-node_modules/**
 .pypi_cache
 .vscode/**
 .github
@@ -17,7 +32,6 @@ out/**
 *.ts
 *.map
 *.log
-test/**
 coverage/**
 .git/**
 .DS_Store
