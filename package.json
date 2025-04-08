@@ -2,7 +2,7 @@
   "name": "smarter-manifest",
   "displayName": "Smarter Manifest",
   "description": "Enhanced support for Smarter YAML manifest files with syntax validation, semantic checking, and auto-completion.",
-  "version": "0.1.4",
+  "version": "0.1.6",
   "icon": "images/logo.png",
   "publisher": "Querium",
   "engines": {
@@ -19,12 +19,17 @@
   "contributes": {
     "configuration": {
       "type": "object",
-      "title": "YAML Manifest Extension",
+      "title": "Smarter YAML Manifest Settings",
       "properties": {
         "yaml.schemas": {
           "type": "object",
           "description": "Associate schemas to YAML files.",
           "default": {}
+        },
+        "smarterYaml.rootUrl": {
+          "type": "string",
+          "default": "https://platform.smarter.sh",
+          "description": "The root URL for the Smarter platform."
         }
       }
     }

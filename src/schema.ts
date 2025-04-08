@@ -1,9 +1,14 @@
 import * as path from "path";
 import * as fs from "fs";
-import RefParser from "json-schema-ref-parser";
 import axios from "axios";
+import RefParser from "json-schema-ref-parser";
+import * as vscode from "vscode";
 
-const apiUrl = `https://platform.smarter.sh/api/v1/cli/schema/${kind}`;
+const defaultRootUrl = "https://platform.smarter.sh";
+const rootUrl =
+  vscode.workspace.getConfiguration("smarterYaml").get<string>("rootUrl") ||
+  defaultRootUrl;
+console.log("Configured rootUrl:", rootUrl);
 
 interface RefParserType {
   dereference(path: string): Promise<object>;
@@ -42,11 +47,26 @@ export function findPropertyInSchema(
   schema: any,
   path: string[] = [],
   currentPath: string = "",
+  rootSchema: any = schema, // Pass the root schema to retain $defs
+  visited: Set<any> = new Set(), // Track visited schemas
 ): any {
   if (!schema) {
     console.error("Invalid schema.");
     return null;
   }
+
+  // Prevent revisiting the same schema
+  if (visited.has(schema)) {
+    console.warn(
+      "Already visited schema, skipping to prevent infinite loop:",
+      schema,
+    );
+    return null;
+  }
+  visited.add(schema);
+
+  //console.log("Schema passed to findPropertyInSchema:", schema);
+  //console.log("Schema $defs keys in findPropertyInSchema:", Object.keys(rootSchema.$defs || {}));
 
   // Check if the property exists at the current level
   if (schema.properties && schema.properties[property]) {
@@ -61,12 +81,35 @@ export function findPropertyInSchema(
 
   // If the schema has a $ref, resolve it and continue searching
   if (schema.$ref) {
-    const refPath = schema.$ref.replace("#/$defs/", "");
-    const refSchema = schema.$defs?.[refPath];
-    if (!refSchema) {
+    // Strip the '#/$defs/' or '#/' prefix from the $ref path
+    const refPath = schema.$ref.startsWith("#/$defs/")
+      ? schema.$ref.substring("#/$defs/".length)
+      : schema.$ref.startsWith("#/")
+        ? schema.$ref.substring("#/".length)
+        : schema.$ref;
+
+    // Debug log to inspect the $defs and refPath
+    console.log("Schema $defs keys:", Object.keys(rootSchema.$defs || {}));
+    console.log("Resolving $ref path:", refPath);
+
+    // Check if the $defs section exists and contains the referenced schema
+    if (rootSchema.$defs && rootSchema.$defs[refPath]) {
+      const refSchema = rootSchema.$defs[refPath];
+      console.log(`Resolved $ref '${schema.$ref}' to '${refPath}' in $defs.`);
+      return findPropertyInSchema(
+        property,
+        refSchema,
+        path,
+        currentPath,
+        rootSchema,
+        visited,
+      );
+    } else {
+      console.error(
+        `$ref '${schema.$ref}' could not be resolved. Ensure the $defs section contains '${refPath}'.`,
+      );
       return null;
     }
-    return findPropertyInSchema(property, refSchema, path, currentPath);
   }
 
   // Recurse into child keys of the current schema
@@ -78,6 +121,8 @@ export function findPropertyInSchema(
         childSchema,
         path,
         `${currentPath}${key}.`,
+        rootSchema, // Pass the root schema
+        visited, // Pass the visited set
       );
       if (result) {
         return result;
@@ -86,13 +131,15 @@ export function findPropertyInSchema(
   }
 
   // Handle $defs explicitly
-  if (schema.$defs) {
-    for (const [key, defSchema] of Object.entries(schema.$defs)) {
+  if (rootSchema.$defs) {
+    for (const [key, defSchema] of Object.entries(rootSchema.$defs)) {
       const result = findPropertyInSchema(
         property,
         defSchema,
         path,
         `${currentPath}${key}.`,
+        rootSchema, // Pass the root schema
+        visited, // Pass the visited set
       );
       if (result) {
         return result;
@@ -112,13 +159,18 @@ export async function getSchemaForKind(kind: string): Promise<Schema | null> {
 
   // Try fetching the schema from the API
   try {
+    const apiUrl = `${rootUrl}/api/v1/cli/schema/${kind}`;
     const response = await axios.get(apiUrl);
     schema = response.data?.data as Schema;
 
     if (schema) {
       console.log(
-        `getSchemaForKind() successfully fetched schema for kind: ${kind} from API`,
+        `getSchemaForKind() successfully fetched schema for kind: ${kind} from API (${apiUrl})`,
         schema,
+      );
+      console.log(
+        "Fetched schema $defs keys:",
+        Object.keys(schema.$defs || {}),
       );
       schemaCache.set(kind, schema);
       return schema;
