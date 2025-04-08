@@ -3,6 +3,8 @@ import * as fs from "fs";
 import RefParser from "json-schema-ref-parser";
 import axios from "axios";
 
+const apiUrl = `https://platform.smarter.sh/api/v1/cli/schema/${kind}`;
+
 interface RefParserType {
   dereference(path: string): Promise<object>;
 }
@@ -105,8 +107,6 @@ export async function getSchemaForKind(kind: string): Promise<Schema | null> {
   if (schemaCache.has(kind)) {
     return schemaCache.get(kind) || null;
   }
-
-  const apiUrl = `https://platform.smarter.sh/api/v1/cli/schema/${kind}`;
 
   let schema: Schema | null = null;
 
