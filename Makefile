@@ -52,8 +52,7 @@ build:
 	@echo "Building the project..."
 	npm run build
 
-# https://marketplace.visualstudio.com/manage/publishers/smarter-sh
-# https://marketplace.visualstudio.com/manage/publishers/smarter-sh/extensions/smarter-manifest-extension/hub
+# https://marketplace.visualstudio.com/manage/publishers/querium/
 package:
 	@echo "Packaging the project..." && \
 	rm -rf node_modules dist package-lock.json && \

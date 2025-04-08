@@ -1,6 +1,7 @@
 import * as path from "path";
 import * as fs from "fs";
 import RefParser from "json-schema-ref-parser";
+import axios from "axios";
 
 interface RefParserType {
   dereference(path: string): Promise<object>;
@@ -91,6 +92,22 @@ export function findPropertyInSchema(
     }
   }
 
+  // Handle $defs explicitly
+  if (schema.$defs) {
+    for (const [key, defSchema] of Object.entries(schema.$defs)) {
+      console.log(`Searching in $defs key: '${key}'`);
+      const result = findPropertyInSchema(
+        property,
+        defSchema,
+        path,
+        `${currentPath}${key}.`,
+      );
+      if (result) {
+        return result;
+      }
+    }
+  }
+
   console.log(
     `Property '${property}' not found at current path: '${currentPath}'. Backtracking...`,
   );
@@ -100,6 +117,34 @@ export function findPropertyInSchema(
 export async function getSchemaForKind(kind: string): Promise<Schema | null> {
   if (schemaCache.has(kind)) {
     return schemaCache.get(kind) || null;
+  }
+
+  const apiUrl = `https://platform.smarter.sh/api/v1/cli/schema/${kind}`;
+
+  let schema: Schema | null = null;
+
+  // Try fetching the schema from the API
+  try {
+    const response = await axios.get(apiUrl);
+    schema = response.data?.data as Schema;
+
+    if (schema) {
+      console.log(
+        `getSchemaForKind() successfully fetched schema for kind: ${kind} from API`,
+        schema,
+      );
+      schemaCache.set(kind, schema); // Cache the resolved schema
+      return schema;
+    } else {
+      console.error(
+        `Schema for kind '${kind}' is missing in the API response.`,
+      );
+    }
+  } catch (error) {
+    console.error(
+      `Failed to fetch schema for kind '${kind}' from API. Falling back to local file. Error:`,
+      error,
+    );
   }
 
   const schemaPath = path.join(
