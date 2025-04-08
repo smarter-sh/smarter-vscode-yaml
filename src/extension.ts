@@ -124,8 +124,6 @@ export function activate(context: vscode.ExtensionContext) {
     { language: "yaml", scheme: "file" },
     {
       provideHover(document, position) {
-        console.log("Hover invoked at position:", position);
-
         const yaml = require("js-yaml");
         const text = document.getText();
         const parsedYaml = yaml.load(text);
@@ -140,8 +138,6 @@ export function activate(context: vscode.ExtensionContext) {
           );
           return null;
         }
-
-        console.log("Hovering over word:", word);
 
         // Fetch the schema for the document
         const kind = parsedYaml?.kind;

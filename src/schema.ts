@@ -41,10 +41,6 @@ export function findPropertyInSchema(
   path: string[] = [],
   currentPath: string = "",
 ): any {
-  console.log(
-    `findPropertyInSchema() called with property: '${property}', currentPath: '${currentPath}'`,
-  );
-
   if (!schema) {
     console.error("Invalid schema.");
     return null;
@@ -64,10 +60,8 @@ export function findPropertyInSchema(
   // If the schema has a $ref, resolve it and continue searching
   if (schema.$ref) {
     const refPath = schema.$ref.replace("#/$defs/", "");
-    console.log(`Resolving $ref: '${schema.$ref}'`);
     const refSchema = schema.$defs?.[refPath];
     if (!refSchema) {
-      console.error(`$ref '${schema.$ref}' could not be resolved.`);
       return null;
     }
     return findPropertyInSchema(property, refSchema, path, currentPath);
@@ -76,9 +70,6 @@ export function findPropertyInSchema(
   // Recurse into child keys of the current schema
   if (schema.properties) {
     for (const key of Object.keys(schema.properties)) {
-      console.log(
-        `Descending into child key: '${key}' at path: '${currentPath}${key}.'`,
-      );
       const childSchema = schema.properties[key];
       const result = findPropertyInSchema(
         property,
@@ -95,7 +86,6 @@ export function findPropertyInSchema(
   // Handle $defs explicitly
   if (schema.$defs) {
     for (const [key, defSchema] of Object.entries(schema.$defs)) {
-      console.log(`Searching in $defs key: '${key}'`);
       const result = findPropertyInSchema(
         property,
         defSchema,
@@ -108,9 +98,6 @@ export function findPropertyInSchema(
     }
   }
 
-  console.log(
-    `Property '${property}' not found at current path: '${currentPath}'. Backtracking...`,
-  );
   return null;
 }
 
@@ -133,7 +120,7 @@ export async function getSchemaForKind(kind: string): Promise<Schema | null> {
         `getSchemaForKind() successfully fetched schema for kind: ${kind} from API`,
         schema,
       );
-      schemaCache.set(kind, schema); // Cache the resolved schema
+      schemaCache.set(kind, schema);
       return schema;
     } else {
       console.error(
@@ -151,14 +138,14 @@ export async function getSchemaForKind(kind: string): Promise<Schema | null> {
     __dirname,
     `../schemas/${kind.toLowerCase()}.json`,
   );
-  console.log(
-    `Cache miss. Loading schema for kind: ${kind} from ${schemaPath}`,
-  );
 
   if (fs.existsSync(schemaPath)) {
     try {
       const schema = (await RefParserTyped.dereference(schemaPath)) as Schema;
-      schemaCache.set(kind, schema); // Cache the resolved schema
+      console.log(
+        `Cache miss. Loading schema for kind: ${kind} from ${schemaPath}`,
+      );
+      schemaCache.set(kind, schema);
       return schema;
     } catch (error) {
       console.error(`Failed to resolve schema for kind '${kind}':`, error);
