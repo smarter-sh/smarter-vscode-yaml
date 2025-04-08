@@ -1,7 +1,7 @@
 {
   "name": "smarter-manifest",
   "displayName": "Smarter Manifest",
-  "description": "Enhanced support for Smarter YAML manifest files with syntax validation, semantic checking, and auto-completion.",
+  "description": "Enhanced support for Smarter YAML manifest files with syntax validation, semantic checking, auto-completion and context sensitive pop up micro help.",
   "version": "0.1.7",
   "icon": "images/logo.png",
   "publisher": "Querium",

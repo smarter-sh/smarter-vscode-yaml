@@ -52,6 +52,10 @@ build:
 	@echo "Building the project..."
 	npm run build
 
+change-log:
+	@echo "Generating changelog..."
+	npx conventional-changelog -p angular -i CHANGELOG.md -s
+
 # https://marketplace.visualstudio.com/manage/publishers/querium/
 package:
 	@echo "Packaging the project..." && \
