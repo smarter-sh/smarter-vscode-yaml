@@ -156,9 +156,6 @@ export function activate(context: vscode.ExtensionContext) {
           const path = word.split(".");
           const propertyDetails = findPropertyInSchema(word, schema, path);
           if (!propertyDetails) {
-            console.error(
-              `Property '${word}' not found in schema for kind '${kind}'.`,
-            );
             return null;
           }
 
