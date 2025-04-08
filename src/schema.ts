@@ -57,16 +57,9 @@ export function findPropertyInSchema(
 
   // Prevent revisiting the same schema
   if (visited.has(schema)) {
-    console.warn(
-      "Already visited schema, skipping to prevent infinite loop:",
-      schema,
-    );
     return null;
   }
   visited.add(schema);
-
-  //console.log("Schema passed to findPropertyInSchema:", schema);
-  //console.log("Schema $defs keys in findPropertyInSchema:", Object.keys(rootSchema.$defs || {}));
 
   // Check if the property exists at the current level
   if (schema.properties && schema.properties[property]) {
@@ -89,8 +82,8 @@ export function findPropertyInSchema(
         : schema.$ref;
 
     // Debug log to inspect the $defs and refPath
-    console.log("Schema $defs keys:", Object.keys(rootSchema.$defs || {}));
-    console.log("Resolving $ref path:", refPath);
+    // console.log("Schema $defs keys:", Object.keys(rootSchema.$defs || {}));
+    // console.log("Resolving $ref path:", refPath);
 
     // Check if the $defs section exists and contains the referenced schema
     if (rootSchema.$defs && rootSchema.$defs[refPath]) {
@@ -167,10 +160,6 @@ export async function getSchemaForKind(kind: string): Promise<Schema | null> {
       console.log(
         `getSchemaForKind() successfully fetched schema for kind: ${kind} from API (${apiUrl})`,
         schema,
-      );
-      console.log(
-        "Fetched schema $defs keys:",
-        Object.keys(schema.$defs || {}),
       );
       schemaCache.set(kind, schema);
       return schema;
