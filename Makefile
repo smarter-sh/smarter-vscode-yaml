@@ -30,6 +30,9 @@ help:
 	@echo "  build	- Build the project"
 	@echo "  deploy	- Deploy the project"
 
+analyze:
+	cloc . --exclude-ext=svg,zip,json --fullpath --not-match-d=smarter/smarter/static/assets/ --vcs=git
+
 # Initialize the project
 init:
 	@echo "Initializing the project..."

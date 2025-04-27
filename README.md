@@ -1,6 +1,6 @@
 # Smarter YAML Manifest Extension for VS Code
 
-This Visual Studio Code extension provides enhanced support for working with Smarter YAML manifest files, similar to Kubernetes manifests. It includes syntax validation, semantic checking, and auto-completion for reserved keywords. A Smarter manifest will include the following two keys at the top of the document:
+A [Visual Studio Code extension](https://marketplace.visualstudio.com/items/?itemName=Querium.smarter-manifest) that provides enhanced support for working with Smarter YAML manifest files, similar to Kubernetes manifests. It includes syntax validation, semantic checking, and auto-completion for reserved keywords. A Smarter manifest will include the following two keys at the top of the document:
 
 ```yaml
 apiVersion: smarter.sh/v1
@@ -50,6 +50,7 @@ You can configure the extension by adding the following settings to your `settin
 - [https://platform.smarter.sh/api/v1/cli/schema/ChatToolCall/](https://platform.smarter.sh/api/v1/cli/schema/ChatToolCall/)
 - [https://platform.smarter.sh/api/v1/cli/schema/SqlConnection/](https://platform.smarter.sh/api/v1/cli/schema/SqlConnection/)
 - [https://platform.smarter.sh/api/v1/cli/schema/ApiConnection/](https://platform.smarter.sh/api/v1/cli/schema/ApiConnection/)
+- [https://platform.smarter.sh/api/v1/cli/schema/Secret/](https://platform.smarter.sh/api/v1/cli/schema/Secret/)
 
 ## Environments
 
