@@ -55,7 +55,7 @@
     "@types/vscode": "^1.101.0",
     "@vscode/test-electron": "^2.4.1",
     "@vscode/vsce": "^3.6.0",
-    "typescript": "^5.9.2"
+    "typescript": "^5.9.3"
   },
   "dependencies": {
     "ajv": "^8.17.1",
