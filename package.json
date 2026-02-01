@@ -62,7 +62,7 @@
     "ajv-formats": "^3.0.1",
     "axios": "^1.12.2",
     "glob": "^11.0.3",
-    "js-yaml": "^4.1.0",
+    "js-yaml": "^4.1.1",
     "json-schema-ref-parser": "^9.0.9",
     "mkdirp": "^3.0.1"
   }
