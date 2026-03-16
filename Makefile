@@ -77,6 +77,7 @@ release:
 
 
 # Clean up build artifacts
+#
 clean:
 	@echo "Cleaning up..."
 	rm -rf $(DIST_DIR)
