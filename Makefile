@@ -36,6 +36,7 @@ analyze:
 # Initialize the project
 init:
 	@echo "Initializing the project..."
+	rm -rf node_modules package-lock.json && \
 	npm install && \
 	mkdir -p .pypi_cache && \
 	$(PYTHON) -m venv venv && \
@@ -70,9 +71,10 @@ package:
 package-list:
 	vsce ls
 # Deploy the project
-deploy:
-	@echo "Deploying the project..."
-	@echo "Deploy logic goes here (e.g., publishing to a registry or uploading files)"
+release:
+	npx vsce package
+	npx vsce publish
+
 
 # Clean up build artifacts
 clean:

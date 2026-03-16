@@ -1,3 +1,15 @@
+###############################################################################
+# This workflow is triggered manually to publish the extension
+# to the Visual Studio Code Marketplace.
+#
+# https://marketplace.visualstudio.com/manage/publishers/Smarter
+#
+# To create a Personal Access Token (PAT) for publishing:
+# 1. Go to https://dev.azure.com/lpm0073/Smarter
+#    or https://dev.azure.com/lpm0073/_usersSettings/tokens
+# 2. Add the token as a secret named "VSCE_PAT" in GitHub Secrets
+###############################################################################
+
 name: Publish Extension
 
 on:
@@ -9,12 +21,10 @@ jobs:
 
     steps:
       - name: Checkout code
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
 
       - name: Set up Node.js
-        uses: actions/setup-node@v4
-        with:
-          node-version: "20.9.0"
+        uses: actions/setup-node@v6
 
       - name: Install dependencies
         run: npm ci
