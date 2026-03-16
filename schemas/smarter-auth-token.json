@@ -1,172 +1,237 @@
 {
-  "$defs": {
-    "SAMSmarterAuthTokenMetadata": {
-      "description": "Smarter API SmarterAuthToken Manifest - Metadata class.",
-      "properties": {
-        "name": {
-          "description": "The name of the manifest resource",
-          "title": "Name",
-          "type": "string"
-        },
-        "description": {
-          "description": "The description of the manifest resource",
-          "title": "Description",
-          "type": "string"
-        },
-        "version": {
-          "description": "The version of the manifest",
-          "title": "Version",
-          "type": "string"
-        },
-        "tags": {
-          "anyOf": [
-            {
-              "items": {
+  "data": {
+    "$defs": {
+      "SAMSmarterAuthTokenMetadata": {
+        "description": "Smarter API SmarterAuthToken Manifest - Metadata class.",
+        "properties": {
+          "name": {
+            "description": "The camelCase name of the manifest resource",
+            "title": "Name",
+            "type": "string"
+          },
+          "description": {
+            "anyOf": [
+              {
                 "type": "string"
               },
-              "type": "array"
-            },
-            {
-              "type": "null"
-            }
-          ],
-          "default": null,
-          "description": "The tags of the manifest",
-          "title": "Tags"
-        },
-        "annotations": {
-          "anyOf": [
-            {
-              "items": {
+              {
+                "type": "null"
+              }
+            ],
+            "description": "The description for this resource. Be brief. Keep it under 255 characters.",
+            "title": "Description"
+          },
+          "version": {
+            "anyOf": [
+              {
                 "type": "string"
               },
-              "type": "array"
-            },
-            {
-              "type": "null"
-            }
-          ],
-          "default": null,
-          "description": "The annotations of the manifest",
-          "title": "Annotations"
-        }
-      },
-      "required": ["name", "description", "version"],
-      "title": "SAMSmarterAuthTokenMetadata",
-      "type": "object"
-    },
-    "SAMSmarterAuthTokenSpec": {
-      "description": "Smarter API SmarterAuthToken Manifest SmarterAuthToken.spec",
-      "properties": {
-        "config": {
-          "$ref": "#/$defs/SAMSmarterAuthTokenSpecConfig",
-          "description": "AuthToken.spec.config[object]. The configuration for the AuthToken."
-        }
-      },
-      "required": ["config"],
-      "title": "SAMSmarterAuthTokenSpec",
-      "type": "object"
-    },
-    "SAMSmarterAuthTokenSpecConfig": {
-      "description": "Smarter API SmarterAuthToken Manifest SmarterAuthToken.spec.config",
-      "properties": {
-        "isActive": {
-          "default": false,
-          "description": "AuthToken.spec.configuration.isActive[bool]. Required. Whether the AuthToken is activated.",
-          "title": "Isactive",
-          "type": "boolean"
+              {
+                "type": "null"
+              }
+            ],
+            "description": "The semantic version of the manifest. Example: 0.1.0",
+            "title": "Version"
+          },
+          "tags": {
+            "anyOf": [
+              {
+                "items": {
+                  "type": "string"
+                },
+                "type": "array"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "The tags of the manifest. Used for generic resource categorization and search. Example: ['tag1', 'tag2']",
+            "title": "Tags"
+          },
+          "annotations": {
+            "anyOf": [
+              {
+                "items": {
+                  "additionalProperties": {
+                    "anyOf": [
+                      {
+                        "type": "string"
+                      },
+                      {
+                        "type": "integer"
+                      },
+                      {
+                        "type": "number"
+                      },
+                      {
+                        "type": "boolean"
+                      },
+                      {
+                        "format": "date",
+                        "type": "string"
+                      },
+                      {
+                        "format": "date-time",
+                        "type": "string"
+                      },
+                      {
+                        "pattern": "^(?!^[-+.]*$)[+-]?0*\\d*\\.?\\d*$",
+                        "type": "string"
+                      },
+                      {
+                        "format": "uuid",
+                        "type": "string"
+                      },
+                      {
+                        "format": "binary",
+                        "type": "string"
+                      },
+                      {
+                        "items": {},
+                        "type": "array"
+                      },
+                      {
+                        "additionalProperties": true,
+                        "type": "object"
+                      }
+                    ]
+                  },
+                  "type": "object"
+                },
+                "type": "array"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "The manifest annotations. Used for storing arbitrary metadata as key-value pairs. Example: [{'smarter.sh/test-manifest/project-name': 'Scooby dooby do'}]. The key should be a valid url-friendly string. The value accepts multi-line string values (YAML block scalars) and various scalar types including str, int, float, bool, datetime.date, datetime.datetime, decimal.Decimal, uuid.UUID, bytes, list, dict. ",
+            "title": "Annotations"
+          }
         },
-        "username": {
-          "description": "AuthToken.spec.configuration.username[str]. The Smarter username to which this AuthToken is attached.",
-          "title": "Username",
-          "type": "string"
-        }
+        "required": ["name", "description", "version"],
+        "title": "SAMSmarterAuthTokenMetadata",
+        "type": "object"
       },
-      "required": ["username"],
-      "title": "SAMSmarterAuthTokenSpecConfig",
-      "type": "object"
+      "SAMSmarterAuthTokenSpec": {
+        "description": "Smarter API SmarterAuthToken Manifest SmarterAuthToken.spec",
+        "properties": {
+          "config": {
+            "$ref": "#/$defs/SAMSmarterAuthTokenSpecConfig",
+            "description": "AuthToken.spec.config[object]. The configuration for the AuthToken."
+          }
+        },
+        "required": ["config"],
+        "title": "SAMSmarterAuthTokenSpec",
+        "type": "object"
+      },
+      "SAMSmarterAuthTokenSpecConfig": {
+        "description": "Smarter API SmarterAuthToken Manifest SmarterAuthToken.spec.config",
+        "properties": {
+          "isActive": {
+            "default": false,
+            "description": "AuthToken.spec.configuration.isActive[bool]. Required. Whether the AuthToken is activated.",
+            "title": "Isactive",
+            "type": "boolean"
+          },
+          "username": {
+            "description": "AuthToken.spec.configuration.username[str]. The Smarter username to which this AuthToken is attached.",
+            "title": "Username",
+            "type": "string"
+          }
+        },
+        "required": ["username"],
+        "title": "SAMSmarterAuthTokenSpecConfig",
+        "type": "object"
+      },
+      "SAMSmarterAuthTokenStatus": {
+        "description": "Smarter API SmarterAuthToken Manifest - Status class.",
+        "properties": {
+          "created": {
+            "anyOf": [
+              {
+                "format": "date-time",
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "AuthToken.status.created: The date in which this AuthToken was created. Read only.",
+            "title": "Created"
+          },
+          "modified": {
+            "anyOf": [
+              {
+                "format": "date-time",
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "AuthToken.status.modified: The date in which this AuthToken was most recently changed. Read only.",
+            "title": "Modified"
+          },
+          "lastUsedAt": {
+            "anyOf": [
+              {
+                "format": "date-time",
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "AuthToken.status.modified: The date in which this AuthToken was most recently used for authentication. Read only.",
+            "title": "Lastusedat"
+          }
+        },
+        "required": ["created", "modified", "lastUsedAt"],
+        "title": "SAMSmarterAuthTokenStatus",
+        "type": "object"
+      }
     },
-    "SAMSmarterAuthTokenStatus": {
-      "description": "Smarter API SmarterAuthToken Manifest - Status class.",
-      "properties": {
-        "created": {
-          "anyOf": [
-            {
-              "format": "date-time",
-              "type": "string"
-            },
-            {
-              "type": "null"
-            }
-          ],
-          "description": "AuthToken.status.created: The date in which this AuthToken was created. Read only.",
-          "title": "Created"
-        },
-        "modified": {
-          "anyOf": [
-            {
-              "format": "date-time",
-              "type": "string"
-            },
-            {
-              "type": "null"
-            }
-          ],
-          "description": "AuthToken.status.modified: The date in which this AuthToken was most recently changed. Read only.",
-          "title": "Modified"
-        },
-        "lastUsedAt": {
-          "anyOf": [
-            {
-              "format": "date-time",
-              "type": "string"
-            },
-            {
-              "type": "null"
-            }
-          ],
-          "description": "AuthToken.status.modified: The date in which this AuthToken was most recently used for authentication. Read only.",
-          "title": "Lastusedat"
-        }
+    "description": "Smarter API Manifest - SmarterAuthToken",
+    "properties": {
+      "apiVersion": {
+        "description": "apiVersion[String]: Required. The API version of the AbstractSAMBase.",
+        "title": "Apiversion",
+        "type": "string"
       },
-      "required": ["created", "modified", "lastUsedAt"],
-      "title": "SAMSmarterAuthTokenStatus",
-      "type": "object"
-    }
+      "kind": {
+        "description": "kind[String]: Required. The kind of resource described by the manifest.",
+        "title": "Kind",
+        "type": "string"
+      },
+      "metadata": {
+        "$ref": "#/$defs/SAMSmarterAuthTokenMetadata",
+        "description": "AuthToken.metadata[obj]: Required, the AuthToken metadata."
+      },
+      "spec": {
+        "$ref": "#/$defs/SAMSmarterAuthTokenSpec",
+        "description": "AuthToken.spec[obj]: Required, the AuthToken specification."
+      },
+      "status": {
+        "anyOf": [
+          {
+            "$ref": "#/$defs/SAMSmarterAuthTokenStatus"
+          },
+          {
+            "type": "null"
+          }
+        ],
+        "default": null,
+        "description": "AuthToken.status[obj]: Optional, Read-only. Stateful status information about the AuthToken."
+      }
+    },
+    "required": ["apiVersion", "kind", "metadata", "spec"],
+    "title": "SAMSmarterAuthToken",
+    "type": "object"
   },
-  "description": "Smarter API Manifest - SmarterAuthToken",
-  "properties": {
-    "apiVersion": {
-      "description": "apiVersion[String]: Required. The API version of the AbstractSAMBase.",
-      "title": "Apiversion",
-      "type": "string"
-    },
-    "kind": {
-      "description": "kind[String]: Required. The kind of resource described by the manifest.",
-      "title": "Kind",
-      "type": "string"
-    },
-    "metadata": {
-      "$ref": "#/$defs/SAMSmarterAuthTokenMetadata",
-      "description": "AuthToken.metadata[obj]: Required, the AuthToken metadata."
-    },
-    "spec": {
-      "$ref": "#/$defs/SAMSmarterAuthTokenSpec",
-      "description": "AuthToken.spec[obj]: Required, the AuthToken specification."
-    },
-    "status": {
-      "anyOf": [
-        {
-          "$ref": "#/$defs/SAMSmarterAuthTokenStatus"
-        },
-        {
-          "type": "null"
-        }
-      ],
-      "description": "AuthToken.status[obj]: Optional, Read-only. Stateful status information about the AuthToken."
-    }
-  },
-  "required": ["apiVersion", "kind", "metadata", "spec", "status"],
-  "title": "SAMSmarterAuthToken",
-  "type": "object"
+  "message": "AuthToken example manifest successfully generated",
+  "api": "smarter.sh/v1",
+  "thing": "AuthToken",
+  "metadata": {
+    "command": "example_manifest"
+  }
 }

@@ -4,19 +4,33 @@
       "description": "Smarter API Chat Manifest - Metadata class.",
       "properties": {
         "name": {
-          "description": "The name of the manifest resource",
+          "description": "The camelCase name of the manifest resource",
           "title": "Name",
           "type": "string"
         },
         "description": {
-          "description": "The description of the manifest resource",
-          "title": "Description",
-          "type": "string"
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "description": "The description for this resource. Be brief. Keep it under 255 characters.",
+          "title": "Description"
         },
         "version": {
-          "description": "The version of the manifest",
-          "title": "Version",
-          "type": "string"
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "description": "The semantic version of the manifest. Example: 0.1.0",
+          "title": "Version"
         },
         "tags": {
           "anyOf": [
@@ -30,15 +44,58 @@
               "type": "null"
             }
           ],
-          "default": null,
-          "description": "The tags of the manifest",
+          "description": "The tags of the manifest. Used for generic resource categorization and search. Example: [tag1, tag2]",
           "title": "Tags"
         },
         "annotations": {
           "anyOf": [
             {
               "items": {
-                "type": "string"
+                "additionalProperties": {
+                  "anyOf": [
+                    {
+                      "type": "string"
+                    },
+                    {
+                      "type": "integer"
+                    },
+                    {
+                      "type": "number"
+                    },
+                    {
+                      "type": "boolean"
+                    },
+                    {
+                      "format": "date",
+                      "type": "string"
+                    },
+                    {
+                      "format": "date-time",
+                      "type": "string"
+                    },
+                    {
+                      "pattern": "^(?!^[-+.]*$)[+-]?0*d*.?d*$",
+                      "type": "string"
+                    },
+                    {
+                      "format": "uuid",
+                      "type": "string"
+                    },
+                    {
+                      "format": "binary",
+                      "type": "string"
+                    },
+                    {
+                      "items": {},
+                      "type": "array"
+                    },
+                    {
+                      "additionalProperties": true,
+                      "type": "object"
+                    }
+                  ]
+                },
+                "type": "object"
               },
               "type": "array"
             },
@@ -46,8 +103,7 @@
               "type": "null"
             }
           ],
-          "default": null,
-          "description": "The annotations of the manifest",
+          "description": "The manifest annotations. Used for storing arbitrary metadata as key-value pairs. Example: [{smarter.sh/test-manifest/project-name: Scooby dooby do}]. The key should be a valid url-friendly string. The value accepts multi-line string values (YAML block scalars) and various scalar types including str, int, float, bool, datetime.date, datetime.datetime, decimal.Decimal, uuid.UUID, bytes, list, dict.",
           "title": "Annotations"
         }
       },
@@ -125,10 +181,11 @@
           "type": "null"
         }
       ],
+      "default": null,
       "description": "ChatHistory.status[obj]: Optional, Read-only. Stateful status information about the ChatHistory."
     }
   },
-  "required": ["apiVersion", "kind", "metadata", "spec", "status"],
+  "required": ["apiVersion", "kind", "metadata", "spec"],
   "title": "SAMChatHistory",
   "type": "object"
 }

@@ -4,7 +4,7 @@ import axios from "axios";
 import RefParser from "json-schema-ref-parser";
 import * as vscode from "vscode";
 
-const defaultRootUrl = "https://platform.smarter.sh";
+const defaultRootUrl = "https://ubc.smarter.sh";
 const rootUrl =
   vscode.workspace.getConfiguration("smarterYaml").get<string>("rootUrl") ||
   defaultRootUrl;

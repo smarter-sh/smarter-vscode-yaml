@@ -1,425 +1,574 @@
 {
-  "$defs": {
-    "SAMChatBotCustomDomain": {
-      "description": "Smarter API Chatbot Manifest Chatbot.spec.config.customDomain",
-      "properties": {
-        "aws_hosted_zone_id": {
-          "description": "ChatBot.spec.configuration.customDomain.aws_hosted_zone_id[str]. Required. The AWS hosted zone ID.",
-          "title": "Aws Hosted Zone Id",
-          "type": "string"
+  "data": {
+    "$defs": {
+      "SAMChatBotCustomDomain": {
+        "description": "Smarter API Chatbot Manifest Chatbot.spec.config.customDomain",
+        "properties": {
+          "aws_hosted_zone_id": {
+            "description": "Chatbot.spec.configuration.customDomain.aws_hosted_zone_id[str]. Required. The AWS hosted zone ID for this domain name. Example: Z08678681MEAGNEVHT5I8",
+            "title": "Aws Hosted Zone Id",
+            "type": "string"
+          },
+          "domain_name": {
+            "description": "Chatbot.spec.configuration.customDomain.domain_name[str]. Required. The domain name. Example: example.com",
+            "title": "Domain Name",
+            "type": "string"
+          }
         },
-        "domain_name": {
-          "description": "ChatBot.spec.configuration.customDomain.domain_name[str]. Required. The domain name.",
-          "title": "Domain Name",
-          "type": "string"
-        }
+        "required": ["aws_hosted_zone_id", "domain_name"],
+        "title": "SAMChatBotCustomDomain",
+        "type": "object"
       },
-      "required": ["aws_hosted_zone_id", "domain_name"],
-      "title": "SAMChatBotCustomDomain",
-      "type": "object"
+      "SAMChatbotMetadata": {
+        "description": "Smarter API Chatbot Manifest - Metadata class.",
+        "properties": {
+          "name": {
+            "description": "The camelCase name of the manifest resource",
+            "title": "Name",
+            "type": "string"
+          },
+          "description": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "The description for this resource. Be brief. Keep it under 255 characters.",
+            "title": "Description"
+          },
+          "version": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "The semantic version of the manifest. Example: 0.1.0",
+            "title": "Version"
+          },
+          "tags": {
+            "anyOf": [
+              {
+                "items": {
+                  "type": "string"
+                },
+                "type": "array"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "The tags of the manifest. Used for generic resource categorization and search. Example: ['tag1', 'tag2']",
+            "title": "Tags"
+          },
+          "annotations": {
+            "anyOf": [
+              {
+                "items": {
+                  "additionalProperties": {
+                    "anyOf": [
+                      {
+                        "type": "string"
+                      },
+                      {
+                        "type": "integer"
+                      },
+                      {
+                        "type": "number"
+                      },
+                      {
+                        "type": "boolean"
+                      },
+                      {
+                        "format": "date",
+                        "type": "string"
+                      },
+                      {
+                        "format": "date-time",
+                        "type": "string"
+                      },
+                      {
+                        "pattern": "^(?!^[-+.]*$)[+-]?0*\\d*\\.?\\d*$",
+                        "type": "string"
+                      },
+                      {
+                        "format": "uuid",
+                        "type": "string"
+                      },
+                      {
+                        "format": "binary",
+                        "type": "string"
+                      },
+                      {
+                        "items": {},
+                        "type": "array"
+                      },
+                      {
+                        "additionalProperties": true,
+                        "type": "object"
+                      }
+                    ]
+                  },
+                  "type": "object"
+                },
+                "type": "array"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "The manifest annotations. Used for storing arbitrary metadata as key-value pairs. Example: [{'smarter.sh/test-manifest/project-name': 'Scooby dooby do'}]. The key should be a valid url-friendly string. The value accepts multi-line string values (YAML block scalars) and various scalar types including str, int, float, bool, datetime.date, datetime.datetime, decimal.Decimal, uuid.UUID, bytes, list, dict. ",
+            "title": "Annotations"
+          }
+        },
+        "required": ["name", "description", "version"],
+        "title": "SAMChatbotMetadata",
+        "type": "object"
+      },
+      "SAMChatbotSpec": {
+        "description": "Smarter API Chatbot Manifest Chatbot.spec",
+        "properties": {
+          "config": {
+            "$ref": "#/$defs/SAMChatbotSpecConfig",
+            "description": "Chatbot.spec.config[object]. The configuration for the Chatbot."
+          },
+          "plugins": {
+            "anyOf": [
+              {
+                "items": {
+                  "type": "string"
+                },
+                "type": "array"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "description": "Chatbot.spec.searchTerms[list]. Optional. The Plugins to add to the Chatbot. Plugins are a proprietary extensibility model for tool calling and are not the same as OpenAI plugins. See https://platform.smarter.sh/docs/plugins/ for more information.",
+            "title": "Plugins"
+          },
+          "functions": {
+            "anyOf": [
+              {
+                "items": {
+                  "type": "string"
+                },
+                "type": "array"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "description": "Chatbot.spec.functions[list]. Optional. The built-in Smarter Functions to add to the Chatbot. Example: ['get_current_weather']. These are built-in backing functions written in Python that are fully compatible with OpenAI API-compatible function calling. These are not the same as OpenAI functions. See https://platform.smarter.sh/docs/functions/ for more information.",
+            "title": "Functions"
+          },
+          "apiKey": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "description": "Chatbot.spec.apiKey[str]. Optional. The name of the API key that this chatbot uses for authentication. Example: 'my_api_key'. API keys are only necessary for chatbots that are not public facing. This is the name of the API key that is used to authenticate the chatbot with the Smarter API. API keys are issued by a Smarter platform administrator and are used to authenticate the chatbot with the Smarter API.",
+            "title": "Apikey"
+          }
+        },
+        "required": ["config"],
+        "title": "SAMChatbotSpec",
+        "type": "object"
+      },
+      "SAMChatbotSpecConfig": {
+        "description": "Smarter API Chatbot Manifest Chatbot.spec.config",
+        "properties": {
+          "subdomain": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "description": "Chatbot.spec.configuration.subdomain[str]. Optional. The subdomain to use for the chatbot for published public urls. Example: https://<subdomain>.3141-5926-5359.api.example.com",
+            "title": "Subdomain"
+          },
+          "customDomain": {
+            "anyOf": [
+              {
+                "$ref": "#/$defs/SAMChatBotCustomDomain"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "description": "Chatbot.spec.configuration.custom_domain[str]. Optional. The custom domain to use for the chatbot. Example: example.com"
+          },
+          "deployed": {
+            "default": false,
+            "description": "Chatbot.spec.configuration.deployed[bool]. Required. Whether the chatbot is deployed. Deployed means that the chatbot is available for use outside the Smarter Prompt Engineer Workbench. Published chatbots have their own subdomain, Kubernetes ingress, and TLS/SSL certificate.",
+            "title": "Deployed",
+            "type": "boolean"
+          },
+          "provider": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "description": "Chatbot.spec.configuration.provider[str]. Optional. The provider to use for the chatbot. Options: openai, metaai, googleai. Default: openai.",
+            "title": "Provider"
+          },
+          "defaultModel": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "description": "Chatbot.spec.configuration.default_model[str]. Optional. The default model to use for the chatbot. This changes routinely and is currently defaults to gpt-4o-mini",
+            "title": "Defaultmodel"
+          },
+          "defaultSystemRole": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "description": "Chatbot.spec.configuration.default_system_role[str]. Optional. The default system prompt to use for the chatbot. This defaults to the following value: You are a helpful chatbot. When given the opportunity to utilize function calling, you should always do so. This will allow you to provide the best possible responses to the user. If you are unable to provide a response, you should prompt the user for more information. If you are still unable to provide a response, you should inform the user that you are unable to help them at this time.. The system prompt is the first message in the conversation and is used to set the context for the chatbot. It is important to keep this prompt short, as it is included in the token count for each message. The maximum length of the system prompt is 2048 characters.",
+            "title": "Defaultsystemrole"
+          },
+          "defaultTemperature": {
+            "anyOf": [
+              {
+                "maximum": 1,
+                "minimum": 0,
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "description": "Chatbot.spec.configuration.default_temperature[float]. Optional. The default temperature to use for the chatbot. This defaults to 0.5. The temperature is a floating point value between 0 and 1 that controls the randomness of the chatbot's responses. A value of 0 means that the chatbot will always choose the most likely response, while a value of 1 means that the chatbot will choose a random response. Low values work better for information retrieval tasks, while high values work better for creative tasks.",
+            "title": "Defaulttemperature"
+          },
+          "defaultMaxTokens": {
+            "anyOf": [
+              {
+                "exclusiveMinimum": 0,
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "description": "Chatbot.spec.configuration.default_max_tokens[int]. Optional. The default max tokens to use for the chatbot. This defaults to 2048. The max tokens is an integer value that controls the maximum number of tokens in the chatbot's response. The maximum number of tokens is the sum of the tokens in the prompt and the tokens in the response. The maximum number of tokens varies by provider. Refer to vendor documentation as this value routinely changes as new models are released.",
+            "title": "Defaultmaxtokens"
+          },
+          "appName": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "description": "Chatbot.spec.configuration.app_name[str]. Optional. The name of the chatbot. Example: 'Sales Support Chatbot'. This is the name that will be displayed to users in the Smarter Prompt Engineer Workbench, as well as any production UI that leverages the SmarterChat React.js Component - https://www.npmjs.com/package/@smarter.sh/ui-chat.",
+            "title": "Appname"
+          },
+          "appAssistant": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "description": "Chatbot.spec.configuration.app_assistant[str]. Optional. The assistant name of the chatbot. Example: 'Joe'. This is the fictitious assistant name that will be displayed to users in the Smarter Prompt Engineer Workbench, as well as any production UI that leverages the SmarterChat React.js Component - https://www.npmjs.com/package/@smarter.sh/ui-chat.",
+            "title": "Appassistant"
+          },
+          "appWelcomeMessage": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "description": "Chatbot.spec.configuration.app_welcome_message[str]. Optional. The welcome message of the chatbot. Example: 'Welcome to Smarter's sales support chatbot!' The welcome messages will appear as the first assistant message in each message list from the Smarter Prompt Engineer Workbench, as well as any production UI that leverages the SmarterChat React.js Component - https://www.npmjs.com/package/@smarter.sh/ui-chat.",
+            "title": "Appwelcomemessage"
+          },
+          "appExamplePrompts": {
+            "anyOf": [
+              {
+                "items": {
+                  "type": "string"
+                },
+                "type": "array"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "description": "Chatbot.spec.configuration.app_example_prompts[list]. Optional. A list of example prompts to add to new chat sessions. These are intended to be brief, and the list is assumed to include only a few examples. Example: ['How do I get a refund?', 'What is the return policy?']. These are intended to help the user to understand the chatbot's capabilities. These will be displayed to users in the Smarter Prompt Engineer Workbench, as well as any production UI that leverages the SmarterChat React.js Component - https://www.npmjs.com/package/@smarter.sh/ui-chat.",
+            "title": "Appexampleprompts"
+          },
+          "appPlaceholder": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "description": "Chatbot.spec.configuration.app_placeholder[str]. Optional. The text placeholder added to the chat input box for all new chat sessions. Example: 'ask me anything...'. The place holder will be displayed to users in the Smarter Prompt Engineer Workbench, as well as any production UI that leverages the SmarterChat React.js Component - https://www.npmjs.com/package/@smarter.sh/ui-chat.",
+            "title": "Appplaceholder"
+          },
+          "appInfoUrl": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "description": "Chatbot.spec.configuration.app_info_url[str]. Optional. The custom info URL of the chatbot. This is a user control button located on the right-hand side of the header of the Smarter Prompt Engineer Workbench, as well as any production UI that leverages the SmarterChat React.js Component - https://www.npmjs.com/package/@smarter.sh/ui-chat.",
+            "title": "Appinfourl"
+          },
+          "appBackgroundImageUrl": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "description": "Chatbot.spec.configuration.app_background_image_url[str]. Optional. The image URL for the background image of the chat window in the Smarter Prompt Engineer Workbench, as well as any production UI that leverages the SmarterChat React.js Component - https://www.npmjs.com/package/@smarter.sh/ui-chat.",
+            "title": "Appbackgroundimageurl"
+          },
+          "appLogoUrl": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "description": "Chatbot.spec.configuration.app_logo_url[str]. Optional. The URL for the chatbot logo. This is future use and is anticipated to be used for meta presentation of this chatbot in UI collections.",
+            "title": "Applogourl"
+          },
+          "appFileAttachment": {
+            "anyOf": [
+              {
+                "type": "boolean"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": false,
+            "description": "Chatbot.spec.configuration.app_file_attachment[bool]. Optional. Whether the chatbot supports file attachments. Defaults to False. When set to True, a file attachment button will be displayed in the chat input box of the Smarter Prompt Engineer Workbench, as well as any production UI that leverages the SmarterChat React.js Component - https://www.npmjs.com/package/@smarter.sh/ui-chat.",
+            "title": "Appfileattachment"
+          }
+        },
+        "title": "SAMChatbotSpecConfig",
+        "type": "object"
+      },
+      "SAMChatbotStatus": {
+        "description": "Smarter API Chatbot Manifest - Status class.",
+        "properties": {
+          "accountNumber": {
+            "description": "Chatbot.status.account_number: The account owner of this Chatbot. Read only.",
+            "title": "Accountnumber",
+            "type": "string"
+          },
+          "username": {
+            "description": "Chatbot.status.username: The Smarter user who created this Chatbot. Read only.",
+            "title": "Username",
+            "type": "string"
+          },
+          "created": {
+            "description": "Chatbot.status.created: The date in which this Chatbot was created. Read only.",
+            "format": "date-time",
+            "title": "Created",
+            "type": "string"
+          },
+          "modified": {
+            "description": "Chatbot.status.modified: The date in which this Chatbot was most recently changed. Read only.",
+            "format": "date-time",
+            "title": "Modified",
+            "type": "string"
+          },
+          "deployed": {
+            "description": "Chatbot.status.deployed: Whether this Chatbot is currently deployed. Read only.",
+            "title": "Deployed",
+            "type": "boolean"
+          },
+          "defaultHost": {
+            "description": "Chatbot.status.defaultHost: The default host URL for this Chatbot. Read only.",
+            "title": "Defaulthost",
+            "type": "string"
+          },
+          "defaultUrl": {
+            "description": "Chatbot.status.defaultUrl: The default URL for this Chatbot. Read only.",
+            "title": "Defaulturl",
+            "type": "string"
+          },
+          "customUrl": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "Chatbot.status.customUrl: The custom URL for this Chatbot. Read only.",
+            "title": "Customurl"
+          },
+          "sandboxHost": {
+            "description": "Chatbot.status.sandboxHost: The sandbox host URL for this Chatbot. Read only.",
+            "title": "Sandboxhost",
+            "type": "string"
+          },
+          "sandboxUrl": {
+            "description": "Chatbot.status.sandboxUrl: The sandbox URL for this Chatbot. Read only.",
+            "title": "Sandboxurl",
+            "type": "string"
+          },
+          "hostname": {
+            "description": "Chatbot.status.hostname: The hostname for this Chatbot. Read only.",
+            "title": "Hostname",
+            "type": "string"
+          },
+          "url": {
+            "description": "Chatbot.status.url: The URL for this Chatbot. Read only.",
+            "title": "Url",
+            "type": "string"
+          },
+          "urlChatbot": {
+            "description": "Chatbot.status.urlChatbot: The chatbot URL for this Chatbot. Read only.",
+            "title": "Urlchatbot",
+            "type": "string"
+          },
+          "urlChatapp": {
+            "description": "Chatbot.status.urlChatapp: The chatapp URL for this Chatbot. Read only.",
+            "title": "Urlchatapp",
+            "type": "string"
+          },
+          "urlChatConfig": {
+            "description": "Chatbot.status.urlChatConfig: The chat config URL for this Chatbot. Read only.",
+            "title": "Urlchatconfig",
+            "type": "string"
+          },
+          "dnsVerificationStatus": {
+            "description": "Chatbot.status.dnsVerificationStatus: The DNS verification status for this Chatbot. Read only.",
+            "title": "Dnsverificationstatus",
+            "type": "string"
+          }
+        },
+        "required": [
+          "accountNumber",
+          "username",
+          "created",
+          "modified",
+          "deployed",
+          "defaultHost",
+          "defaultUrl",
+          "customUrl",
+          "sandboxHost",
+          "sandboxUrl",
+          "hostname",
+          "url",
+          "urlChatbot",
+          "urlChatapp",
+          "urlChatConfig",
+          "dnsVerificationStatus"
+        ],
+        "title": "SAMChatbotStatus",
+        "type": "object"
+      }
     },
-    "SAMChatbotMetadata": {
-      "description": "Smarter API Chatbot Manifest - Metadata class.",
-      "properties": {
-        "name": {
-          "description": "The name of the manifest resource",
-          "title": "Name",
-          "type": "string"
-        },
-        "description": {
-          "description": "The description of the manifest resource",
-          "title": "Description",
-          "type": "string"
-        },
-        "version": {
-          "description": "The version of the manifest",
-          "title": "Version",
-          "type": "string"
-        },
-        "tags": {
-          "anyOf": [
-            {
-              "items": {
-                "type": "string"
-              },
-              "type": "array"
-            },
-            {
-              "type": "null"
-            }
-          ],
-          "default": null,
-          "description": "The tags of the manifest",
-          "title": "Tags"
-        },
-        "annotations": {
-          "anyOf": [
-            {
-              "items": {
-                "type": "string"
-              },
-              "type": "array"
-            },
-            {
-              "type": "null"
-            }
-          ],
-          "default": null,
-          "description": "The annotations of the manifest",
-          "title": "Annotations"
-        }
+    "description": "Smarter API Manifest - Chatbot",
+    "properties": {
+      "apiVersion": {
+        "description": "apiVersion[String]: Required. The API version of the AbstractSAMBase.",
+        "title": "Apiversion",
+        "type": "string"
       },
-      "required": ["name", "description", "version"],
-      "title": "SAMChatbotMetadata",
-      "type": "object"
+      "kind": {
+        "description": "kind[String]: Required. The kind of resource described by the manifest.",
+        "title": "Kind",
+        "type": "string"
+      },
+      "metadata": {
+        "$ref": "#/$defs/SAMChatbotMetadata",
+        "description": "Chatbot.metadata[obj]: Required, the Chatbot metadata."
+      },
+      "spec": {
+        "$ref": "#/$defs/SAMChatbotSpec",
+        "description": "Chatbot.spec[obj]: Required, the Chatbot specification."
+      },
+      "status": {
+        "anyOf": [
+          {
+            "$ref": "#/$defs/SAMChatbotStatus"
+          },
+          {
+            "type": "null"
+          }
+        ],
+        "default": null,
+        "description": "Chatbot.status[obj]: Optional, Read-only. Stateful status information about the Chatbot."
+      }
     },
-    "SAMChatbotSpec": {
-      "description": "Smarter API Chatbot Manifest Chatbot.spec",
-      "properties": {
-        "config": {
-          "$ref": "#/$defs/SAMChatbotSpecConfig",
-          "description": "ChatBot.spec.config[object]. The configuration for the ChatBot."
-        },
-        "plugins": {
-          "anyOf": [
-            {
-              "items": {
-                "type": "string"
-              },
-              "type": "array"
-            },
-            {
-              "type": "null"
-            }
-          ],
-          "default": null,
-          "description": "ChatBot.spec.searchTerms[list]. Optional. The Plugins to add to the ChatBot.",
-          "title": "Plugins"
-        },
-        "functions": {
-          "anyOf": [
-            {
-              "items": {
-                "type": "string"
-              },
-              "type": "array"
-            },
-            {
-              "type": "null"
-            }
-          ],
-          "default": null,
-          "description": "ChatBot.spec.functions[list]. Optional. The built-in Smarter Functions to add to the ChatBot.",
-          "title": "Functions"
-        },
-        "apiKey": {
-          "anyOf": [
-            {
-              "type": "string"
-            },
-            {
-              "type": "null"
-            }
-          ],
-          "default": null,
-          "description": "ChatBot.spec.api_key[str]. Optional. The name of the API key that this chatbot uses for authentication.",
-          "title": "Apikey"
-        }
-      },
-      "required": ["config"],
-      "title": "SAMChatbotSpec",
-      "type": "object"
-    },
-    "SAMChatbotSpecConfig": {
-      "description": "Smarter API Chatbot Manifest Chatbot.spec.config",
-      "properties": {
-        "subdomain": {
-          "anyOf": [
-            {
-              "type": "string"
-            },
-            {
-              "type": "null"
-            }
-          ],
-          "default": null,
-          "description": "ChatBot.spec.configuration.subdomain[str]. Optional. The subdomain to use for the chatbot.",
-          "title": "Subdomain"
-        },
-        "customDomain": {
-          "anyOf": [
-            {
-              "$ref": "#/$defs/SAMChatBotCustomDomain"
-            },
-            {
-              "type": "null"
-            }
-          ],
-          "default": null,
-          "description": "ChatBot.spec.configuration.custom_domain[str]. Optional. The custom domain to use for the chatbot."
-        },
-        "deployed": {
-          "default": false,
-          "description": "ChatBot.spec.configuration.deployed[bool]. Required. Whether the chatbot is deployed.",
-          "title": "Deployed",
-          "type": "boolean"
-        },
-        "provider": {
-          "anyOf": [
-            {
-              "type": "string"
-            },
-            {
-              "type": "null"
-            }
-          ],
-          "default": null,
-          "description": "ChatBot.spec.configuration.provider[str]. Optional. The provider to use for the chatbot. Default: openai.",
-          "title": "Provider"
-        },
-        "defaultModel": {
-          "anyOf": [
-            {
-              "type": "string"
-            },
-            {
-              "type": "null"
-            }
-          ],
-          "default": null,
-          "description": "ChatBot.spec.configuration.default_model[str]. Optional. The default model to use for the chatbot.",
-          "title": "Defaultmodel"
-        },
-        "defaultSystemRole": {
-          "anyOf": [
-            {
-              "type": "string"
-            },
-            {
-              "type": "null"
-            }
-          ],
-          "default": null,
-          "description": "ChatBot.spec.configuration.default_system_role[str]. Optional. The default system prompt to use for the chatbot.",
-          "title": "Defaultsystemrole"
-        },
-        "defaultTemperature": {
-          "anyOf": [
-            {
-              "type": "number"
-            },
-            {
-              "type": "null"
-            }
-          ],
-          "default": null,
-          "description": "ChatBot.spec.configuration.default_temperature[float]. Optional. The default temperature to use for the chatbot.",
-          "title": "Defaulttemperature"
-        },
-        "defaultMaxTokens": {
-          "anyOf": [
-            {
-              "type": "integer"
-            },
-            {
-              "type": "null"
-            }
-          ],
-          "default": null,
-          "description": "ChatBot.spec.configuration.default_max_tokens[int]. Optional. The default max tokens to use for the chatbot.",
-          "title": "Defaultmaxtokens"
-        },
-        "appName": {
-          "anyOf": [
-            {
-              "type": "string"
-            },
-            {
-              "type": "null"
-            }
-          ],
-          "default": null,
-          "description": "ChatBot.spec.configuration.app_name[str]. Optional. The name of the chatbot.",
-          "title": "Appname"
-        },
-        "appAssistant": {
-          "anyOf": [
-            {
-              "type": "string"
-            },
-            {
-              "type": "null"
-            }
-          ],
-          "default": null,
-          "description": "ChatBot.spec.configuration.app_assistant[str]. Optional. The assistant name of the chatbot.",
-          "title": "Appassistant"
-        },
-        "appWelcomeMessage": {
-          "anyOf": [
-            {
-              "type": "string"
-            },
-            {
-              "type": "null"
-            }
-          ],
-          "default": null,
-          "description": "ChatBot.spec.configuration.app_welcome_message[str]. Optional. The welcome message of the chatbot.",
-          "title": "Appwelcomemessage"
-        },
-        "appExamplePrompts": {
-          "anyOf": [
-            {
-              "items": {
-                "type": "string"
-              },
-              "type": "array"
-            },
-            {
-              "type": "null"
-            }
-          ],
-          "default": null,
-          "description": "ChatBot.spec.configuration.app_example_prompts[list]. Optional. The example prompts of the chatbot.",
-          "title": "Appexampleprompts"
-        },
-        "appPlaceholder": {
-          "anyOf": [
-            {
-              "type": "string"
-            },
-            {
-              "type": "null"
-            }
-          ],
-          "default": null,
-          "description": "ChatBot.spec.configuration.app_placeholder[str]. Optional. The placeholder of the chatbot.",
-          "title": "Appplaceholder"
-        },
-        "appInfoUrl": {
-          "anyOf": [
-            {
-              "type": "string"
-            },
-            {
-              "type": "null"
-            }
-          ],
-          "default": null,
-          "description": "ChatBot.spec.configuration.app_info_url[str]. Optional. The info URL of the chatbot.",
-          "title": "Appinfourl"
-        },
-        "appBackgroundImageUrl": {
-          "anyOf": [
-            {
-              "type": "string"
-            },
-            {
-              "type": "null"
-            }
-          ],
-          "default": null,
-          "description": "ChatBot.spec.configuration.app_background_image_url[str]. Optional. The background image URL of the chatbot.",
-          "title": "Appbackgroundimageurl"
-        },
-        "appLogoUrl": {
-          "anyOf": [
-            {
-              "type": "string"
-            },
-            {
-              "type": "null"
-            }
-          ],
-          "default": null,
-          "description": "ChatBot.spec.configuration.app_logo_url[str]. Optional. The logo URL of the chatbot.",
-          "title": "Applogourl"
-        },
-        "appFileAttachment": {
-          "anyOf": [
-            {
-              "type": "boolean"
-            },
-            {
-              "type": "null"
-            }
-          ],
-          "default": null,
-          "description": "ChatBot.spec.configuration.app_file_attachment[bool]. Optional. Whether the chatbot supports file attachment.",
-          "title": "Appfileattachment"
-        }
-      },
-      "title": "SAMChatbotSpecConfig",
-      "type": "object"
-    },
-    "SAMChatbotStatus": {
-      "description": "Smarter API Chatbot Manifest - Status class.",
-      "properties": {
-        "account_number": {
-          "default": null,
-          "description": "ChatBot.status.account_number: The account owner of this ChatBot. Read only.",
-          "title": "Account Number",
-          "type": "string"
-        },
-        "username": {
-          "default": null,
-          "description": "ChatBot.status.account_number: The Smarter user who created this ChatBot. Read only.",
-          "title": "Username",
-          "type": "string"
-        },
-        "created": {
-          "default": null,
-          "description": "ChatBot.status.created: The date in which this ChatBot was created. Read only.",
-          "format": "date-time",
-          "title": "Created",
-          "type": "string"
-        },
-        "modified": {
-          "default": null,
-          "description": "ChatBot.status.modified: The date in which this ChatBot was most recently changed. Read only.",
-          "format": "date-time",
-          "title": "Modified",
-          "type": "string"
-        }
-      },
-      "title": "SAMChatbotStatus",
-      "type": "object"
-    }
+    "required": ["apiVersion", "kind", "metadata", "spec"],
+    "title": "SAMChatbot",
+    "type": "object"
   },
-  "description": "Smarter API Manifest - Chatbot",
-  "properties": {
-    "apiVersion": {
-      "description": "apiVersion[String]: Required. The API version of the AbstractSAMBase.",
-      "title": "Apiversion",
-      "type": "string"
-    },
-    "kind": {
-      "description": "kind[String]: Required. The kind of resource described by the manifest.",
-      "title": "Kind",
-      "type": "string"
-    },
-    "metadata": {
-      "$ref": "#/$defs/SAMChatbotMetadata",
-      "description": "ChatBot.metadata[obj]: Required, the ChatBot metadata."
-    },
-    "spec": {
-      "$ref": "#/$defs/SAMChatbotSpec",
-      "description": "ChatBot.spec[obj]: Required, the ChatBot specification."
-    },
-    "status": {
-      "anyOf": [
-        {
-          "$ref": "#/$defs/SAMChatbotStatus"
-        },
-        {
-          "type": "null"
-        }
-      ],
-      "description": "ChatBot.status[obj]: Optional, Read-only. Stateful status information about the ChatBot."
-    }
-  },
-  "required": ["apiVersion", "kind", "metadata", "spec", "status"],
-  "title": "SAMChatbot",
-  "type": "object"
+  "message": "Chatbot example manifest successfully generated",
+  "api": "smarter.sh/v1",
+  "thing": "Chatbot",
+  "metadata": {
+    "command": "example_manifest"
+  }
 }

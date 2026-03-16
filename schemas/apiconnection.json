@@ -1,0 +1,308 @@
+{
+  "data": {
+    "$defs": {
+      "ApiConnection": {
+        "description": "Smarter API - generic API Connection class.",
+        "properties": {
+          "baseUrl": {
+            "description": "The root domain of the API. Example: 'https://api.example.com'.",
+            "title": "Baseurl",
+            "type": "string"
+          },
+          "apiKey": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "description": "The API key for authentication, if required.",
+            "title": "Apikey"
+          },
+          "authMethod": {
+            "default": "none",
+            "description": "The authentication method to use. Example: 'Basic Auth', 'Token Auth'.",
+            "title": "Authmethod",
+            "type": "string"
+          },
+          "timeout": {
+            "default": 30,
+            "description": "The timeout for the API request in seconds. Default is 30 seconds.",
+            "minimum": 1,
+            "title": "Timeout",
+            "type": "integer"
+          },
+          "proxyProtocol": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "description": "The protocol of the proxy connection. Example: 'http', 'https'.",
+            "title": "Proxyprotocol"
+          },
+          "proxyHost": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "description": "The remote host of the proxy connection.",
+            "title": "Proxyhost"
+          },
+          "proxyPort": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "description": "The port of the proxy connection.",
+            "title": "Proxyport"
+          },
+          "proxyUsername": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "description": "The username for the proxy connection.",
+            "title": "Proxyusername"
+          },
+          "proxyPassword": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "description": "The password for the proxy connection.",
+            "title": "Proxypassword"
+          }
+        },
+        "required": ["baseUrl"],
+        "title": "ApiConnection",
+        "type": "object"
+      },
+      "SAMApiConnectionSpec": {
+        "description": "Smarter API Api Connection Manifest ApiConnection.spec",
+        "properties": {
+          "connection": {
+            "$ref": "#/$defs/ApiConnection",
+            "description": "ApiConnection.spec.selector[obj]: the selector logic to use for the ApiConnection"
+          }
+        },
+        "required": ["connection"],
+        "title": "SAMApiConnectionSpec",
+        "type": "object"
+      },
+      "SAMConnectionCommonMetadata": {
+        "description": "Smarter API Connection Manifest - common Metadata class.",
+        "properties": {
+          "name": {
+            "description": "The camelCase name of the manifest resource",
+            "title": "Name",
+            "type": "string"
+          },
+          "description": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "The description for this resource. Be brief. Keep it under 255 characters.",
+            "title": "Description"
+          },
+          "version": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "The semantic version of the manifest. Example: 0.1.0",
+            "title": "Version"
+          },
+          "tags": {
+            "anyOf": [
+              {
+                "items": {
+                  "type": "string"
+                },
+                "type": "array"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "The tags of the manifest. Used for generic resource categorization and search. Example: ['tag1', 'tag2']",
+            "title": "Tags"
+          },
+          "annotations": {
+            "anyOf": [
+              {
+                "items": {
+                  "additionalProperties": {
+                    "anyOf": [
+                      {
+                        "type": "string"
+                      },
+                      {
+                        "type": "integer"
+                      },
+                      {
+                        "type": "number"
+                      },
+                      {
+                        "type": "boolean"
+                      },
+                      {
+                        "format": "date",
+                        "type": "string"
+                      },
+                      {
+                        "format": "date-time",
+                        "type": "string"
+                      },
+                      {
+                        "pattern": "^(?!^[-+.]*$)[+-]?0*\\d*\\.?\\d*$",
+                        "type": "string"
+                      },
+                      {
+                        "format": "uuid",
+                        "type": "string"
+                      },
+                      {
+                        "format": "binary",
+                        "type": "string"
+                      },
+                      {
+                        "items": {},
+                        "type": "array"
+                      },
+                      {
+                        "additionalProperties": true,
+                        "type": "object"
+                      }
+                    ]
+                  },
+                  "type": "object"
+                },
+                "type": "array"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "The manifest annotations. Used for storing arbitrary metadata as key-value pairs. Example: [{'smarter.sh/test-manifest/project-name': 'Scooby dooby do'}]. The key should be a valid url-friendly string. The value accepts multi-line string values (YAML block scalars) and various scalar types including str, int, float, bool, datetime.date, datetime.datetime, decimal.Decimal, uuid.UUID, bytes, list, dict. ",
+            "title": "Annotations"
+          }
+        },
+        "required": ["name", "description", "version"],
+        "title": "SAMConnectionCommonMetadata",
+        "type": "object"
+      },
+      "SAMConnectionCommonStatus": {
+        "description": "Smarter API Connection Manifest - Status class.",
+        "properties": {
+          "account_number": {
+            "default": null,
+            "description": "Connection.status.account_number: The account owner of this Connection. Read only.",
+            "title": "Account Number",
+            "type": "string"
+          },
+          "username": {
+            "default": null,
+            "description": "Connection.status.account_number: The Smarter user who created this Connection. Read only.",
+            "title": "Username",
+            "type": "string"
+          },
+          "created": {
+            "default": null,
+            "description": "Connection.status.created: The date in which this Connection was created. Read only.",
+            "format": "date-time",
+            "title": "Created",
+            "type": "string"
+          },
+          "modified": {
+            "default": null,
+            "description": "Connection.status.modified: The date in which this Connection was most recently changed. Read only.",
+            "format": "date-time",
+            "title": "Modified",
+            "type": "string"
+          }
+        },
+        "title": "SAMConnectionCommonStatus",
+        "type": "object"
+      }
+    },
+    "description": "Smarter API Manifest - SqlPlugin Connection Model",
+    "properties": {
+      "apiVersion": {
+        "description": "apiVersion[String]: Required. The API version of the AbstractSAMBase.",
+        "title": "Apiversion",
+        "type": "string"
+      },
+      "kind": {
+        "description": "kind[String]: Required. The kind of resource described by the manifest.",
+        "title": "Kind",
+        "type": "string"
+      },
+      "metadata": {
+        "$ref": "#/$defs/SAMConnectionCommonMetadata",
+        "description": "Connection.metadata[obj]: Required, the Connection metadata."
+      },
+      "spec": {
+        "$ref": "#/$defs/SAMApiConnectionSpec",
+        "description": "ApiConnection.spec[obj]: Required, the ApiConnection specification."
+      },
+      "status": {
+        "anyOf": [
+          {
+            "$ref": "#/$defs/SAMConnectionCommonStatus"
+          },
+          {
+            "type": "null"
+          }
+        ],
+        "default": null,
+        "description": "Connection.status[obj]: Optional, Read-only. Stateful status information about the Connection."
+      }
+    },
+    "required": ["apiVersion", "kind", "metadata", "spec"],
+    "title": "SAMApiConnection",
+    "type": "object"
+  },
+  "message": "ApiConnection example manifest successfully generated",
+  "api": "smarter.sh/v1",
+  "thing": "ApiConnection",
+  "metadata": {
+    "command": "example_manifest"
+  }
+}

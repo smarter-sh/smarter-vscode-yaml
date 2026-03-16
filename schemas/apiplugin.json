@@ -1,6 +1,256 @@
 {
   "data": {
     "$defs": {
+      "ApiData": {
+        "description": "Smarter API - apiData class.",
+        "properties": {
+          "endpoint": {
+            "description": "The endpoint path for the API. Example: '/v1/weather'.",
+            "maxLength": 255,
+            "title": "Endpoint",
+            "type": "string"
+          },
+          "method": {
+            "default": "GET",
+            "description": "The HTTP method to use for the API request. Default is 'GET'.",
+            "maxLength": 10,
+            "title": "Method",
+            "type": "string"
+          },
+          "urlParams": {
+            "anyOf": [
+              {
+                "items": {
+                  "$ref": "#/$defs/UrlParam"
+                },
+                "type": "array"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "description": "A list of URL parameters to be included in the API request. Example: {'city': 'San Francisco'}",
+            "title": "Urlparams"
+          },
+          "headers": {
+            "anyOf": [
+              {
+                "items": {
+                  "$ref": "#/$defs/RequestHeader"
+                },
+                "type": "array"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "description": "A list of JSON dict containing headers to be sent with the API request. Example: {'Authorization': 'Bearer <token>'}",
+            "title": "Headers"
+          },
+          "body": {
+            "anyOf": [
+              {
+                "additionalProperties": true,
+                "type": "object"
+              },
+              {
+                "items": {},
+                "type": "array"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "description": "Any valid JSON object containing the body of the API request, if applicable.",
+            "title": "Body"
+          },
+          "parameters": {
+            "anyOf": [
+              {
+                "items": {
+                  "$ref": "#/$defs/Parameter"
+                },
+                "type": "array"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "description": "A JSON dict containing parameter names and data types. Example: {'city': {'type': 'string', 'description': 'City name'}}",
+            "title": "Parameters"
+          },
+          "testValues": {
+            "anyOf": [
+              {
+                "items": {
+                  "$ref": "#/$defs/TestValue"
+                },
+                "type": "array"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "description": "A JSON dict containing test values for each parameter. Example: {'city': 'San Francisco'}",
+            "title": "Testvalues"
+          },
+          "limit": {
+            "anyOf": [
+              {
+                "exclusiveMinimum": 1,
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": 100,
+            "description": "The maximum number of records to return from the API. Default is 100.",
+            "title": "Limit"
+          }
+        },
+        "required": ["endpoint"],
+        "title": "ApiData",
+        "type": "object"
+      },
+      "Parameter": {
+        "description": "Parameter class for parameterized Plugins. This structure is intended to match that which is used in the OpenAPI function calling specification. It is used to define the parameters that a plugin can accept, and also for creating the function calling prompt api.",
+        "properties": {
+          "name": {
+            "description": "The name of the parameter.",
+            "title": "Name",
+            "type": "string"
+          },
+          "type": {
+            "$ref": "#/$defs/ParameterType",
+            "description": "The data type of the parameter (one of: string, number, integer, boolean, object, array, null)."
+          },
+          "description": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "description": "A description of the parameter.",
+            "title": "Description"
+          },
+          "required": {
+            "default": false,
+            "description": "Whether the parameter is required.",
+            "title": "Required",
+            "type": "boolean"
+          },
+          "enum": {
+            "anyOf": [
+              {
+                "items": {
+                  "type": "string"
+                },
+                "type": "array"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "description": "A list of allowed values for the parameter. Example: ['Celsius', 'Fahrenheit']",
+            "title": "Enum"
+          },
+          "default": {
+            "anyOf": [
+              {},
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "description": "The default value of the parameter, if any.",
+            "title": "Default"
+          }
+        },
+        "required": ["name", "type"],
+        "title": "Parameter",
+        "type": "object"
+      },
+      "ParameterType": {
+        "description": "Enum for parameter types.",
+        "enum": [
+          "string",
+          "number",
+          "integer",
+          "boolean",
+          "object",
+          "array",
+          "null"
+        ],
+        "title": "ParameterType",
+        "type": "string"
+      },
+      "RequestHeader": {
+        "description": "Model for storing HTTP request headers.",
+        "properties": {
+          "name": {
+            "description": "The name of the HTTP header.",
+            "title": "Name",
+            "type": "string"
+          },
+          "value": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "integer"
+              },
+              {
+                "type": "number"
+              },
+              {
+                "type": "boolean"
+              }
+            ],
+            "description": "The value of the HTTP header.",
+            "title": "Value"
+          }
+        },
+        "required": ["name", "value"],
+        "title": "RequestHeader",
+        "type": "object"
+      },
+      "SAMApiPluginSpec": {
+        "description": "Smarter API Manifest ApiConnection.spec",
+        "properties": {
+          "selector": {
+            "$ref": "#/$defs/SAMPluginCommonSpecSelector",
+            "description": "Plugin.spec.selector[obj]: the selector logic to use for the Plugin"
+          },
+          "prompt": {
+            "$ref": "#/$defs/SAMPluginCommonSpecPrompt",
+            "description": "Plugin.spec.prompt[obj]: the LLM prompt engineering to apply to the Plugin"
+          },
+          "connection": {
+            "description": "ApiPlugin.spec.selector[obj]: the name of an existing SqlConnector to use for the ApiPlugin",
+            "title": "Connection",
+            "type": "string"
+          },
+          "apiData": {
+            "$ref": "#/$defs/ApiData",
+            "description": "ApiPlugin.spec.selector[obj]: the ApiData to use for the ApiPlugin"
+          }
+        },
+        "required": ["selector", "prompt", "connection", "apiData"],
+        "title": "SAMApiPluginSpec",
+        "type": "object"
+      },
       "SAMPluginCommonMetadata": {
         "description": "Smarter API Plugin Manifest - common Metadata class.",
         "properties": {
@@ -216,49 +466,56 @@
         "title": "SAMPluginCommonStatus",
         "type": "object"
       },
-      "SAMPluginStaticSpec": {
-        "description": "Smarter API Plugin Manifest Plugin.spec",
+      "TestValue": {
+        "description": "TestValue class for SqlPlugin and ApiPlugin test values.",
         "properties": {
-          "selector": {
-            "$ref": "#/$defs/SAMPluginCommonSpecSelector",
-            "description": "Plugin.spec.selector[obj]: the selector logic to use for the Plugin"
+          "name": {
+            "description": "The name of the parameter being tested.",
+            "title": "Name",
+            "type": "string"
           },
-          "prompt": {
-            "$ref": "#/$defs/SAMPluginCommonSpecPrompt",
-            "description": "Plugin.spec.prompt[obj]: the LLM prompt engineering to apply to the Plugin"
-          },
-          "data": {
-            "$ref": "#/$defs/SAMPluginStaticSpecData",
-            "description": "Plugin.spec.data[obj]: the json data returned by the Plugin. This should be one of the following kinds: ['static', 'static', 'api', 'sql']"
+          "value": {
+            "description": "The test value for the parameter.",
+            "title": "Value"
           }
         },
-        "required": ["selector", "prompt", "data"],
-        "title": "SAMPluginStaticSpec",
+        "required": ["name", "value"],
+        "title": "TestValue",
         "type": "object"
       },
-      "SAMPluginStaticSpecData": {
-        "description": "Smarter API Plugin Manifest Plugin.spec.data",
+      "UrlParam": {
+        "description": "Model for storing url param k-v pairs.",
         "properties": {
-          "staticData": {
+          "key": {
+            "description": "The key (ie 'name') of the url param.",
+            "title": "Key",
+            "type": "string"
+          },
+          "value": {
             "anyOf": [
               {
-                "additionalProperties": true,
-                "type": "object"
+                "type": "string"
               },
               {
-                "type": "null"
+                "type": "integer"
+              },
+              {
+                "type": "number"
+              },
+              {
+                "type": "boolean"
               }
             ],
-            "default": null,
-            "description": "Plugin.spec.data.staticData[obj]: The static data returned by the Plugin when the class is 'static'. LLM's are adept at understanding the context of json data structures. Try to provide granular and specific data elements.",
-            "title": "Staticdata"
+            "description": "The value for the key.",
+            "title": "Value"
           }
         },
-        "title": "SAMPluginStaticSpecData",
+        "required": ["key", "value"],
+        "title": "UrlParam",
         "type": "object"
       }
     },
-    "description": "Smarter API Manifest - Plugin",
+    "description": "Smarter API Manifest - ApiPlugin Model",
     "properties": {
       "apiVersion": {
         "description": "apiVersion[String]: Required. The API version of the AbstractSAMBase.",
@@ -275,8 +532,8 @@
         "description": "Plugin.metadata[obj]: Required, the Plugin metadata."
       },
       "spec": {
-        "$ref": "#/$defs/SAMPluginStaticSpec",
-        "description": "Plugin.spec[obj]: Required, the Plugin specification."
+        "$ref": "#/$defs/SAMApiPluginSpec",
+        "description": "ApiPlugin.spec[obj]: Required, the ApiPlugin specification."
       },
       "status": {
         "anyOf": [
@@ -292,12 +549,12 @@
       }
     },
     "required": ["apiVersion", "kind", "metadata", "spec"],
-    "title": "SAMStaticPlugin",
+    "title": "SAMApiPlugin",
     "type": "object"
   },
-  "message": "Plugin example manifest successfully generated",
+  "message": "ApiPlugin example manifest successfully generated",
   "api": "smarter.sh/v1",
-  "thing": "Plugin",
+  "thing": "ApiPlugin",
   "metadata": {
     "command": "example_manifest"
   }
