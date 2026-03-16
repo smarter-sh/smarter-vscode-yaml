@@ -4,19 +4,33 @@
       "description": "Smarter API Account Manifest - Metadata class.",
       "properties": {
         "name": {
-          "description": "The name of the manifest resource",
+          "description": "The camelCase name of the manifest resource",
           "title": "Name",
           "type": "string"
         },
         "description": {
-          "description": "The description of the manifest resource",
-          "title": "Description",
-          "type": "string"
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "description": "The description for this resource. Be brief. Keep it under 255 characters.",
+          "title": "Description"
         },
         "version": {
-          "description": "The version of the manifest",
-          "title": "Version",
-          "type": "string"
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "description": "The semantic version of the manifest. Example: 0.1.0",
+          "title": "Version"
         },
         "tags": {
           "anyOf": [
@@ -30,15 +44,58 @@
               "type": "null"
             }
           ],
-          "default": null,
-          "description": "The tags of the manifest",
+          "description": "The tags of the manifest. Used for generic resource categorization and search. Example: [tag1, tag2]",
           "title": "Tags"
         },
         "annotations": {
           "anyOf": [
             {
               "items": {
-                "type": "string"
+                "additionalProperties": {
+                  "anyOf": [
+                    {
+                      "type": "string"
+                    },
+                    {
+                      "type": "integer"
+                    },
+                    {
+                      "type": "number"
+                    },
+                    {
+                      "type": "boolean"
+                    },
+                    {
+                      "format": "date",
+                      "type": "string"
+                    },
+                    {
+                      "format": "date-time",
+                      "type": "string"
+                    },
+                    {
+                      "pattern": "^(?!^[-+.]*$)[+-]?0*d*.?d*$",
+                      "type": "string"
+                    },
+                    {
+                      "format": "uuid",
+                      "type": "string"
+                    },
+                    {
+                      "format": "binary",
+                      "type": "string"
+                    },
+                    {
+                      "items": {},
+                      "type": "array"
+                    },
+                    {
+                      "additionalProperties": true,
+                      "type": "object"
+                    }
+                  ]
+                },
+                "type": "object"
               },
               "type": "array"
             },
@@ -46,8 +103,7 @@
               "type": "null"
             }
           ],
-          "default": null,
-          "description": "The annotations of the manifest",
+          "description": "The manifest annotations. Used for storing arbitrary metadata as key-value pairs. Example: [{smarter.sh/test-manifest/project-name: Scooby dooby do}]. The key should be a valid url-friendly string. The value accepts multi-line string values (YAML block scalars) and various scalar types including str, int, float, bool, datetime.date, datetime.datetime, decimal.Decimal, uuid.UUID, bytes, list, dict.",
           "title": "Annotations"
         },
         "accountNumber": {
@@ -119,22 +175,26 @@
           "type": "string"
         },
         "country": {
-          "description": "Account.spec.configuration.country[str]. The country for the Account.",
+          "default": "US",
+          "description": "Account.spec.configuration.country[str]. The ISO 3166 country code for the Account. Default: USA.",
           "title": "Country",
           "type": "string"
         },
         "language": {
-          "description": "Account.spec.configuration.language[str]. The primary language for the Account.",
+          "default": "en-US",
+          "description": "Account.spec.configuration.language[str]. The primary BCP 47 language tag for the Account. Default: en-US.",
           "title": "Language",
           "type": "string"
         },
         "timezone": {
-          "description": "Account.spec.configuration.timezone[str]. The primary timezone for the Account.",
+          "default": "America/New_York",
+          "description": "Account.spec.configuration.timezone[str]. The primary IANA timezone for the Account. Default: America/New_York.",
           "title": "Timezone",
           "type": "string"
         },
         "currency": {
-          "description": "Account.spec.configuration.currency[str]. The primary currency for the Account.",
+          "default": "USD",
+          "description": "Account.spec.configuration.currency[str]. The primary ISO 4217 currency for the Account. Default: USD.",
           "title": "Currency",
           "type": "string"
         }
@@ -145,11 +205,7 @@
         "address1",
         "city",
         "state",
-        "postalCode",
-        "country",
-        "language",
-        "timezone",
-        "currency"
+        "postalCode"
       ],
       "title": "SAMAccountSpecConfig",
       "type": "object"
@@ -158,26 +214,24 @@
       "description": "Smarter API Account Manifest - Status class.",
       "properties": {
         "adminAccount": {
-          "default": null,
           "description": "Account.status.adminAccount: The designated Smarter admin user for this Account. Read only.",
           "title": "Adminaccount",
           "type": "string"
         },
         "created": {
-          "default": null,
           "description": "Account.status.created: The date in which this Account was created. Read only.",
           "format": "date-time",
           "title": "Created",
           "type": "string"
         },
         "modified": {
-          "default": null,
           "description": "Account.status.modified: The date in which this Account was most recently changed. Read only.",
           "format": "date-time",
           "title": "Modified",
           "type": "string"
         }
       },
+      "required": ["adminAccount", "created", "modified"],
       "title": "SAMAccountStatus",
       "type": "object"
     }
@@ -211,10 +265,11 @@
           "type": "null"
         }
       ],
+      "default": null,
       "description": "Account.status[obj]: Optional, Read-only. Stateful status information about the Account."
     }
   },
-  "required": ["apiVersion", "kind", "metadata", "spec", "status"],
+  "required": ["apiVersion", "kind", "metadata", "spec"],
   "title": "SAMAccount",
   "type": "object"
 }

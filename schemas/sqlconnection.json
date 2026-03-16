@@ -1,0 +1,400 @@
+{
+  "data": {
+    "$defs": {
+      "Connection": {
+        "description": "Smarter API - generic SQL Connection class.",
+        "properties": {
+          "dbEngine": {
+            "description": "A valid SQL database engine. Common db_engines: ['django.db.backends.postgresql', 'django.db.backends.mysql', 'django.db.backends.oracle', 'django.db.backends.sqlite3', 'django.db.backends.mssql', 'django.db.backends.sybase']",
+            "title": "Dbengine",
+            "type": "string"
+          },
+          "hostname": {
+            "description": "The remote host of the SQL connection. Should be a valid internet domain name. Example: 'localhost' or 'mysql.mycompany.com'.",
+            "title": "Hostname",
+            "type": "string"
+          },
+          "port": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "description": "The port of the SQL connection. Default values are assigned based on the dbEngine.",
+            "title": "Port"
+          },
+          "database": {
+            "description": "The name of the database to connect to. Examples: 'sales' or 'mydb'.",
+            "title": "Database",
+            "type": "string"
+          },
+          "username": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "description": "The database username.",
+            "title": "Username"
+          },
+          "password": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "description": "The password.",
+            "title": "Password"
+          },
+          "timeout": {
+            "default": 30,
+            "description": "The timeout for the database connection in seconds. Default is 30 seconds.",
+            "title": "Timeout",
+            "type": "integer"
+          },
+          "useSsl": {
+            "default": false,
+            "description": "Whether to use SSL/TLS for the connection.",
+            "title": "Usessl",
+            "type": "boolean"
+          },
+          "sslCert": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "description": "The SSL certificate for the connection, if required.",
+            "title": "Sslcert"
+          },
+          "sslKey": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "description": "The SSL key for the connection, if required.",
+            "title": "Sslkey"
+          },
+          "sslCa": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "description": "The Certificate Authority (CA) certificate for verifying the server.",
+            "title": "Sslca"
+          },
+          "proxyHost": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "description": "The remote host of the SQL proxy connection. Should be a valid internet domain name.",
+            "title": "Proxyhost"
+          },
+          "proxyPort": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "description": "The port of the SQL proxy connection.",
+            "title": "Proxyport"
+          },
+          "proxyUsername": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "description": "The username for the proxy connection.",
+            "title": "Proxyusername"
+          },
+          "proxyPassword": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "description": "The password for the proxy connection.",
+            "title": "Proxypassword"
+          },
+          "sshKnownHosts": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "description": "The known_hosts file content for verifying SSH connections.",
+            "title": "Sshknownhosts"
+          },
+          "poolSize": {
+            "default": 5,
+            "description": "The size of the connection pool.",
+            "title": "Poolsize",
+            "type": "integer"
+          },
+          "maxOverflow": {
+            "default": 10,
+            "description": "The maximum number of connections to allow beyond the pool size.",
+            "title": "Maxoverflow",
+            "type": "integer"
+          },
+          "authenticationMethod": {
+            "default": "none",
+            "description": "The authentication method to use for the connection. Example: 'Standard TCP/IP', 'Standard TCP/IP over SSH', 'LDAP User/Password'.",
+            "title": "Authenticationmethod",
+            "type": "string"
+          }
+        },
+        "required": ["dbEngine", "hostname", "database"],
+        "title": "Connection",
+        "type": "object"
+      },
+      "SAMConnectionCommonMetadata": {
+        "description": "Smarter API Connection Manifest - common Metadata class.",
+        "properties": {
+          "name": {
+            "description": "The camelCase name of the manifest resource",
+            "title": "Name",
+            "type": "string"
+          },
+          "description": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "The description for this resource. Be brief. Keep it under 255 characters.",
+            "title": "Description"
+          },
+          "version": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "The semantic version of the manifest. Example: 0.1.0",
+            "title": "Version"
+          },
+          "tags": {
+            "anyOf": [
+              {
+                "items": {
+                  "type": "string"
+                },
+                "type": "array"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "The tags of the manifest. Used for generic resource categorization and search. Example: ['tag1', 'tag2']",
+            "title": "Tags"
+          },
+          "annotations": {
+            "anyOf": [
+              {
+                "items": {
+                  "additionalProperties": {
+                    "anyOf": [
+                      {
+                        "type": "string"
+                      },
+                      {
+                        "type": "integer"
+                      },
+                      {
+                        "type": "number"
+                      },
+                      {
+                        "type": "boolean"
+                      },
+                      {
+                        "format": "date",
+                        "type": "string"
+                      },
+                      {
+                        "format": "date-time",
+                        "type": "string"
+                      },
+                      {
+                        "pattern": "^(?!^[-+.]*$)[+-]?0*\\d*\\.?\\d*$",
+                        "type": "string"
+                      },
+                      {
+                        "format": "uuid",
+                        "type": "string"
+                      },
+                      {
+                        "format": "binary",
+                        "type": "string"
+                      },
+                      {
+                        "items": {},
+                        "type": "array"
+                      },
+                      {
+                        "additionalProperties": true,
+                        "type": "object"
+                      }
+                    ]
+                  },
+                  "type": "object"
+                },
+                "type": "array"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "The manifest annotations. Used for storing arbitrary metadata as key-value pairs. Example: [{'smarter.sh/test-manifest/project-name': 'Scooby dooby do'}]. The key should be a valid url-friendly string. The value accepts multi-line string values (YAML block scalars) and various scalar types including str, int, float, bool, datetime.date, datetime.datetime, decimal.Decimal, uuid.UUID, bytes, list, dict. ",
+            "title": "Annotations"
+          }
+        },
+        "required": ["name", "description", "version"],
+        "title": "SAMConnectionCommonMetadata",
+        "type": "object"
+      },
+      "SAMConnectionCommonStatus": {
+        "description": "Smarter API Connection Manifest - Status class.",
+        "properties": {
+          "account_number": {
+            "default": null,
+            "description": "Connection.status.account_number: The account owner of this Connection. Read only.",
+            "title": "Account Number",
+            "type": "string"
+          },
+          "username": {
+            "default": null,
+            "description": "Connection.status.account_number: The Smarter user who created this Connection. Read only.",
+            "title": "Username",
+            "type": "string"
+          },
+          "created": {
+            "default": null,
+            "description": "Connection.status.created: The date in which this Connection was created. Read only.",
+            "format": "date-time",
+            "title": "Created",
+            "type": "string"
+          },
+          "modified": {
+            "default": null,
+            "description": "Connection.status.modified: The date in which this Connection was most recently changed. Read only.",
+            "format": "date-time",
+            "title": "Modified",
+            "type": "string"
+          }
+        },
+        "title": "SAMConnectionCommonStatus",
+        "type": "object"
+      },
+      "SAMSqlConnectionSpec": {
+        "description": "Smarter API Sql Connection Manifest Connection.spec",
+        "properties": {
+          "connection": {
+            "$ref": "#/$defs/Connection",
+            "description": "SqlConnection.spec.selector[obj]: the selector logic to use for the SqlConnection"
+          }
+        },
+        "required": ["connection"],
+        "title": "SAMSqlConnectionSpec",
+        "type": "object"
+      }
+    },
+    "description": "Smarter API Manifest - SqlPlugin Connection Model",
+    "properties": {
+      "apiVersion": {
+        "description": "apiVersion[String]: Required. The API version of the AbstractSAMBase.",
+        "title": "Apiversion",
+        "type": "string"
+      },
+      "kind": {
+        "description": "kind[String]: Required. The kind of resource described by the manifest.",
+        "title": "Kind",
+        "type": "string"
+      },
+      "metadata": {
+        "$ref": "#/$defs/SAMConnectionCommonMetadata",
+        "description": "SqlConnection.metadata[obj]: Required, the SqlConnection metadata."
+      },
+      "spec": {
+        "$ref": "#/$defs/SAMSqlConnectionSpec",
+        "description": "SqlConnection.spec[obj]: Required, the SqlConnection specification."
+      },
+      "status": {
+        "anyOf": [
+          {
+            "$ref": "#/$defs/SAMConnectionCommonStatus"
+          },
+          {
+            "type": "null"
+          }
+        ],
+        "default": null,
+        "description": "SqlConnection.status[obj]: Optional, Read-only. Stateful status information about the SqlConnection."
+      }
+    },
+    "required": ["apiVersion", "kind", "metadata", "spec"],
+    "title": "SAMSqlConnection",
+    "type": "object"
+  },
+  "message": "SqlConnection example manifest successfully generated",
+  "api": "smarter.sh/v1",
+  "thing": "SqlConnection",
+  "metadata": {
+    "command": "example_manifest"
+  }
+}

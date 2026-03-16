@@ -32,28 +32,28 @@ You can configure the extension by adding the following settings to your `settin
   "yaml.schemas": {
     "path/to/your/schema.json": "*.yaml"
   },
-  "smarterYaml.rootUrl": "https://platform.smarter.sh"
+  "smarterYaml.rootUrl": "https://ubc.smarter.sh"
 }
 ```
 
 ## JSON Schemas
 
-- [https://platform.smarter.sh/api/v1/cli/schema/Chatbot/](https://platform.smarter.sh/api/v1/cli/schema/Chatbot/)
-- [https://platform.smarter.sh/api/v1/cli/schema/Plugin/](https://platform.smarter.sh/api/v1/cli/schema/Plugin/)
-- [https://platform.smarter.sh/api/v1/cli/schema/Account/](https://platform.smarter.sh/api/v1/cli/schema/Account/)
-- [https://platform.smarter.sh/api/v1/cli/schema/SmarterAuthToken/](https://platform.smarter.sh/api/v1/cli/schema/SmarterAuthToken/)
-- [https://platform.smarter.sh/api/v1/cli/schema/User/](https://platform.smarter.sh/api/v1/cli/schema/User/)
-- [https://platform.smarter.sh/api/v1/cli/schema/Chat/](https://platform.smarter.sh/api/v1/cli/schema/Chat/)
-- [https://platform.smarter.sh/api/v1/cli/schema/ChatConfig/](https://platform.smarter.sh/api/v1/cli/schema/ChatConfig/)
-- [https://platform.smarter.sh/api/v1/cli/schema/ChatHistory/](https://platform.smarter.sh/api/v1/cli/schema/ChatHistory/)
-- [https://platform.smarter.sh/api/v1/cli/schema/ChatPluginUsage/](https://platform.smarter.sh/api/v1/cli/schema/ChatPluginUsage/)
-- [https://platform.smarter.sh/api/v1/cli/schema/ChatToolCall/](https://platform.smarter.sh/api/v1/cli/schema/ChatToolCall/)
-- [https://platform.smarter.sh/api/v1/cli/schema/SqlConnection/](https://platform.smarter.sh/api/v1/cli/schema/SqlConnection/)
-- [https://platform.smarter.sh/api/v1/cli/schema/ApiConnection/](https://platform.smarter.sh/api/v1/cli/schema/ApiConnection/)
-- [https://platform.smarter.sh/api/v1/cli/schema/Secret/](https://platform.smarter.sh/api/v1/cli/schema/Secret/)
+- [https://ubc.smarter.sh/api/v1/cli/schema/Chatbot/](https://ubc.smarter.sh/api/v1/cli/schema/Chatbot/)
+- [https://ubc.smarter.sh/api/v1/cli/schema/Plugin/](https://ubc.smarter.sh/api/v1/cli/schema/Plugin/)
+- [https://ubc.smarter.sh/api/v1/cli/schema/Account/](https://ubc.smarter.sh/api/v1/cli/schema/Account/)
+- [https://ubc.smarter.sh/api/v1/cli/schema/SmarterAuthToken/](https://ubc.smarter.sh/api/v1/cli/schema/SmarterAuthToken/)
+- [https://ubc.smarter.sh/api/v1/cli/schema/User/](https://ubc.smarter.sh/api/v1/cli/schema/User/)
+- [https://ubc.smarter.sh/api/v1/cli/schema/Chat/](https://ubc.smarter.sh/api/v1/cli/schema/Chat/)
+- [https://ubc.smarter.sh/api/v1/cli/schema/ChatConfig/](https://ubc.smarter.sh/api/v1/cli/schema/ChatConfig/)
+- [https://ubc.smarter.sh/api/v1/cli/schema/ChatHistory/](https://ubc.smarter.sh/api/v1/cli/schema/ChatHistory/)
+- [https://ubc.smarter.sh/api/v1/cli/schema/ChatPluginUsage/](https://ubc.smarter.sh/api/v1/cli/schema/ChatPluginUsage/)
+- [https://ubc.smarter.sh/api/v1/cli/schema/ChatToolCall/](https://ubc.smarter.sh/api/v1/cli/schema/ChatToolCall/)
+- [https://ubc.smarter.sh/api/v1/cli/schema/SqlConnection/](https://ubc.smarter.sh/api/v1/cli/schema/SqlConnection/)
+- [https://ubc.smarter.sh/api/v1/cli/schema/ApiConnection/](https://ubc.smarter.sh/api/v1/cli/schema/ApiConnection/)
+- [https://ubc.smarter.sh/api/v1/cli/schema/Secret/](https://ubc.smarter.sh/api/v1/cli/schema/Secret/)
 
 ## Environments
 
-- [Production - https://platform.smarter.sh/](https://platform.smarter.sh/)
-- [Beta - https://beta.platform.smarter.sh/](https://beta.platform.smarter.sh/)
-- [Alpha - https://alpha.platform.smarter.sh/](https://alpha.platform.smarter.sh/)
+- [Production - https://ubc.smarter.sh/](https://ubc.smarter.sh/)
+- [Beta - https://beta.ubc.smarter.sh/](https://beta.ubc.smarter.sh/)
+- [Alpha - https://alpha.ubc.smarter.sh/](https://alpha.ubc.smarter.sh/)

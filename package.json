@@ -2,7 +2,7 @@
   "name": "smarter-manifest",
   "displayName": "Smarter Manifest",
   "description": "Enhanced support for Smarter YAML manifest files with syntax validation, semantic checking, auto-completion and context sensitive pop up micro help.",
-  "version": "0.1.7",
+  "version": "0.2.0",
   "icon": "images/logo.png",
   "publisher": "Querium",
   "engines": {
@@ -28,7 +28,7 @@
         },
         "smarterYaml.rootUrl": {
           "type": "string",
-          "default": "https://platform.smarter.sh",
+          "default": "https://ubc.smarter.sh",
           "description": "The root URL for the Smarter platform."
         }
       }
