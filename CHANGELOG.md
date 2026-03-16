@@ -4,6 +4,21 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](http://keepachangelog.com/) and this project adheres to [Semantic Versioning](http://semver.org/).
 
+
+
+## [0.2.0](https://github.com/smarter-sh/smarter-vscode-yaml/compare/v0.1.1...v0.2.0) (2026-03-16)
+
+### Features
+
+* add new schemas for apiconnection, sqlconnection, apiplugin, sqlplugin ([20ed9f9](https://github.com/smarter-sh/smarter-vscode-yaml/commit/20ed9f94c654178ee7048235cd7d5619d30ffad4))
+
+### Bug Fixes
+
+* setup semantic release ([e6187f8](https://github.com/smarter-sh/smarter-vscode-yaml/commit/e6187f8af49ee66096007f91ef0ec6ea05a1cf96))
+* setup semantic release ([06c8c24](https://github.com/smarter-sh/smarter-vscode-yaml/commit/06c8c2412a6fd538487a58a5b20b803cdf926ad9))
+* setup semantic release ([cc41b9d](https://github.com/smarter-sh/smarter-vscode-yaml/commit/cc41b9d7d0c06114a64999ce95537f4c99a7e8c8))
+* setup semantic release ([b88f8b5](https://github.com/smarter-sh/smarter-vscode-yaml/commit/b88f8b5b59c3872516878ac5881296de847f4dfe))
+
 ## [0.1.7](https://github.com/smarter-sh/smarter-vscode-yaml/compare/v1.0.0...v0.1.7) (2025-04-08)
 
 ### Features
