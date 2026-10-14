@@ -87,3 +87,5 @@ venv
 
 # ReactJS
 node_modules
+.vscode-test/
+out

@@ -1,37 +1,10 @@
-# Include all runtime dependencies
-!node_modules/**
-
-# Exclude dev dependencies
-node_modules/@types/**
-node_modules/typescript/**
-node_modules/@vscode/**
-
-# Exclude source files
-src/**
-
-# Exclude test files
-test/**
-
-# Exclude TypeScript config
-tsconfig.json
-
-# Exclude other unnecessary files from the extension package
-tests
-venv
-.pypi_cache
-.vscode/**
-.github
-.env
-.gitignore
-.mergify.yml
-.pre-commit-config.yaml
-Makefile
-requirements
-codespell.txt
-out/**
-*.ts
-*.map
-*.log
-coverage/**
-.git/**
-.DS_Store
+# The extension is bundled into dist/extension.js by esbuild, so the package needs only dist/,
+# the bundled SAM contract, the icon and the docs.
+**
+!dist/extension.js
+!contract/sam/**
+!images/logo.png
+!package.json
+!README.md
+!CHANGELOG.md
+!LICENSE

@@ -54,7 +54,7 @@ module.exports = {
           "package-lock.json",
           "dist/**",
           "images/**",
-          "schemas/**",
+          "contract/**",
         ],
         message:
           "chore(release): ${nextRelease.version} [skip ci]\n\n${nextRelease.notes}",

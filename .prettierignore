@@ -1,0 +1,4 @@
+# generated, or copied from the smarter repository: keep them byte-identical to their source.
+contract/
+src/contract/openapi.d.ts
+CHANGELOG.md
