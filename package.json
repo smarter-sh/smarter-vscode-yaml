@@ -2,7 +2,7 @@
   "name": "smarter-manifest",
   "displayName": "Smarter Manifest",
   "description": "Edit, validate and apply Smarter YAML manifests: schema validation with exact error positions, context-aware completion and hover help, quick fixes, example manifests, and the Smarter cli api's validate, apply, deploy and describe commands.",
-  "version": "0.2.0",
+  "version": "0.3.0",
   "icon": "images/logo.png",
   "publisher": "Querium",
   "license": "AGPL-3.0",
