@@ -1,5 +1,13 @@
 # Smarter Manifest for VS Code
 
+![Test Status](https://github.com/smarter-sh/smarter-vscode-yaml/actions/workflows/test.yml/badge.svg?branch=main)
+[![VS Marketplace](https://vsmarketplacebadges.dev/version-short/Querium.smarter-manifest.svg)](https://marketplace.visualstudio.com/items?itemName=Querium.smarter-manifest)
+[![Installs](https://vsmarketplacebadges.dev/installs-short/Querium.smarter-manifest.svg)](https://marketplace.visualstudio.com/items?itemName=Querium.smarter-manifest)
+[![Latest Release](https://img.shields.io/github/v/release/smarter-sh/smarter-vscode-yaml?label=release)](https://github.com/smarter-sh/smarter-vscode-yaml/releases)
+[![Docs](https://img.shields.io/badge/Read%20the%20Docs-smarter.sh-blue?logo=readthedocs)](https://docs.smarter.sh/en/latest/smarter-framework/vs-code-extension.html)
+[![Website](https://img.shields.io/badge/official%20web%20site-smarter.sh-blue?logo=google-chrome)](https://smarter.sh)
+[![License: GNU AGPL v3](https://img.shields.io/badge/License-AGPL_v3-blue.svg)](https://www.gnu.org/licenses/agpl-3.0)
+
 A [Visual Studio Code extension](https://marketplace.visualstudio.com/items/?itemName=Querium.smarter-manifest) for [Smarter](https://smarter.sh) manifests: the YAML files that declare Smarter resources such as LLMClients, Plugins, Guardrails, Secrets and Custom Domains. Any YAML file whose `apiVersion` is `smarter.sh/v1` is a manifest:
 
 ```yaml
