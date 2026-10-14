@@ -13,6 +13,10 @@ updates:
       - "lpm0073"
     reviewers:
       - "lpm0073"
+    ignore:
+      # @types/vscode must not be newer than engines.vscode in package.json, or vsce refuses to
+      # package the extension. Raise both together, by hand.
+      - dependency-name: "@types/vscode"
 
   # Check for updates to GitHub Actions
   - package-ecosystem: "github-actions"

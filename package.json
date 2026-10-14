@@ -1,35 +1,216 @@
 {
   "name": "smarter-manifest",
   "displayName": "Smarter Manifest",
-  "description": "Enhanced support for Smarter YAML manifest files with syntax validation, semantic checking, auto-completion and context sensitive pop up micro help.",
+  "description": "Edit, validate and apply Smarter YAML manifests: schema validation with exact error positions, context-aware completion and hover help, quick fixes, example manifests, and the Smarter cli api's validate, apply, deploy and describe commands.",
   "version": "0.2.0",
   "icon": "images/logo.png",
   "publisher": "Querium",
+  "license": "AGPL-3.0",
   "engines": {
     "vscode": "^1.101.0"
   },
   "categories": [
     "Programming Languages",
-    "Linters"
+    "Linters",
+    "Snippets"
+  ],
+  "keywords": [
+    "smarter",
+    "yaml",
+    "manifest",
+    "llm",
+    "json schema"
   ],
   "activationEvents": [
     "onLanguage:yaml"
   ],
   "main": "./dist/extension.js",
   "contributes": {
+    "commands": [
+      {
+        "command": "smarter.newManifest",
+        "title": "New Manifest...",
+        "category": "Smarter",
+        "icon": "$(new-file)"
+      },
+      {
+        "command": "smarter.validateOnServer",
+        "title": "Validate Manifest on Platform",
+        "category": "Smarter",
+        "icon": "$(check)"
+      },
+      {
+        "command": "smarter.apply",
+        "title": "Apply Manifest",
+        "category": "Smarter",
+        "icon": "$(cloud-upload)"
+      },
+      {
+        "command": "smarter.deploy",
+        "title": "Deploy Resource",
+        "category": "Smarter"
+      },
+      {
+        "command": "smarter.undeploy",
+        "title": "Undeploy Resource",
+        "category": "Smarter"
+      },
+      {
+        "command": "smarter.delete",
+        "title": "Delete Resource",
+        "category": "Smarter"
+      },
+      {
+        "command": "smarter.openResource",
+        "title": "Open Resource from Platform...",
+        "category": "Smarter",
+        "icon": "$(cloud-download)"
+      },
+      {
+        "command": "smarter.openDocs",
+        "title": "Open Documentation for This Kind",
+        "category": "Smarter",
+        "icon": "$(book)"
+      },
+      {
+        "command": "smarter.setApiKey",
+        "title": "Set API Key...",
+        "category": "Smarter",
+        "icon": "$(key)"
+      },
+      {
+        "command": "smarter.clearApiKey",
+        "title": "Remove API Key",
+        "category": "Smarter"
+      },
+      {
+        "command": "smarter.selectPlatform",
+        "title": "Select Platform...",
+        "category": "Smarter"
+      },
+      {
+        "command": "smarter.whoami",
+        "title": "Show Account (whoami)",
+        "category": "Smarter"
+      },
+      {
+        "command": "smarter.reloadSchemas",
+        "title": "Reload Schemas",
+        "category": "Smarter"
+      }
+    ],
+    "menus": {
+      "commandPalette": [
+        {
+          "command": "smarter.validateOnServer",
+          "when": "smarter.isManifest"
+        },
+        {
+          "command": "smarter.apply",
+          "when": "smarter.isManifest"
+        },
+        {
+          "command": "smarter.deploy",
+          "when": "smarter.isManifest"
+        },
+        {
+          "command": "smarter.undeploy",
+          "when": "smarter.isManifest"
+        },
+        {
+          "command": "smarter.delete",
+          "when": "smarter.isManifest"
+        },
+        {
+          "command": "smarter.openDocs",
+          "when": "smarter.isManifest"
+        }
+      ],
+      "editor/title": [
+        {
+          "command": "smarter.apply",
+          "when": "smarter.isManifest",
+          "group": "navigation@1"
+        }
+      ],
+      "editor/context": [
+        {
+          "command": "smarter.validateOnServer",
+          "when": "smarter.isManifest",
+          "group": "smarter@1"
+        },
+        {
+          "command": "smarter.apply",
+          "when": "smarter.isManifest",
+          "group": "smarter@2"
+        },
+        {
+          "command": "smarter.deploy",
+          "when": "smarter.isManifest",
+          "group": "smarter@3"
+        },
+        {
+          "command": "smarter.undeploy",
+          "when": "smarter.isManifest",
+          "group": "smarter@4"
+        }
+      ],
+      "explorer/context": [
+        {
+          "command": "smarter.newManifest",
+          "when": "explorerResourceIsFolder",
+          "group": "navigation@9"
+        }
+      ]
+    },
     "configuration": {
       "type": "object",
-      "title": "Smarter YAML Manifest Settings",
+      "title": "Smarter Manifest",
       "properties": {
-        "yaml.schemas": {
-          "type": "object",
-          "description": "Associate schemas to YAML files.",
-          "default": {}
-        },
         "smarterYaml.rootUrl": {
           "type": "string",
           "default": "https://ubc.smarter.sh",
-          "description": "The root URL for the Smarter platform."
+          "format": "uri",
+          "markdownDescription": "The url of the Smarter platform that the extension reads schemas from, and validates and applies manifests on. For example `https://ubc.smarter.sh`, or `http://localhost:9357` for a local development platform. Each platform has its own API key: see **Smarter: Set API Key**."
+        },
+        "smarterYaml.schemaSource": {
+          "type": "string",
+          "enum": [
+            "platform",
+            "bundled"
+          ],
+          "enumDescriptions": [
+            "Read each kind's JSON Schema from the platform, and fall back to the bundled schema when the platform can't be reached.",
+            "Use only the JSON Schemas bundled with the extension. Works offline."
+          ],
+          "default": "platform",
+          "description": "Where the extension reads the JSON Schemas of the manifest kinds from."
+        },
+        "smarterYaml.validateOnSave": {
+          "type": "boolean",
+          "default": false,
+          "markdownDescription": "When saving a manifest, also validate it on the platform, with the cli api's `validate` command. This is the validation that `apply` does, so it finds errors that the JSON Schema can't, e.g. a field that depends on another. Needs an API key."
+        },
+        "smarterYaml.unknownKeys": {
+          "type": "string",
+          "enum": [
+            "warning",
+            "information",
+            "off"
+          ],
+          "default": "warning",
+          "markdownDescription": "How to report a key that the kind's schema doesn't declare, which is usually a misspelling. The platform ignores most unknown keys, so the manifest still applies, without the setting you meant."
+        },
+        "smarterYaml.codeLens": {
+          "type": "boolean",
+          "default": true,
+          "description": "Show Validate, Apply and Docs links above a manifest's kind."
+        },
+        "smarterYaml.requestTimeout": {
+          "type": "number",
+          "default": 10000,
+          "minimum": 1000,
+          "description": "Timeout of a request to the platform, in milliseconds."
         }
       }
     }
@@ -38,11 +219,20 @@
     "type": "git",
     "url": "https://github.com/smarter-sh/smarter-vscode-yaml.git"
   },
+  "bugs": {
+    "url": "https://github.com/smarter-sh/smarter-vscode-yaml/issues"
+  },
+  "homepage": "https://docs.smarter.sh",
   "scripts": {
-    "build": "tsc -p ./",
-    "watch": "tsc -watch -p ./",
-    "prepublish": "echo 'Prepublish step skipped.'",
-    "start": "npx vscode-debugger --extensionDevelopmentPath=.",
+    "build": "npm run typecheck && node esbuild.mjs --production",
+    "watch": "node esbuild.mjs --watch",
+    "typecheck": "tsc -p ./ --noEmit",
+    "compile-tests": "tsc -p ./tsconfig.test.json",
+    "test": "npm run compile-tests && node --test 'out/test/**/*.test.js'",
+    "test:integration": "npm run build && npm run compile-tests && node out/integration/runTests.js",
+    "contract:sync": "scripts/sync-contracts.sh ../smarter",
+    "contract:types": "npx --yes openapi-typescript@7.13.0 contract/openapi.json -o src/contract/openapi.d.ts",
+    "vscode:prepublish": "npm run build",
     "package": "vsce package"
   },
   "devDependencies": {

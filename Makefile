@@ -27,6 +27,8 @@ help:
 	@echo "Available targets:"
 	@echo "  init	- Install dependencies and prepare the environment"
 	@echo "  test	- Run tests"
+	@echo "  test-integration	- Run the integration tests in VS Code"
+	@echo "  contracts	- Copy the api contract from ../smarter (SMARTER_REF=<git ref> to read a ref)"
 	@echo "  build	- Build the project"
 	@echo "  deploy	- Deploy the project"
 
@@ -50,6 +52,15 @@ init:
 test:
 	@echo "Running tests..."
 	npm test
+
+# Run the integration tests in VS Code
+test-integration:
+	npm run test:integration
+
+# Copy the smarter platform's api contract from ../smarter, and regenerate the api's types
+contracts:
+	scripts/sync-contracts.sh ../smarter $(SMARTER_REF)
+	npm run contract:types
 
 # Build the project
 build:
