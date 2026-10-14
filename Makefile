@@ -38,14 +38,15 @@ analyze:
 # Initialize the project
 init:
 	@echo "Initializing the project..."
-	rm -rf node_modules package-lock.json && \
-	npm install && \
+	rm -rf node_modules && \
+	NODE_ENV=development npm ci && \
 	mkdir -p .pypi_cache && \
 	$(PYTHON) -m venv venv && \
 	$(ACTIVATE_VENV) && \
 	PIP_CACHE_DIR=.pypi_cache $(PIP) install --upgrade pip && \
 	PIP_CACHE_DIR=.pypi_cache $(PIP) install -r requirements/local.txt && \
 	pre-commit install && \
+	pre-commit install --hook-type commit-msg && \
 	pre-commit autoupdate
 
 # Run tests
@@ -74,8 +75,8 @@ change-log:
 # https://marketplace.visualstudio.com/manage/publishers/querium/
 package:
 	@echo "Packaging the project..." && \
-	rm -rf node_modules dist package-lock.json && \
-	npm install && \
+	rm -rf node_modules dist && \
+	NODE_ENV=development npm ci && \
 	npm run build && \
 	npm run package
 
