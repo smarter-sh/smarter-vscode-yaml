@@ -6,6 +6,16 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 
 
 
+## [0.3.0](https://github.com/smarter-sh/smarter-vscode-yaml/compare/v0.2.0...v0.3.0) (2026-10-14)
+
+### Features
+
+* rebuild the extension on the platform's api contract ([72a69bd](https://github.com/smarter-sh/smarter-vscode-yaml/commit/72a69bd3a9e0c7d806cf7811a02be6380d3401a3))
+
+### Bug Fixes
+
+* **build:** commit the lockfile, restore the merged-away dependencies ([a848aac](https://github.com/smarter-sh/smarter-vscode-yaml/commit/a848aacef5bd3a6a1edf5ca12da8c1c17b231014))
+
 ## [0.2.0](https://github.com/smarter-sh/smarter-vscode-yaml/compare/v0.1.1...v0.2.0) (2026-03-16)
 
 ### Features
