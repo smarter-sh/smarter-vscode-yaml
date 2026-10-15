@@ -633,7 +633,7 @@ export interface paths {
         };
         /**
          * An LLMClient
-         * @description An LLMClient, with its functions, plugins, custom domains, api keys and urls. Requires an api key of a superuser: the REST api's views refuse other users with a 403. Other users read their resources with the cli api's get and describe.
+         * @description An LLMClient, with its extensions, plugins, custom domains, api keys and urls. Requires an api key of a superuser: the REST api's views refuse other users with a 403. Other users read their resources with the cli api's get and describe.
          */
         get: operations["llmclient_retrieve"];
         put?: never;
@@ -744,7 +744,7 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
-    "/llm-clients/{id}/functions": {
+    "/llm-clients/{id}/extensions": {
         parameters: {
             query?: never;
             header?: never;
@@ -752,10 +752,10 @@ export interface paths {
             cookie?: never;
         };
         /**
-         * An LLMClient's built-in functions
-         * @description The built-in functions of an LLMClient. Requires an api key of a superuser: the REST api's views refuse other users with a 403. Other users read their resources with the cli api's get and describe.
+         * An LLMClient's extensions
+         * @description The extensions whose tools an LLMClient offers the LLM. Requires an api key of a superuser: the REST api's views refuse other users with a 403. Other users read their resources with the cli api's get and describe.
          */
-        get: operations["llmclient_function_list"];
+        get: operations["llmclient_extension_list"];
         put?: never;
         post?: never;
         delete?: never;
@@ -764,7 +764,7 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
-    "/llm-clients/{id}/functions/{function_id}": {
+    "/llm-clients/{id}/extensions/{extension_id}": {
         parameters: {
             query?: never;
             header?: never;
@@ -772,10 +772,10 @@ export interface paths {
             cookie?: never;
         };
         /**
-         * A built-in function of an LLMClient
-         * @description A built-in function of an LLMClient, by the LLMClientFunctions' id. Requires an api key of a superuser: the REST api's views refuse other users with a 403. Other users read their resources with the cli api's get and describe.
+         * An extension of an LLMClient
+         * @description An extension of an LLMClient, by the LLMClientExtensions' id. Requires an api key of a superuser: the REST api's views refuse other users with a 403. Other users read their resources with the cli api's get and describe.
          */
-        get: operations["llmclient_function_retrieve"];
+        get: operations["llmclient_extension_retrieve"];
         put?: never;
         post?: never;
         delete?: never;
@@ -3548,10 +3548,10 @@ export interface components {
             version: string | null;
         };
         /**
-         * LLMClientApiFunction
-         * @description A built-in function of an LLMClient: a :class:`smarter.apps.llmclient.models.LLMClientFunctions`.
+         * LLMClientApiExtension
+         * @description An extension of an LLMClient: a :class:`smarter.apps.llmclient.models.LLMClientExtensions`.
          */
-        LLMClientApiFunction: {
+        LLMClientApiExtension: {
             /**
              * Createdat
              * @description TimestampedModel.created_at.
@@ -3559,21 +3559,25 @@ export interface components {
              */
             createdAt: string | null;
             /**
+             * Extension
+             * @description LLMClientExtensions.extension: the Extension's id.
+             */
+            extension: number;
+            /**
              * Id
              * @description The row's primary key.
              */
             id: number;
             /**
              * Llmclient
-             * @description LLMClientFunctions.llmclient: the LLMClient's id.
+             * @description LLMClientExtensions.llmclient: the LLMClient's id.
              */
             llmclient: number;
             /**
              * Name
-             * @description LLMClientFunctions.name.
-             * @default null
+             * @description The extension's slug, e.g. weather.
              */
-            name: ("get_current_weather" | "date_calculator" | "calculator") | null;
+            name: string;
             /**
              * Updatedat
              * @description TimestampedModel.updated_at.
@@ -3635,7 +3639,7 @@ export interface components {
          * LLMClientApiLLMClient
          * @description An LLMClient: a :class:`smarter.apps.llmclient.models.LLMClient`, with its related rows and its urls.
          *
-         *     Its ``functions``, ``plugins``, ``custom_domains`` and ``api_keys`` are inline, and its urls and
+         *     Its ``extensions``, ``plugins``, ``custom_domains`` and ``api_keys`` are inline, and its urls and
          *     hosts are computed, as the LLMClient's properties compute them for the platform that serves the
          *     request.
          */
@@ -3803,10 +3807,10 @@ export interface components {
              */
             dnsVerificationStatus: ("Verifying" | "Not Verified" | "Verified" | "Failed") | null;
             /**
-             * Functions
-             * @description The LLMClient's built-in functions.
+             * Extensions
+             * @description The LLMClient's extensions.
              */
-            functions: components["schemas"]["LLMClientApiFunction"][];
+            extensions: components["schemas"]["LLMClientApiExtension"][];
             /**
              * Guardrails
              * @description The LLMClient's guardrails.
@@ -3910,7 +3914,7 @@ export interface components {
             tlsCertificateIssuanceStatus: ("No Certificate" | "Requested" | "Issued" | "Failed") | null;
             /**
              * Tools
-             * @description Everything that the LLMClient adds to a prompt: its functions, plugins, MCPClients and guardrails, in that order.
+             * @description Everything that the LLMClient adds to a prompt: its extensions, plugins, MCPClients and guardrails, in that order.
              */
             tools: components["schemas"]["LLMClientApiTool"][];
             /**
@@ -4016,23 +4020,23 @@ export interface components {
         };
         /**
          * LLMClientApiTool
-         * @description Something that an LLMClient adds to a prompt: a function, plugin, MCPClient or guardrail.
+         * @description Something that an LLMClient adds to a prompt: an extension, plugin, MCPClient or guardrail.
          */
         LLMClientApiTool: {
             /**
              * Id
-             * @description The link row's id: LLMClientFunctions, LLMClientPlugin, ... .id.
+             * @description The link row's id: LLMClientExtensions, LLMClientPlugin, ... .id.
              */
             id: number;
             /**
              * Kind
-             * @description Function, or the linked resource's manifest kind.
+             * @description Extension, or the linked resource's manifest kind.
              * @enum {string}
              */
-            kind: "Function" | "Plugin" | "MCPClient" | "Guardrail";
+            kind: "Extension" | "Plugin" | "MCPClient" | "Guardrail";
             /**
              * Name
-             * @description The function's or the linked resource's name.
+             * @description The extension's slug, or the linked resource's name.
              */
             name: string;
         };
@@ -5509,7 +5513,7 @@ export interface components {
              */
             debug_mode: boolean;
             /** @default null */
-            functions: components["schemas"]["PromptChatApiFunctionList"] | null;
+            extensions: components["schemas"]["PromptChatApiExtensionList"] | null;
             history: components["schemas"]["PromptChatApiHistory"];
             llmclient: components["schemas"]["PromptChatApiLLMClient"];
             meta_data: components["schemas"]["PromptChatApiMetaData"];
@@ -5597,6 +5601,19 @@ export interface components {
             [key: string]: unknown;
         };
         /**
+         * PromptChatApiExtensionList
+         * @description The LLMClient's extensions.
+         *
+         *     The list itself is returned only in the complete configuration.
+         */
+        PromptChatApiExtensionList: {
+            /** Extensions */
+            extensions?: components["schemas"]["PromptChatApiLLMClientExtension"][];
+            meta_data: components["schemas"]["PromptChatApiListMetaData"];
+        } & {
+            [key: string]: unknown;
+        };
+        /**
          * PromptChatApiFilePart
          * @description A message's file part.
          */
@@ -5645,19 +5662,6 @@ export interface components {
             arguments: string;
             /** Name */
             name: string;
-        } & {
-            [key: string]: unknown;
-        };
-        /**
-         * PromptChatApiFunctionList
-         * @description The LLMClient's built-in functions.
-         *
-         *     The list itself is returned only in the complete configuration.
-         */
-        PromptChatApiFunctionList: {
-            /** Functions */
-            functions?: components["schemas"]["PromptChatApiLLMClientFunction"][];
-            meta_data: components["schemas"]["PromptChatApiListMetaData"];
         } & {
             [key: string]: unknown;
         };
@@ -5842,10 +5846,10 @@ export interface components {
             [key: string]: unknown;
         };
         /**
-         * PromptChatApiLLMClientFunction
-         * @description A built-in function of the LLMClient: a :class:`smarter.apps.llmclient.models.LLMClientFunctions`.
+         * PromptChatApiLLMClientExtension
+         * @description An extension of the LLMClient: a :class:`smarter.apps.llmclient.models.LLMClientExtensions`.
          */
-        PromptChatApiLLMClientFunction: {
+        PromptChatApiLLMClientExtension: {
             /**
              * Created At
              * @description TimestampedModel.created_at.
@@ -5853,27 +5857,42 @@ export interface components {
              */
             created_at: string | null;
             /**
+             * Enabled
+             * @description Whether the Extension is enabled, so that its tools are offered.
+             */
+            enabled: boolean;
+            /**
+             * Extension
+             * @description LLMClientExtensions.extension: the Extension's id.
+             */
+            extension: number;
+            /**
              * Id
              * @description The row's primary key.
              */
             id: number;
             /**
              * Llmclient
-             * @description LLMClientFunctions.llmclient: the LLMClient's id.
+             * @description LLMClientExtensions.llmclient: the LLMClient's id.
              */
             llmclient: number;
             /**
              * Name
-             * @description LLMClientFunctions.name.
-             * @default null
+             * @description The Extension's slug, e.g. weather.
              */
-            name: ("get_current_weather" | "date_calculator" | "calculator") | null;
+            name: string;
             /**
              * Updated At
              * @description TimestampedModel.updated_at.
              * @default null
              */
             updated_at: string | null;
+            /**
+             * Version
+             * @description The Extension's installed version, e.g. 1.0.0.
+             * @default null
+             */
+            version: string | null;
         };
         /**
          * PromptChatApiLLMClientPlugin
@@ -5977,24 +5996,24 @@ export interface components {
         };
         /**
          * PromptChatApiListMetaData
-         * @description The counts of a list of the LLMClient's plugins or functions.
+         * @description The counts of a list of the LLMClient's plugins or extensions.
          */
         PromptChatApiListMetaData: {
             /**
-             * Functions Returned
+             * Extensions Returned
              * @default null
              */
-            functions_returned: number | null;
+            extensions_returned: number | null;
             /**
              * Plugins Returned
              * @default null
              */
             plugins_returned: number | null;
             /**
-             * Total Functions
+             * Total Extensions
              * @default null
              */
-            total_functions: number | null;
+            total_extensions: number | null;
             /**
              * Total Plugins
              * @default null
@@ -8559,11 +8578,11 @@ export interface components {
             /** @description LLMClient.spec.config[object]. The configuration for the LLMClient. */
             config: components["schemas"]["SAMLLMClientSpecConfig"];
             /**
-             * Functions
-             * @description LLMClient.spec.functions[list]. Optional. The built-in Smarter Functions to add to the LLMClient. Example: ['get_current_weather']. These are built-in backing functions written in Python that are fully compatible with OpenAI API-compatible function calling. These are not the same as OpenAI functions. See https://docs.smarter.sh/ for more information.
+             * Extensions
+             * @description LLMClient.spec.extensions[list]. Optional. The slugs of the Extensions whose tools the LLMClient offers the LLM. Example: ['weather', 'calculator']. Extensions are Python packages that a platform administrator installs; each must be installed, enabled and available to your account. See https://docs.smarter.sh/ for more information.
              * @default null
              */
-            functions: string[] | null;
+            extensions: string[] | null;
             /**
              * Guardrails
              * @description LLMClient.spec.guardrails[list]. Optional. The names of the Guardrails that protect the LLMClient's prompts. Example: ['pii_redaction_input', 'prompt_injection_keyword_input']. Each must be a Guardrail that you own, or that is shared with you, such as Smarter's built-in guardrails. Input guardrails run on the user's message before it is sent to the LLM, and output guardrails on the LLM's reply before it is returned to the user, in order of their priority. Experimental.
@@ -8680,7 +8699,7 @@ export interface components {
              * Defaultsystemrole
              * @description LLMClient.spec.configuration.prompt.default_system_role[str]. Optional. The default system prompt to use for the llmclient. This defaults to the following value:
              *     You are a helpful llmclient. When given the opportunity to utilize function calling, you should always do so. This will allow you to provide the best possible responses to the user. If you are unable to provide a response, you should prompt the user for more information. If you are still unable to provide a response, you should inform the user that you are unable to help them at this time..
-             *     The system prompt is the first message in the conversation and is used to set the context for the llmclient. It is important to keep this prompt short, as it is included in the token count for each message. The maximum length of the system prompt is 2048 characters.
+             *     The system prompt is the first message in the conversation and is used to set the context for the llmclient. It is sent with every prompt, so its tokens count towards every turn's cost. The maximum length of the system prompt is 32768 characters.
              * @default null
              */
             defaultSystemRole: string | null;
@@ -8913,14 +8932,17 @@ export interface components {
         };
         /**
          * SAMLLMClientStylesButtons
-         * @description ``spec.config.styles.buttons``: the send and attach buttons, and the header's buttons.
+         * @description ``spec.config.styles.buttons``: the send and attach buttons, on the message input.
+         *
+         *     The header's buttons take the header's text color, ``conversationHeader.color``, so that
+         *     they contrast with the header, whose background is usually the opposite of the input's.
          *
          *     chatscope's ``Button``, class ``.cs-button``.
          */
         SAMLLMClientStylesButtons: {
             /**
              * Color
-             * @description LLMClient.styles.buttons.color[str]. Optional. The color of the buttons' icons. chatscope's $button-color. Example: '#6ea9d7'.
+             * @description LLMClient.styles.buttons.color[str]. Optional. The color of the send and attach buttons' icons, on the message input. The header's buttons use conversationHeader.color, or this color if it is not set. chatscope's $button-color. Example: '#6ea9d7'.
              * @default null
              */
             color: string | null;
@@ -8947,7 +8969,7 @@ export interface components {
             borderColor: string | null;
             /**
              * Color
-             * @description LLMClient.styles.conversationHeader.color[str]. Optional. The color of the LLMClient's name. chatscope's $conversation-header-user-name-color. Example: '#ffffff'.
+             * @description LLMClient.styles.conversationHeader.color[str]. Optional. The color of the LLMClient's name, and of the header's buttons: new chat, show or hide the Console, sandbox or production, and Docs. Choose a color that contrasts with backgroundColor. chatscope's $conversation-header-user-name-color. Example: '#ffffff'.
              * @default null
              */
             color: string | null;
@@ -10427,7 +10449,7 @@ export interface components {
             provider: string;
             /**
              * Systemrole
-             * @description Plugin.spec.prompt.systemRole[str]. Required. The system role that the Plugin will use for the LLM text completion prompt. Be verbose and specific. Ensure that systemRole accurately conveys to the LLM how you want it to use the Plugin data that is returned.
+             * @description Plugin.spec.prompt.systemRole[str]. Required. The system role that the Plugin will use for the LLM text completion prompt. Be verbose and specific. Ensure that systemRole accurately conveys to the LLM how you want it to use the Plugin data that is returned. The maximum length is 32768 characters.
              */
             systemRole: string;
             /**
@@ -11543,7 +11565,7 @@ export interface components {
         };
         /**
          * SAMUserSpec
-         * @description Smarter API User Manifest User.spec
+         * @description Smarter API User Manifest User.spec.
          */
         SAMUserSpec: {
             /** @description User.spec.config[object]. The configuration for the User. */
@@ -11551,7 +11573,7 @@ export interface components {
         };
         /**
          * SAMUserSpecConfig
-         * @description Smarter API User Manifest User.spec.config
+         * @description Smarter API User Manifest User.spec.config.
          */
         SAMUserSpecConfig: {
             /**
@@ -14467,7 +14489,7 @@ export interface operations {
             };
         };
     };
-    llmclient_function_list: {
+    llmclient_extension_list: {
         parameters: {
             query?: never;
             header?: never;
@@ -14485,7 +14507,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["LLMClientApiFunction"][];
+                    "application/json": components["schemas"]["LLMClientApiExtension"][];
                 };
             };
             /** @description An error, e.g. 404 for a row that does not exist, or 403 for a user who is not a superuser. */
@@ -14499,15 +14521,15 @@ export interface operations {
             };
         };
     };
-    llmclient_function_retrieve: {
+    llmclient_extension_retrieve: {
         parameters: {
             query?: never;
             header?: never;
             path: {
                 /** @description The LLMClient's numeric id. */
                 id: number;
-                /** @description The LLMClientFunctions' id. */
-                function_id: number;
+                /** @description The LLMClientExtensions' id. */
+                extension_id: number;
             };
             cookie?: never;
         };
@@ -14519,7 +14541,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["LLMClientApiFunction"];
+                    "application/json": components["schemas"]["LLMClientApiExtension"];
                 };
             };
             /** @description An error, e.g. 404 for a row that does not exist, or 403 for a user who is not a superuser. */
