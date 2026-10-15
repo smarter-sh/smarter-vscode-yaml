@@ -191,6 +191,7 @@ Copy the nearest existing example of each; they are consistent.
 | Lint, format, pre-commit                                       | `smarter-code-quality`    |
 | Writing a commit message                                       | `smarter-git-commits`     |
 | The monthly sync with the platform, and the dependency update  | `monthly-maintenance`     |
+| A platform contract change to follow now, between maintenances | `smarter-contract-sync` |
 
 When a task leads into the platform itself, e.g. to fix a bug that the extension
 found, load the platform's skills from `../smarter/skills/`, starting with

@@ -56,6 +56,6 @@ spec:
     defaultTemperature: 1
     provider: openai
     subdomain: null
-  functions: []
+  extensions: []
   plugins: []
 status:

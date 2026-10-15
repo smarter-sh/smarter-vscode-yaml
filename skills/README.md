@@ -37,6 +37,7 @@ and which narrower skill to load for each kind of task.
 | `smarter-code-quality`       | You're about to finish a change, and need to typecheck, format and run the hooks.   |
 | `smarter-git-commits`        | You've been asked to write a commit message.                                        |
 | `monthly-maintenance`        | It's time to follow the platform, and update the dependencies.                      |
+| `smarter-contract-sync` | The platform's api contract changed, and this repository's copy must follow it now. |
 
 The bundled scripts are ordinary scripts that you can run yourself from the
 repository root:

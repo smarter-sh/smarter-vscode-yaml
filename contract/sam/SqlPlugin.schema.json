@@ -239,7 +239,8 @@
           "type": "string"
         },
         "systemRole": {
-          "description": "Plugin.spec.prompt.systemRole[str]. Required. The system role that the Plugin will use for the LLM text completion prompt. Be verbose and specific. Ensure that systemRole accurately conveys to the LLM how you want it to use the Plugin data that is returned.",
+          "description": "Plugin.spec.prompt.systemRole[str]. Required. The system role that the Plugin will use for the LLM text completion prompt. Be verbose and specific. Ensure that systemRole accurately conveys to the LLM how you want it to use the Plugin data that is returned. The maximum length is 32768 characters.",
+          "maxLength": 32768,
           "title": "Systemrole",
           "type": "string"
         },
@@ -347,7 +348,7 @@
       "type": "object"
     },
     "SAMSqlPluginSpec": {
-      "description": "Smarter API SqlData Connection Manifest SqlConnection.spec",
+      "description": "Smarter API SqlData Connection Manifest SqlConnection.spec.",
       "properties": {
         "connection": {
           "description": "SqlPlugin.spec.selector[obj]: the name of an existing SqlConnector to use for the SqlPlugin",
@@ -458,7 +459,7 @@
       "type": "object"
     }
   },
-  "description": "Smarter API Manifest - Sql Connection Model",
+  "description": "Smarter API Manifest - Sql Connection Model.",
   "properties": {
     "apiVersion": {
       "description": "apiVersion[String]: Required. The API version of the AbstractSAMBase.",
