@@ -1999,8 +1999,14 @@ export interface components {
              */
             name: string;
             /**
+             * Profileimage
+             * @description UserProfile.profile_image: the url of the image that the user uploaded, which takes precedence.
+             * @default null
+             */
+            profileImage: string | null;
+            /**
              * Profileimageurl
-             * @description UserProfile.profile_image_url.
+             * @description UserProfile.profile_image_url: the image that the oauth provider supplied.
              * @default null
              */
             profileImageUrl: string | null;
@@ -4675,6 +4681,17 @@ export interface components {
              */
             count: number;
             /**
+             * Filter
+             * @description The named filter that narrows the list, e.g. pending, or an empty string for none.
+             * @default
+             */
+            filter: string;
+            /**
+             * Filters
+             * @description The named filters that the list offers.
+             */
+            filters?: string[];
+            /**
              * Numpages
              * @description The number of pages.
              */
@@ -5604,7 +5621,7 @@ export interface components {
          * PromptChatApiExtensionList
          * @description The LLMClient's extensions.
          *
-         *     The list itself is returned only in the complete configuration.
+         *     The list itself is returned only in the complete configuration, with ``?verbose=true``.
          */
         PromptChatApiExtensionList: {
             /** Extensions */
@@ -5669,7 +5686,8 @@ export interface components {
          * PromptChatApiHistory
          * @description The chat session's history, in version 2.
          *
-         *     Only ``chat_history`` is public.
+         *     Only ``chat_history`` is public. ``prompt_tool_call_history`` is in the complete configuration with
+         *     ``?verbose=true``, and the other histories are returned only to the cli.
          */
         PromptChatApiHistory: {
             /**
@@ -5832,6 +5850,12 @@ export interface components {
              * @default null
              */
             styles: components["schemas"]["PromptChatApiStyles"] | null;
+            /**
+             * Total Tools
+             * @description The number of the LLMClient's extensions, plugins and MCPClients.
+             * @default null
+             */
+            total_tools: number | null;
             /**
              * Url Llmclient
              * @description The url of the LLMClient's prompt api.
@@ -6065,8 +6089,22 @@ export interface components {
         /**
          * PromptChatApiMetaData
          * @description The LLMClient's state.
+         *
+         *     The complete configuration, with ``?verbose=true``, adds the rest of ``LLMClientHelper.to_json()``.
          */
         PromptChatApiMetaData: {
+            /**
+             * Is Authentication Required
+             * @description True if the LLMClient requires a Smarter api key, or a logged-in user.
+             * @default null
+             */
+            is_authentication_required: boolean | null;
+            /**
+             * Is Custom Domain
+             * @description True if the request's host is a custom domain.
+             * @default null
+             */
+            is_custom_domain: boolean | null;
             /**
              * Is Deployed
              * @default null
@@ -6089,7 +6127,7 @@ export interface components {
          * PromptChatApiPluginList
          * @description The LLMClient's plugins.
          *
-         *     The list itself is returned only in the complete configuration.
+         *     The list itself is returned only in the complete configuration, with ``?verbose=true``.
          */
         PromptChatApiPluginList: {
             meta_data: components["schemas"]["PromptChatApiListMetaData"];
@@ -14386,6 +14424,8 @@ export interface operations {
             query?: {
                 /** @description The chat session's key. The platform looks for it in this parameter, then in the request body, a header and a cookie, in that order. */
                 session_key?: string;
+                /** @description true adds the configuration's diagnostic parts: the session's tool calls (history.prompt_tool_call_history), the complete meta_data, and the lists of the LLMClient's plugins and extensions. Without it, the configuration has what a chat needs, and the counts of the plugins and extensions. A deployed LLMClient's own host ignores it. */
+                verbose?: boolean;
             };
             header?: {
                 /** @description A comma-separated list of the client's capabilities. chat-contract-v2 asks for version 2 of the Smarter Chat api contract, which this document describes, and which is also the default. chat-contract-v1 asks for the deprecated version 1. */
