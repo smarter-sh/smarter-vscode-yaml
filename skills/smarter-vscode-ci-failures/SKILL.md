@@ -52,10 +52,15 @@ request) has one job, `test`, on ubuntu-latest with **node 22**. Its steps:
 | Integration tests | `xvfb-run -a npm run test:integration` | A VS Code layer test failed, or VS Code failed to download or start (flaky: check before changing code).  |
 | Package           | `npx vsce package`                     | vsce refused: `@types/vscode` newer than `engines.vscode`, a missing README field, or an unexpected file. |
 
-The other workflows (`mergeMain.yml`, `semanticVersionBump.yml`,
-`precommitVersionBumps.yml`, `publish.yml`) release, version and publish. Read
-their failures, but don't re-run them: publishing is a manual workflow
-(`CLAUDE.md`).
+The other workflows (`mergeMain.yml`, `precommitVersionBumps.yml`,
+`publish.yml`) release, version and publish. Read their failures, but don't
+re-run them: publishing is a manual workflow (`CLAUDE.md`).
+
+`mergeMain.yml` runs semantic-release, which alone sets the version in
+`package.json` (its prepare step). If its log says "The local branch main is
+behind the remote one, therefore a new version won't be published", another
+push landed on main while it ran; the next push to main releases the skipped
+commits.
 
 ## 3. Is it new? Reproduce it
 
