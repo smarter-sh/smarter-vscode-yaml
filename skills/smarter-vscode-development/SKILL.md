@@ -24,7 +24,7 @@ the same things in the browser.
 | ------------------------------- | ------------------------------------------------------------------------------------------ |
 | `src/extension.ts`              | `activate()`: creates the services and registers everything with VS Code                   |
 | `src/core/`                     | **No `vscode` import.** Everything that can be unit tested in Node (ADR-005)               |
-| `src/core/yamlDoc.ts`           | Parsing (PyYAML parity), offsets ↔ paths, the completion context                          |
+| `src/core/yamlDoc.ts`           | Parsing (PyYAML parity), offsets ↔ paths, the completion context                           |
 | `src/core/schema.ts`            | Navigating a kind's JSON Schema: `$ref`, `anyOf`, properties at a path, hover markdown     |
 | `src/core/validate.ts`          | `validateText()`: Ajv 2020 errors grouped into `Problem`s, unknown keys, quick fix data    |
 | `src/core/completion.ts`        | Key and value suggestions, as snippet text                                                 |
@@ -182,16 +182,18 @@ Copy the nearest existing example of each; they are consistent.
 
 ## Which skill to load
 
-| Task                                                           | Skill                     |
-| -------------------------------------------------------------- | ------------------------- |
-| Unit, integration or corpus tests                              | `smarter-vscode-testing`  |
-| The platform's contract changed, a new kind, regenerated types | `smarter-vscode-contract` |
-| README, the platform's docs page, ADRs                         | `smarter-vscode-docs`     |
-| Probing the platform's cli api by hand                         | `smarter-api-testing`     |
-| Lint, format, pre-commit                                       | `smarter-code-quality`    |
-| Writing a commit message                                       | `smarter-git-commits`     |
-| The monthly sync with the platform, and the dependency update  | `monthly-maintenance`     |
-| A platform contract change to follow now, between maintenances | `smarter-contract-sync` |
+| Task                                                           | Skill                          |
+| -------------------------------------------------------------- | ------------------------------ |
+| Unit, integration or corpus tests                              | `smarter-vscode-testing`       |
+| The platform's contract changed, a new kind, regenerated types | `smarter-vscode-contract`      |
+| README, the platform's docs page, ADRs                         | `smarter-vscode-docs`          |
+| Probing the platform's cli api by hand                         | `smarter-api-testing`          |
+| Lint, format, pre-commit                                       | `smarter-code-quality`         |
+| Writing a commit message                                       | `smarter-git-commits`          |
+| The monthly sync with the platform, and the dependency update  | `monthly-maintenance`          |
+| A platform contract change to follow now, between maintenances | `smarter-contract-sync`        |
+| A failed GitHub Actions run, check or Dependabot pull request  | `smarter-vscode-ci-failures`   |
+| Reading the platform, the cli, an SDK or a manifest repository | `smarter-project-repositories` |
 
 When a task leads into the platform itself, e.g. to fix a bug that the extension
 found, load the platform's skills from `../smarter/skills/`, starting with

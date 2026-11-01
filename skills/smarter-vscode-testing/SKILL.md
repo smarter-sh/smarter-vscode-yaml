@@ -79,7 +79,12 @@ Read every line, grouped by code. A problem is either:
 - **a real defect in the manifest**: a deliberately invalid test fixture
   (`*-bad*.yaml`, `*-invalid.yaml`), or a real bug in the platform's data or
   docs, which you report in your summary, or
-- **a false positive**, which you fix here, with a unit test.
+- **a false positive**, which you fix here, with a unit test, or
+- **a stale bundled contract**: the same problem on many manifests that the
+  platform accepts, e.g. every `metadata.annotations` written as a mapping
+  flagged "Must be array or null". The platform changed a schema after the last
+  sync. Compare `contract/sam/` with the platform's latest release, and sync it
+  (`smarter-contract-sync`) rather than changing the validator.
 
 When unsure, ask the platform: validate the file with
 `POST /api/v1/cli/validate/` (`smarter-api-testing`), or parse it with PyYAML.
