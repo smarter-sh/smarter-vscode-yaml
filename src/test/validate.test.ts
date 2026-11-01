@@ -129,9 +129,13 @@ describe("validateText", () => {
   });
 
   it("doesn't report the keys of a free-form mapping, e.g. annotations", async () => {
-    const text = SECRET.replace(
-      "metadata:\n",
-      "metadata:\n  annotations:\n    - smarter.sh/anything: goes\n",
+    // the example writes annotations in the contract's own form (a list of
+    // mappings before smarter v0.40.4, a mapping since), so rename a key there.
+    const example = exampleYaml("Secret");
+    assert.ok(example.includes("smarter.sh/created-by:"), example);
+    const text = example.replace(
+      "smarter.sh/created-by:",
+      "smarter.sh/anything:",
     );
     assert.deepEqual(await validate(text), []);
   });
