@@ -1776,9 +1776,7 @@ export interface components {
              * @default null
              */
             annotations: {
-                [key: string]: components["schemas"]["JsonValue"];
-            }[] | {
-                [key: string]: components["schemas"]["JsonValue"];
+                [key: string]: string;
             } | null;
             /**
              * City
@@ -1962,9 +1960,7 @@ export interface components {
              * @default null
              */
             annotations: {
-                [key: string]: components["schemas"]["JsonValue"];
-            }[] | {
-                [key: string]: components["schemas"]["JsonValue"];
+                [key: string]: string;
             } | null;
             /**
              * Createdat
@@ -3159,9 +3155,7 @@ export interface components {
              * @default null
              */
             annotations: {
-                [key: string]: components["schemas"]["JsonValue"];
-            }[] | {
-                [key: string]: components["schemas"]["JsonValue"];
+                [key: string]: string;
             } | null;
             /**
              * Candelete
@@ -3194,6 +3188,12 @@ export interface components {
              * @default null
              */
             description: string | null;
+            /**
+             * Detailurl
+             * @description The url of the Guardrail's detail in the web console: its manifest, the resources that it uses, and those that use it.
+             * @default null
+             */
+            detailUrl: string | null;
             /**
              * Failclosed
              * @description Whether an error of the Guardrail blocks the text.
@@ -3482,9 +3482,7 @@ export interface components {
              * @default null
              */
             annotations: {
-                [key: string]: components["schemas"]["JsonValue"];
-            }[] | {
-                [key: string]: components["schemas"]["JsonValue"];
+                [key: string]: string;
             } | null;
             /**
              * Awshostedzoneid
@@ -3661,9 +3659,7 @@ export interface components {
              * @default null
              */
             annotations: {
-                [key: string]: components["schemas"]["JsonValue"];
-            }[] | {
-                [key: string]: components["schemas"]["JsonValue"];
+                [key: string]: string;
             } | null;
             /**
              * Apikeys
@@ -3806,6 +3802,12 @@ export interface components {
              * @default null
              */
             description: string | null;
+            /**
+             * Detailurl
+             * @description The url of the LLMClient's detail in the web console: its manifest, the resources that it uses, and those that use it.
+             * @default null
+             */
+            detailUrl: string | null;
             /**
              * Dnsverificationstatus
              * @description LLMClient.dns_verification_status.
@@ -4163,9 +4165,7 @@ export interface components {
              * @default null
              */
             annotations: {
-                [key: string]: components["schemas"]["JsonValue"];
-            }[] | {
-                [key: string]: components["schemas"]["JsonValue"];
+                [key: string]: string;
             } | null;
             /**
              * Apiformat
@@ -4219,6 +4219,12 @@ export interface components {
              * @default null
              */
             description: string | null;
+            /**
+             * Detailurl
+             * @description The url of the LLMHost's detail in the web console: its manifest, the resources that it uses, and those that use it.
+             * @default null
+             */
+            detailUrl: string | null;
             /**
              * Embeddingdimensions
              * @description An embedding model's dimensions.
@@ -4676,6 +4682,17 @@ export interface components {
          */
         ListViewPagination: {
             /**
+             * Annotationerror
+             * @description Why the annotation selector is invalid, in which case it is not applied, or an empty string.
+             * @default
+             */
+            annotationError: string;
+            /**
+             * Annotations
+             * @description The annotation selector's requirements that every resource matches, e.g. acme.com/crm-id=A-1.
+             */
+            annotations?: string[];
+            /**
              * Count
              * @description The number of resources that match the search, on every page.
              */
@@ -4723,6 +4740,11 @@ export interface components {
              * @description The columns that the list may be sorted by.
              */
             sortFields?: string[];
+            /**
+             * Tags
+             * @description The tags that every resource of the list has, e.g. production.
+             */
+            tags?: string[];
         };
         /** @description An error: a failed connection to the MCP server, with the MCPClient's connection status, or another error, e.g. a 404 for an MCPClient that the user may not read. */
         MCPClientApiErrorResponse: components["schemas"]["MCPClientApiStatusError"] | components["schemas"]["RestApiErrorResponse"];
@@ -4751,9 +4773,7 @@ export interface components {
              * @default null
              */
             annotations: {
-                [key: string]: components["schemas"]["JsonValue"];
-            }[] | {
-                [key: string]: components["schemas"]["JsonValue"];
+                [key: string]: string;
             } | null;
             /**
              * Apikeyheader
@@ -4800,6 +4820,12 @@ export interface components {
              * @default null
              */
             description: string | null;
+            /**
+             * Detailurl
+             * @description The url of the MCPClient's detail in the web console: its manifest, the resources that it uses, and those that use it.
+             * @default null
+             */
+            detailUrl: string | null;
             /**
              * Endpointurl
              * @description The url of the MCP server's endpoint.
@@ -5188,9 +5214,7 @@ export interface components {
              * @default null
              */
             annotations: {
-                [key: string]: components["schemas"]["JsonValue"];
-            }[] | {
-                [key: string]: components["schemas"]["JsonValue"];
+                [key: string]: string;
             } | null;
             /**
              * Candelete
@@ -5209,6 +5233,12 @@ export interface components {
              * @default null
              */
             description: string | null;
+            /**
+             * Detailurl
+             * @description The url of the Orchestrator's detail in the web console: its manifest, the resources that it uses, and those that use it.
+             * @default null
+             */
+            detailUrl: string | null;
             /**
              * Hashedid
              * @description The Orchestrator's hashed id, e.g. rMTAwMDAwMQx, which its urls use.
@@ -5349,9 +5379,7 @@ export interface components {
              * @default null
              */
             annotations: {
-                [key: string]: components["schemas"]["JsonValue"];
-            }[] | {
-                [key: string]: components["schemas"]["JsonValue"];
+                [key: string]: string;
             } | null;
             /**
              * Candelete
@@ -5370,6 +5398,12 @@ export interface components {
              * @default null
              */
             description: string | null;
+            /**
+             * Detailurl
+             * @description The url of the plugin's detail in the web console: its manifest, the resources that it uses, and those that use it.
+             * @default null
+             */
+            detailUrl: string | null;
             /**
              * Id
              * @description The row's primary key.
@@ -6145,13 +6179,11 @@ export interface components {
         PromptChatApiPluginMeta: {
             /**
              * Annotations
-             * @description MetaDataModel.annotations: a list of key-value pairs, or, in legacy rows, an object.
+             * @description MetaDataModel.annotations: a map of keys to string values, as in Kubernetes.
              * @default null
              */
             annotations: {
-                [key: string]: components["schemas"]["JsonValue"];
-            }[] | {
-                [key: string]: components["schemas"]["JsonValue"];
+                [key: string]: string;
             } | null;
             /**
              * Created At
@@ -6742,9 +6774,7 @@ export interface components {
              * @default null
              */
             annotations: {
-                [key: string]: components["schemas"]["JsonValue"];
-            }[] | {
-                [key: string]: components["schemas"]["JsonValue"];
+                [key: string]: string;
             } | null;
             /**
              * Created At
@@ -6954,9 +6984,7 @@ export interface components {
              * @default null
              */
             annotations: {
-                [key: string]: components["schemas"]["JsonValue"];
-            }[] | {
-                [key: string]: components["schemas"]["JsonValue"];
+                [key: string]: string;
             } | null;
             /**
              * @description The Secret of its api key, never the key.
@@ -7008,6 +7036,12 @@ export interface components {
              * @default null
              */
             description: string | null;
+            /**
+             * Detailurl
+             * @description The url of the Provider's detail in the web console: its manifest, the resources that it uses, and those that use it.
+             * @default null
+             */
+            detailUrl: string | null;
             /**
              * Docsurl
              * @default null
@@ -7256,17 +7290,15 @@ export interface components {
             accountNumber: string | null;
             /**
              * Annotations
-             * @description The manifest annotations. Used for storing arbitrary metadata as
-             *                 key-value pairs. Example: [{'smarter.sh/test-manifest/project-name': 'Scooby dooby do'}]. The
-             *                 key should be a valid url-friendly string. The value accepts
-             *                 multi-line string values (YAML block scalars) and various scalar types including
-             *                 str, int, float, bool, datetime.date, datetime.datetime, decimal.Decimal, uuid.UUID, bytes, list, dict.
+             * @description Annotations, as in Kubernetes: a map of keys to string values that clients and integrations attach to a resource for their own purposes, e.g. to associate it with a resource in another system. A key is an optional DNS-subdomain prefix that names its owner, then a slash and a name of one or more slash-separated segments, e.g. 'acme.com/crm-account-id'. The prefix 'smarter.sh' and its subdomains are reserved for the Smarter platform. Values are strings: unquoted YAML scalars such as true, 42 or dates are converted to strings, and structured data belongs in a JSON string. All annotations together are limited to 256 KiB. The list of one-key maps of older manifests, e.g. [{'acme.com/crm-account-id': 'A-10042'}], is also accepted.
+             * @example {
+             *       "acme.com/crm-account-id": "A-10042",
+             *       "smarter.sh/llmclient/use-case": "customer support"
+             *     }
              */
             annotations?: {
-                [key: string]: string | number | boolean | unknown[] | {
-                    [key: string]: unknown;
-                };
-            }[] | null;
+                [key: string]: string;
+            } | null;
             /**
              * Description
              * @description The description for this resource. Be brief. Keep it under 255 characters.
@@ -7508,17 +7540,15 @@ export interface components {
         SAMBudgetMetadata: {
             /**
              * Annotations
-             * @description The manifest annotations. Used for storing arbitrary metadata as
-             *                 key-value pairs. Example: [{'smarter.sh/test-manifest/project-name': 'Scooby dooby do'}]. The
-             *                 key should be a valid url-friendly string. The value accepts
-             *                 multi-line string values (YAML block scalars) and various scalar types including
-             *                 str, int, float, bool, datetime.date, datetime.datetime, decimal.Decimal, uuid.UUID, bytes, list, dict.
+             * @description Annotations, as in Kubernetes: a map of keys to string values that clients and integrations attach to a resource for their own purposes, e.g. to associate it with a resource in another system. A key is an optional DNS-subdomain prefix that names its owner, then a slash and a name of one or more slash-separated segments, e.g. 'acme.com/crm-account-id'. The prefix 'smarter.sh' and its subdomains are reserved for the Smarter platform. Values are strings: unquoted YAML scalars such as true, 42 or dates are converted to strings, and structured data belongs in a JSON string. All annotations together are limited to 256 KiB. The list of one-key maps of older manifests, e.g. [{'acme.com/crm-account-id': 'A-10042'}], is also accepted.
+             * @example {
+             *       "acme.com/crm-account-id": "A-10042",
+             *       "smarter.sh/llmclient/use-case": "customer support"
+             *     }
              */
             annotations?: {
-                [key: string]: string | number | boolean | unknown[] | {
-                    [key: string]: unknown;
-                };
-            }[] | null;
+                [key: string]: string;
+            } | null;
             /**
              * Description
              * @description The description for this resource. Be brief. Keep it under 255 characters.
@@ -7748,17 +7778,15 @@ export interface components {
         SAMConnectionCommonMetadata: {
             /**
              * Annotations
-             * @description The manifest annotations. Used for storing arbitrary metadata as
-             *                 key-value pairs. Example: [{'smarter.sh/test-manifest/project-name': 'Scooby dooby do'}]. The
-             *                 key should be a valid url-friendly string. The value accepts
-             *                 multi-line string values (YAML block scalars) and various scalar types including
-             *                 str, int, float, bool, datetime.date, datetime.datetime, decimal.Decimal, uuid.UUID, bytes, list, dict.
+             * @description Annotations, as in Kubernetes: a map of keys to string values that clients and integrations attach to a resource for their own purposes, e.g. to associate it with a resource in another system. A key is an optional DNS-subdomain prefix that names its owner, then a slash and a name of one or more slash-separated segments, e.g. 'acme.com/crm-account-id'. The prefix 'smarter.sh' and its subdomains are reserved for the Smarter platform. Values are strings: unquoted YAML scalars such as true, 42 or dates are converted to strings, and structured data belongs in a JSON string. All annotations together are limited to 256 KiB. The list of one-key maps of older manifests, e.g. [{'acme.com/crm-account-id': 'A-10042'}], is also accepted.
+             * @example {
+             *       "acme.com/crm-account-id": "A-10042",
+             *       "smarter.sh/llmclient/use-case": "customer support"
+             *     }
              */
             annotations?: {
-                [key: string]: string | number | boolean | unknown[] | {
-                    [key: string]: unknown;
-                };
-            }[] | null;
+                [key: string]: string;
+            } | null;
             /**
              * Description
              * @description The description for this resource. Be brief. Keep it under 255 characters.
@@ -7851,17 +7879,15 @@ export interface components {
         SAMCustomDomainMetadata: {
             /**
              * Annotations
-             * @description The manifest annotations. Used for storing arbitrary metadata as
-             *                 key-value pairs. Example: [{'smarter.sh/test-manifest/project-name': 'Scooby dooby do'}]. The
-             *                 key should be a valid url-friendly string. The value accepts
-             *                 multi-line string values (YAML block scalars) and various scalar types including
-             *                 str, int, float, bool, datetime.date, datetime.datetime, decimal.Decimal, uuid.UUID, bytes, list, dict.
+             * @description Annotations, as in Kubernetes: a map of keys to string values that clients and integrations attach to a resource for their own purposes, e.g. to associate it with a resource in another system. A key is an optional DNS-subdomain prefix that names its owner, then a slash and a name of one or more slash-separated segments, e.g. 'acme.com/crm-account-id'. The prefix 'smarter.sh' and its subdomains are reserved for the Smarter platform. Values are strings: unquoted YAML scalars such as true, 42 or dates are converted to strings, and structured data belongs in a JSON string. All annotations together are limited to 256 KiB. The list of one-key maps of older manifests, e.g. [{'acme.com/crm-account-id': 'A-10042'}], is also accepted.
+             * @example {
+             *       "acme.com/crm-account-id": "A-10042",
+             *       "smarter.sh/llmclient/use-case": "customer support"
+             *     }
              */
             annotations?: {
-                [key: string]: string | number | boolean | unknown[] | {
-                    [key: string]: unknown;
-                };
-            }[] | null;
+                [key: string]: string;
+            } | null;
             /**
              * Description
              * @description The description for this resource. Be brief. Keep it under 255 characters.
@@ -8022,17 +8048,15 @@ export interface components {
         SAMGuardrailMetadata: {
             /**
              * Annotations
-             * @description The manifest annotations. Used for storing arbitrary metadata as
-             *                 key-value pairs. Example: [{'smarter.sh/test-manifest/project-name': 'Scooby dooby do'}]. The
-             *                 key should be a valid url-friendly string. The value accepts
-             *                 multi-line string values (YAML block scalars) and various scalar types including
-             *                 str, int, float, bool, datetime.date, datetime.datetime, decimal.Decimal, uuid.UUID, bytes, list, dict.
+             * @description Annotations, as in Kubernetes: a map of keys to string values that clients and integrations attach to a resource for their own purposes, e.g. to associate it with a resource in another system. A key is an optional DNS-subdomain prefix that names its owner, then a slash and a name of one or more slash-separated segments, e.g. 'acme.com/crm-account-id'. The prefix 'smarter.sh' and its subdomains are reserved for the Smarter platform. Values are strings: unquoted YAML scalars such as true, 42 or dates are converted to strings, and structured data belongs in a JSON string. All annotations together are limited to 256 KiB. The list of one-key maps of older manifests, e.g. [{'acme.com/crm-account-id': 'A-10042'}], is also accepted.
+             * @example {
+             *       "acme.com/crm-account-id": "A-10042",
+             *       "smarter.sh/llmclient/use-case": "customer support"
+             *     }
              */
             annotations?: {
-                [key: string]: string | number | boolean | unknown[] | {
-                    [key: string]: unknown;
-                };
-            }[] | null;
+                [key: string]: string;
+            } | null;
             /**
              * Description
              * @description The description for this resource. Be brief. Keep it under 255 characters.
@@ -8570,17 +8594,15 @@ export interface components {
         SAMLLMClientMetadata: {
             /**
              * Annotations
-             * @description The manifest annotations. Used for storing arbitrary metadata as
-             *                 key-value pairs. Example: [{'smarter.sh/test-manifest/project-name': 'Scooby dooby do'}]. The
-             *                 key should be a valid url-friendly string. The value accepts
-             *                 multi-line string values (YAML block scalars) and various scalar types including
-             *                 str, int, float, bool, datetime.date, datetime.datetime, decimal.Decimal, uuid.UUID, bytes, list, dict.
+             * @description Annotations, as in Kubernetes: a map of keys to string values that clients and integrations attach to a resource for their own purposes, e.g. to associate it with a resource in another system. A key is an optional DNS-subdomain prefix that names its owner, then a slash and a name of one or more slash-separated segments, e.g. 'acme.com/crm-account-id'. The prefix 'smarter.sh' and its subdomains are reserved for the Smarter platform. Values are strings: unquoted YAML scalars such as true, 42 or dates are converted to strings, and structured data belongs in a JSON string. All annotations together are limited to 256 KiB. The list of one-key maps of older manifests, e.g. [{'acme.com/crm-account-id': 'A-10042'}], is also accepted.
+             * @example {
+             *       "acme.com/crm-account-id": "A-10042",
+             *       "smarter.sh/llmclient/use-case": "customer support"
+             *     }
              */
             annotations?: {
-                [key: string]: string | number | boolean | unknown[] | {
-                    [key: string]: unknown;
-                };
-            }[] | null;
+                [key: string]: string;
+            } | null;
             /**
              * Description
              * @description The description for this resource. Be brief. Keep it under 255 characters.
@@ -9252,17 +9274,15 @@ export interface components {
         SAMLLMHostComputeMetadata: {
             /**
              * Annotations
-             * @description The manifest annotations. Used for storing arbitrary metadata as
-             *                 key-value pairs. Example: [{'smarter.sh/test-manifest/project-name': 'Scooby dooby do'}]. The
-             *                 key should be a valid url-friendly string. The value accepts
-             *                 multi-line string values (YAML block scalars) and various scalar types including
-             *                 str, int, float, bool, datetime.date, datetime.datetime, decimal.Decimal, uuid.UUID, bytes, list, dict.
+             * @description Annotations, as in Kubernetes: a map of keys to string values that clients and integrations attach to a resource for their own purposes, e.g. to associate it with a resource in another system. A key is an optional DNS-subdomain prefix that names its owner, then a slash and a name of one or more slash-separated segments, e.g. 'acme.com/crm-account-id'. The prefix 'smarter.sh' and its subdomains are reserved for the Smarter platform. Values are strings: unquoted YAML scalars such as true, 42 or dates are converted to strings, and structured data belongs in a JSON string. All annotations together are limited to 256 KiB. The list of one-key maps of older manifests, e.g. [{'acme.com/crm-account-id': 'A-10042'}], is also accepted.
+             * @example {
+             *       "acme.com/crm-account-id": "A-10042",
+             *       "smarter.sh/llmclient/use-case": "customer support"
+             *     }
              */
             annotations?: {
-                [key: string]: string | number | boolean | unknown[] | {
-                    [key: string]: unknown;
-                };
-            }[] | null;
+                [key: string]: string;
+            } | null;
             /**
              * Description
              * @description The description for this resource. Be brief. Keep it under 255 characters.
@@ -9560,17 +9580,15 @@ export interface components {
         SAMLLMHostMetadata: {
             /**
              * Annotations
-             * @description The manifest annotations. Used for storing arbitrary metadata as
-             *                 key-value pairs. Example: [{'smarter.sh/test-manifest/project-name': 'Scooby dooby do'}]. The
-             *                 key should be a valid url-friendly string. The value accepts
-             *                 multi-line string values (YAML block scalars) and various scalar types including
-             *                 str, int, float, bool, datetime.date, datetime.datetime, decimal.Decimal, uuid.UUID, bytes, list, dict.
+             * @description Annotations, as in Kubernetes: a map of keys to string values that clients and integrations attach to a resource for their own purposes, e.g. to associate it with a resource in another system. A key is an optional DNS-subdomain prefix that names its owner, then a slash and a name of one or more slash-separated segments, e.g. 'acme.com/crm-account-id'. The prefix 'smarter.sh' and its subdomains are reserved for the Smarter platform. Values are strings: unquoted YAML scalars such as true, 42 or dates are converted to strings, and structured data belongs in a JSON string. All annotations together are limited to 256 KiB. The list of one-key maps of older manifests, e.g. [{'acme.com/crm-account-id': 'A-10042'}], is also accepted.
+             * @example {
+             *       "acme.com/crm-account-id": "A-10042",
+             *       "smarter.sh/llmclient/use-case": "customer support"
+             *     }
              */
             annotations?: {
-                [key: string]: string | number | boolean | unknown[] | {
-                    [key: string]: unknown;
-                };
-            }[] | null;
+                [key: string]: string;
+            } | null;
             /**
              * Description
              * @description The description for this resource. Be brief. Keep it under 255 characters.
@@ -10035,17 +10053,15 @@ export interface components {
         SAMMCPClientMetadata: {
             /**
              * Annotations
-             * @description The manifest annotations. Used for storing arbitrary metadata as
-             *                 key-value pairs. Example: [{'smarter.sh/test-manifest/project-name': 'Scooby dooby do'}]. The
-             *                 key should be a valid url-friendly string. The value accepts
-             *                 multi-line string values (YAML block scalars) and various scalar types including
-             *                 str, int, float, bool, datetime.date, datetime.datetime, decimal.Decimal, uuid.UUID, bytes, list, dict.
+             * @description Annotations, as in Kubernetes: a map of keys to string values that clients and integrations attach to a resource for their own purposes, e.g. to associate it with a resource in another system. A key is an optional DNS-subdomain prefix that names its owner, then a slash and a name of one or more slash-separated segments, e.g. 'acme.com/crm-account-id'. The prefix 'smarter.sh' and its subdomains are reserved for the Smarter platform. Values are strings: unquoted YAML scalars such as true, 42 or dates are converted to strings, and structured data belongs in a JSON string. All annotations together are limited to 256 KiB. The list of one-key maps of older manifests, e.g. [{'acme.com/crm-account-id': 'A-10042'}], is also accepted.
+             * @example {
+             *       "acme.com/crm-account-id": "A-10042",
+             *       "smarter.sh/llmclient/use-case": "customer support"
+             *     }
              */
             annotations?: {
-                [key: string]: string | number | boolean | unknown[] | {
-                    [key: string]: unknown;
-                };
-            }[] | null;
+                [key: string]: string;
+            } | null;
             /**
              * Description
              * @description The description for this resource. Be brief. Keep it under 255 characters.
@@ -10105,7 +10121,7 @@ export interface components {
             authType: "none" | "api_key" | "bearer_token" | "oauth2";
             /**
              * Cachettl
-             * @description MCPClient.spec.config.cacheTtl[int]: seconds to cache the MCP server's tools, instructions and capabilities. 0 disables caching.
+             * @description MCPClient.spec.config.cacheTtl[int]: seconds to cache the MCP server's tools, instructions and capabilities, and the results of its read-only tools and resource reads. 0 disables caching.
              * @default 3600
              */
             cacheTtl: number;
@@ -10293,6 +10309,7 @@ export interface components {
             executionOrder: number;
             /**
              * Isactive
+             * @description Whether this LLMClient's membership in the Orchestrator is active.
              * @default true
              */
             isActive: boolean;
@@ -10301,7 +10318,10 @@ export interface components {
              * @description Name of an existing LLMClient to attach as a Harness.
              */
             llmClientName: string;
-            /** @default executor */
+            /**
+             * @description The part this LLMClient plays in the Orchestrator: planner, executor, critic, router, summarizer or tool_caller. The supervisor strategy needs a planner, and the router strategy a router.
+             * @default executor
+             */
             role: components["schemas"]["HarnessRole"];
         };
         /**
@@ -10311,17 +10331,15 @@ export interface components {
         SAMOrchestratorMetadata: {
             /**
              * Annotations
-             * @description The manifest annotations. Used for storing arbitrary metadata as
-             *                 key-value pairs. Example: [{'smarter.sh/test-manifest/project-name': 'Scooby dooby do'}]. The
-             *                 key should be a valid url-friendly string. The value accepts
-             *                 multi-line string values (YAML block scalars) and various scalar types including
-             *                 str, int, float, bool, datetime.date, datetime.datetime, decimal.Decimal, uuid.UUID, bytes, list, dict.
+             * @description Annotations, as in Kubernetes: a map of keys to string values that clients and integrations attach to a resource for their own purposes, e.g. to associate it with a resource in another system. A key is an optional DNS-subdomain prefix that names its owner, then a slash and a name of one or more slash-separated segments, e.g. 'acme.com/crm-account-id'. The prefix 'smarter.sh' and its subdomains are reserved for the Smarter platform. Values are strings: unquoted YAML scalars such as true, 42 or dates are converted to strings, and structured data belongs in a JSON string. All annotations together are limited to 256 KiB. The list of one-key maps of older manifests, e.g. [{'acme.com/crm-account-id': 'A-10042'}], is also accepted.
+             * @example {
+             *       "acme.com/crm-account-id": "A-10042",
+             *       "smarter.sh/llmclient/use-case": "customer support"
+             *     }
              */
             annotations?: {
-                [key: string]: string | number | boolean | unknown[] | {
-                    [key: string]: unknown;
-                };
-            }[] | null;
+                [key: string]: string;
+            } | null;
             /**
              * Description
              * @description The description for this resource. Be brief. Keep it under 255 characters.
@@ -10367,6 +10385,7 @@ export interface components {
             harnesses: components["schemas"]["SAMOrchestratorHarnessConfig"][];
             /**
              * Isactive
+             * @description Whether the Orchestrator is active.
              * @default true
              */
             isActive: boolean;
@@ -10376,7 +10395,10 @@ export interface components {
              * @default 10
              */
             maxIterations: number;
-            /** @default sequential */
+            /**
+             * @description How the Orchestrator coordinates its LLMClients: sequential, parallel, supervisor, router, voting or debate. Supervisor needs a harness with role planner, router one with role router, and voting and debate at least two harnesses.
+             * @default sequential
+             */
             strategy: components["schemas"]["OrchestrationStrategy"];
         };
         /**
@@ -10425,17 +10447,15 @@ export interface components {
         SAMPluginCommonMetadata: {
             /**
              * Annotations
-             * @description The manifest annotations. Used for storing arbitrary metadata as
-             *                 key-value pairs. Example: [{'smarter.sh/test-manifest/project-name': 'Scooby dooby do'}]. The
-             *                 key should be a valid url-friendly string. The value accepts
-             *                 multi-line string values (YAML block scalars) and various scalar types including
-             *                 str, int, float, bool, datetime.date, datetime.datetime, decimal.Decimal, uuid.UUID, bytes, list, dict.
+             * @description Annotations, as in Kubernetes: a map of keys to string values that clients and integrations attach to a resource for their own purposes, e.g. to associate it with a resource in another system. A key is an optional DNS-subdomain prefix that names its owner, then a slash and a name of one or more slash-separated segments, e.g. 'acme.com/crm-account-id'. The prefix 'smarter.sh' and its subdomains are reserved for the Smarter platform. Values are strings: unquoted YAML scalars such as true, 42 or dates are converted to strings, and structured data belongs in a JSON string. All annotations together are limited to 256 KiB. The list of one-key maps of older manifests, e.g. [{'acme.com/crm-account-id': 'A-10042'}], is also accepted.
+             * @example {
+             *       "acme.com/crm-account-id": "A-10042",
+             *       "smarter.sh/llmclient/use-case": "customer support"
+             *     }
              */
             annotations?: {
-                [key: string]: string | number | boolean | unknown[] | {
-                    [key: string]: unknown;
-                };
-            }[] | null;
+                [key: string]: string;
+            } | null;
             /**
              * Description
              * @description The description for this resource. Be brief. Keep it under 255 characters.
@@ -10611,17 +10631,15 @@ export interface components {
         SAMPromptMetadata: {
             /**
              * Annotations
-             * @description The manifest annotations. Used for storing arbitrary metadata as
-             *                 key-value pairs. Example: [{'smarter.sh/test-manifest/project-name': 'Scooby dooby do'}]. The
-             *                 key should be a valid url-friendly string. The value accepts
-             *                 multi-line string values (YAML block scalars) and various scalar types including
-             *                 str, int, float, bool, datetime.date, datetime.datetime, decimal.Decimal, uuid.UUID, bytes, list, dict.
+             * @description Annotations, as in Kubernetes: a map of keys to string values that clients and integrations attach to a resource for their own purposes, e.g. to associate it with a resource in another system. A key is an optional DNS-subdomain prefix that names its owner, then a slash and a name of one or more slash-separated segments, e.g. 'acme.com/crm-account-id'. The prefix 'smarter.sh' and its subdomains are reserved for the Smarter platform. Values are strings: unquoted YAML scalars such as true, 42 or dates are converted to strings, and structured data belongs in a JSON string. All annotations together are limited to 256 KiB. The list of one-key maps of older manifests, e.g. [{'acme.com/crm-account-id': 'A-10042'}], is also accepted.
+             * @example {
+             *       "acme.com/crm-account-id": "A-10042",
+             *       "smarter.sh/llmclient/use-case": "customer support"
+             *     }
              */
             annotations?: {
-                [key: string]: string | number | boolean | unknown[] | {
-                    [key: string]: unknown;
-                };
-            }[] | null;
+                [key: string]: string;
+            } | null;
             /**
              * Description
              * @description The description for this resource. Be brief. Keep it under 255 characters.
@@ -10740,17 +10758,15 @@ export interface components {
         SAMProviderMetadata: {
             /**
              * Annotations
-             * @description The manifest annotations. Used for storing arbitrary metadata as
-             *                 key-value pairs. Example: [{'smarter.sh/test-manifest/project-name': 'Scooby dooby do'}]. The
-             *                 key should be a valid url-friendly string. The value accepts
-             *                 multi-line string values (YAML block scalars) and various scalar types including
-             *                 str, int, float, bool, datetime.date, datetime.datetime, decimal.Decimal, uuid.UUID, bytes, list, dict.
+             * @description Annotations, as in Kubernetes: a map of keys to string values that clients and integrations attach to a resource for their own purposes, e.g. to associate it with a resource in another system. A key is an optional DNS-subdomain prefix that names its owner, then a slash and a name of one or more slash-separated segments, e.g. 'acme.com/crm-account-id'. The prefix 'smarter.sh' and its subdomains are reserved for the Smarter platform. Values are strings: unquoted YAML scalars such as true, 42 or dates are converted to strings, and structured data belongs in a JSON string. All annotations together are limited to 256 KiB. The list of one-key maps of older manifests, e.g. [{'acme.com/crm-account-id': 'A-10042'}], is also accepted.
+             * @example {
+             *       "acme.com/crm-account-id": "A-10042",
+             *       "smarter.sh/llmclient/use-case": "customer support"
+             *     }
              */
             annotations?: {
-                [key: string]: string | number | boolean | unknown[] | {
-                    [key: string]: unknown;
-                };
-            }[] | null;
+                [key: string]: string;
+            } | null;
             /**
              * Description
              * @description The description for this resource. Be brief. Keep it under 255 characters.
@@ -10979,17 +10995,15 @@ export interface components {
         SAMProxyMetadata: {
             /**
              * Annotations
-             * @description The manifest annotations. Used for storing arbitrary metadata as
-             *                 key-value pairs. Example: [{'smarter.sh/test-manifest/project-name': 'Scooby dooby do'}]. The
-             *                 key should be a valid url-friendly string. The value accepts
-             *                 multi-line string values (YAML block scalars) and various scalar types including
-             *                 str, int, float, bool, datetime.date, datetime.datetime, decimal.Decimal, uuid.UUID, bytes, list, dict.
+             * @description Annotations, as in Kubernetes: a map of keys to string values that clients and integrations attach to a resource for their own purposes, e.g. to associate it with a resource in another system. A key is an optional DNS-subdomain prefix that names its owner, then a slash and a name of one or more slash-separated segments, e.g. 'acme.com/crm-account-id'. The prefix 'smarter.sh' and its subdomains are reserved for the Smarter platform. Values are strings: unquoted YAML scalars such as true, 42 or dates are converted to strings, and structured data belongs in a JSON string. All annotations together are limited to 256 KiB. The list of one-key maps of older manifests, e.g. [{'acme.com/crm-account-id': 'A-10042'}], is also accepted.
+             * @example {
+             *       "acme.com/crm-account-id": "A-10042",
+             *       "smarter.sh/llmclient/use-case": "customer support"
+             *     }
              */
             annotations?: {
-                [key: string]: string | number | boolean | unknown[] | {
-                    [key: string]: unknown;
-                };
-            }[] | null;
+                [key: string]: string;
+            } | null;
             /**
              * Description
              * @description The description for this resource. Be brief. Keep it under 255 characters.
@@ -11169,17 +11183,15 @@ export interface components {
         SAMSecretMetadata: {
             /**
              * Annotations
-             * @description The manifest annotations. Used for storing arbitrary metadata as
-             *                 key-value pairs. Example: [{'smarter.sh/test-manifest/project-name': 'Scooby dooby do'}]. The
-             *                 key should be a valid url-friendly string. The value accepts
-             *                 multi-line string values (YAML block scalars) and various scalar types including
-             *                 str, int, float, bool, datetime.date, datetime.datetime, decimal.Decimal, uuid.UUID, bytes, list, dict.
+             * @description Annotations, as in Kubernetes: a map of keys to string values that clients and integrations attach to a resource for their own purposes, e.g. to associate it with a resource in another system. A key is an optional DNS-subdomain prefix that names its owner, then a slash and a name of one or more slash-separated segments, e.g. 'acme.com/crm-account-id'. The prefix 'smarter.sh' and its subdomains are reserved for the Smarter platform. Values are strings: unquoted YAML scalars such as true, 42 or dates are converted to strings, and structured data belongs in a JSON string. All annotations together are limited to 256 KiB. The list of one-key maps of older manifests, e.g. [{'acme.com/crm-account-id': 'A-10042'}], is also accepted.
+             * @example {
+             *       "acme.com/crm-account-id": "A-10042",
+             *       "smarter.sh/llmclient/use-case": "customer support"
+             *     }
              */
             annotations?: {
-                [key: string]: string | number | boolean | unknown[] | {
-                    [key: string]: unknown;
-                };
-            }[] | null;
+                [key: string]: string;
+            } | null;
             /**
              * Description
              * @description The description for this resource. Be brief. Keep it under 255 characters.
@@ -11340,17 +11352,15 @@ export interface components {
         SAMSmarterAuthTokenMetadata: {
             /**
              * Annotations
-             * @description The manifest annotations. Used for storing arbitrary metadata as
-             *                 key-value pairs. Example: [{'smarter.sh/test-manifest/project-name': 'Scooby dooby do'}]. The
-             *                 key should be a valid url-friendly string. The value accepts
-             *                 multi-line string values (YAML block scalars) and various scalar types including
-             *                 str, int, float, bool, datetime.date, datetime.datetime, decimal.Decimal, uuid.UUID, bytes, list, dict.
+             * @description Annotations, as in Kubernetes: a map of keys to string values that clients and integrations attach to a resource for their own purposes, e.g. to associate it with a resource in another system. A key is an optional DNS-subdomain prefix that names its owner, then a slash and a name of one or more slash-separated segments, e.g. 'acme.com/crm-account-id'. The prefix 'smarter.sh' and its subdomains are reserved for the Smarter platform. Values are strings: unquoted YAML scalars such as true, 42 or dates are converted to strings, and structured data belongs in a JSON string. All annotations together are limited to 256 KiB. The list of one-key maps of older manifests, e.g. [{'acme.com/crm-account-id': 'A-10042'}], is also accepted.
+             * @example {
+             *       "acme.com/crm-account-id": "A-10042",
+             *       "smarter.sh/llmclient/use-case": "customer support"
+             *     }
              */
             annotations?: {
-                [key: string]: string | number | boolean | unknown[] | {
-                    [key: string]: unknown;
-                };
-            }[] | null;
+                [key: string]: string;
+            } | null;
             /**
              * Description
              * @description The description for this resource. Be brief. Keep it under 255 characters.
@@ -11564,17 +11574,15 @@ export interface components {
         SAMUserMetadata: {
             /**
              * Annotations
-             * @description The manifest annotations. Used for storing arbitrary metadata as
-             *                 key-value pairs. Example: [{'smarter.sh/test-manifest/project-name': 'Scooby dooby do'}]. The
-             *                 key should be a valid url-friendly string. The value accepts
-             *                 multi-line string values (YAML block scalars) and various scalar types including
-             *                 str, int, float, bool, datetime.date, datetime.datetime, decimal.Decimal, uuid.UUID, bytes, list, dict.
+             * @description Annotations, as in Kubernetes: a map of keys to string values that clients and integrations attach to a resource for their own purposes, e.g. to associate it with a resource in another system. A key is an optional DNS-subdomain prefix that names its owner, then a slash and a name of one or more slash-separated segments, e.g. 'acme.com/crm-account-id'. The prefix 'smarter.sh' and its subdomains are reserved for the Smarter platform. Values are strings: unquoted YAML scalars such as true, 42 or dates are converted to strings, and structured data belongs in a JSON string. All annotations together are limited to 256 KiB. The list of one-key maps of older manifests, e.g. [{'acme.com/crm-account-id': 'A-10042'}], is also accepted.
+             * @example {
+             *       "acme.com/crm-account-id": "A-10042",
+             *       "smarter.sh/llmclient/use-case": "customer support"
+             *     }
              */
             annotations?: {
-                [key: string]: string | number | boolean | unknown[] | {
-                    [key: string]: unknown;
-                };
-            }[] | null;
+                [key: string]: string;
+            } | null;
             /**
              * Description
              * @description The description for this resource. Be brief. Keep it under 255 characters.
@@ -11714,17 +11722,15 @@ export interface components {
         SAMVectorsearchMetadata: {
             /**
              * Annotations
-             * @description The manifest annotations. Used for storing arbitrary metadata as
-             *                 key-value pairs. Example: [{'smarter.sh/test-manifest/project-name': 'Scooby dooby do'}]. The
-             *                 key should be a valid url-friendly string. The value accepts
-             *                 multi-line string values (YAML block scalars) and various scalar types including
-             *                 str, int, float, bool, datetime.date, datetime.datetime, decimal.Decimal, uuid.UUID, bytes, list, dict.
+             * @description Annotations, as in Kubernetes: a map of keys to string values that clients and integrations attach to a resource for their own purposes, e.g. to associate it with a resource in another system. A key is an optional DNS-subdomain prefix that names its owner, then a slash and a name of one or more slash-separated segments, e.g. 'acme.com/crm-account-id'. The prefix 'smarter.sh' and its subdomains are reserved for the Smarter platform. Values are strings: unquoted YAML scalars such as true, 42 or dates are converted to strings, and structured data belongs in a JSON string. All annotations together are limited to 256 KiB. The list of one-key maps of older manifests, e.g. [{'acme.com/crm-account-id': 'A-10042'}], is also accepted.
+             * @example {
+             *       "acme.com/crm-account-id": "A-10042",
+             *       "smarter.sh/llmclient/use-case": "customer support"
+             *     }
              */
             annotations?: {
-                [key: string]: string | number | boolean | unknown[] | {
-                    [key: string]: unknown;
-                };
-            }[] | null;
+                [key: string]: string;
+            } | null;
             /**
              * Description
              * @description The description for this resource. Be brief. Keep it under 255 characters.
@@ -11979,17 +11985,15 @@ export interface components {
         SAMVectorstoreMetadata: {
             /**
              * Annotations
-             * @description The manifest annotations. Used for storing arbitrary metadata as
-             *                 key-value pairs. Example: [{'smarter.sh/test-manifest/project-name': 'Scooby dooby do'}]. The
-             *                 key should be a valid url-friendly string. The value accepts
-             *                 multi-line string values (YAML block scalars) and various scalar types including
-             *                 str, int, float, bool, datetime.date, datetime.datetime, decimal.Decimal, uuid.UUID, bytes, list, dict.
+             * @description Annotations, as in Kubernetes: a map of keys to string values that clients and integrations attach to a resource for their own purposes, e.g. to associate it with a resource in another system. A key is an optional DNS-subdomain prefix that names its owner, then a slash and a name of one or more slash-separated segments, e.g. 'acme.com/crm-account-id'. The prefix 'smarter.sh' and its subdomains are reserved for the Smarter platform. Values are strings: unquoted YAML scalars such as true, 42 or dates are converted to strings, and structured data belongs in a JSON string. All annotations together are limited to 256 KiB. The list of one-key maps of older manifests, e.g. [{'acme.com/crm-account-id': 'A-10042'}], is also accepted.
+             * @example {
+             *       "acme.com/crm-account-id": "A-10042",
+             *       "smarter.sh/llmclient/use-case": "customer support"
+             *     }
              */
             annotations?: {
-                [key: string]: string | number | boolean | unknown[] | {
-                    [key: string]: unknown;
-                };
-            }[] | null;
+                [key: string]: string;
+            } | null;
             /**
              * Description
              * @description The description for this resource. Be brief. Keep it under 255 characters.
@@ -12145,6 +12149,7 @@ export interface components {
             dependencies: components["schemas"]["SAMDependency"][] | null;
             /**
              * Deployedat
+             * @description Vectorstore.status.deployedAt: when it was deployed. Read only.
              * @default null
              */
             deployedAt: string | null;
@@ -12168,16 +12173,19 @@ export interface components {
             indexName: string | null;
             /**
              * Lastcheckedat
+             * @description Vectorstore.status.lastCheckedAt: when its status was last checked. Read only.
              * @default null
              */
             lastCheckedAt: string | null;
             /**
              * Lastmaintenanceat
+             * @description Vectorstore.status.lastMaintenanceAt: when its maintenance last ran. Read only.
              * @default null
              */
             lastMaintenanceAt: string | null;
             /**
              * Lastsnapshotat
+             * @description Vectorstore.status.lastSnapshotAt: when its last snapshot was taken. Read only.
              * @default null
              */
             lastSnapshotAt: string | null;
@@ -12269,9 +12277,7 @@ export interface components {
              * @default null
              */
             annotations: {
-                [key: string]: components["schemas"]["JsonValue"];
-            }[] | {
-                [key: string]: components["schemas"]["JsonValue"];
+                [key: string]: string;
             } | null;
             /**
              * Candelete
@@ -12290,6 +12296,12 @@ export interface components {
              * @default null
              */
             description: string | null;
+            /**
+             * Detailurl
+             * @description The url of the Secret's detail in the web console: its manifest, the resources that it uses, and those that use it.
+             * @default null
+             */
+            detailUrl: string | null;
             /**
              * Expiresat
              * @description When the Secret expires, if it does.
@@ -12353,6 +12365,12 @@ export interface components {
              * @description Whether the requesting user may delete the Secret now.
              */
             canDelete: boolean;
+            /**
+             * Detailurl
+             * @description The url of the Secret's detail in the web console: its manifest, the resources that it uses, and those that use it.
+             * @default null
+             */
+            detailUrl: string | null;
             /**
              * Id
              * @description The Secret's primary key.
@@ -12485,9 +12503,7 @@ export interface components {
              * @default null
              */
             annotations: {
-                [key: string]: components["schemas"]["JsonValue"];
-            }[] | {
-                [key: string]: components["schemas"]["JsonValue"];
+                [key: string]: string;
             } | null;
             /**
              * Authsecret
@@ -12512,6 +12528,12 @@ export interface components {
              * @default null
              */
             description: string | null;
+            /**
+             * Detailurl
+             * @description The url of the Vectorsearch's detail in the web console: its manifest, the resources that it uses, and those that use it.
+             * @default null
+             */
+            detailUrl: string | null;
             /**
              * Fetchk
              * @description Vectorsearch.fetch_k: the candidates of an mmr search.
@@ -12999,9 +13021,7 @@ export interface components {
              * @default null
              */
             annotations: {
-                [key: string]: components["schemas"]["JsonValue"];
-            }[] | {
-                [key: string]: components["schemas"]["JsonValue"];
+                [key: string]: string;
             } | null;
             /**
              * Apikeysecret
@@ -13049,6 +13069,12 @@ export interface components {
              * @default null
              */
             description: string | null;
+            /**
+             * Detailurl
+             * @description The url of the vectorstore's detail in the web console: its manifest, the resources that it uses, and those that use it.
+             * @default null
+             */
+            detailUrl: string | null;
             /**
              * Dimension
              * @description The dimension of its vectors.
