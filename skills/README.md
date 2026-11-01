@@ -27,17 +27,19 @@ Start with `smarter-vscode-development`. It sets out the rules that apply to
 every change, the extension's architecture, the patterns for common changes,
 and which narrower skill to load for each kind of task.
 
-| Skill                        | Use it when                                                                         |
-| ---------------------------- | ----------------------------------------------------------------------------------- |
-| `smarter-vscode-development` | You're making any change. Start here.                                               |
-| `smarter-vscode-testing`     | You're writing or running the unit, integration or corpus tests.                    |
-| `smarter-vscode-contract`    | The platform's api contract changed, or a test says the bundled contract is stale.  |
-| `smarter-vscode-docs`        | You're editing the README, the platform's docs page about the extension, or an ADR. |
-| `smarter-api-testing`        | You're trying the extension's api calls against a real platform.                    |
-| `smarter-code-quality`       | You're about to finish a change, and need to typecheck, format and run the hooks.   |
-| `smarter-git-commits`        | You've been asked to write a commit message.                                        |
-| `monthly-maintenance`        | It's time to follow the platform, and update the dependencies.                      |
-| `smarter-contract-sync` | The platform's api contract changed, and this repository's copy must follow it now. |
+| Skill                          | Use it when                                                                                 |
+| ------------------------------ | ------------------------------------------------------------------------------------------- |
+| `smarter-vscode-development`   | You're making any change. Start here.                                                       |
+| `smarter-vscode-testing`       | You're writing or running the unit, integration or corpus tests.                            |
+| `smarter-vscode-contract`      | The platform's api contract changed, or a test says the bundled contract is stale.          |
+| `smarter-vscode-docs`          | You're editing the README, the platform's docs page about the extension, or an ADR.         |
+| `smarter-api-testing`          | You're trying the extension's api calls against a real platform.                            |
+| `smarter-code-quality`         | You're about to finish a change, and need to typecheck, format and run the hooks.           |
+| `smarter-git-commits`          | You've been asked to write a commit message.                                                |
+| `monthly-maintenance`          | It's time to follow the platform, and update the dependencies.                              |
+| `smarter-contract-sync`        | The platform's api contract changed, and this repository's copy must follow it now.         |
+| `smarter-vscode-ci-failures`   | A GitHub Actions run, check or Dependabot pull request failed, or you're given a run's url. |
+| `smarter-project-repositories` | A task reaches into the platform, the cli, an SDK, or a manifest repository.                |
 
 The bundled scripts are ordinary scripts that you can run yourself from the
 repository root:
@@ -51,6 +53,14 @@ repository root:
   Secret.
 - `monthly-maintenance/scripts/smarter-delta.sh` lists the platform's commits
   since the extension last followed it, grouped by what they mean here.
+- `smarter-vscode-ci-failures/scripts/fetch-run-logs.sh` prints a failed
+  GitHub Actions run's failed step, annotations and failures. It works without
+  a gh login, and with no token at all it uses the public api.
+- `smarter-vscode-ci-failures/scripts/reproduce-dependency.sh` installs a
+  bumped package (e.g. a Dependabot pull request's) in a throwaway copy of the
+  repository, and builds and tests it there.
+- `smarter-project-repositories/scripts/repos-status.sh` shows whether the
+  checkouts beside this one are current. Read-only.
 
 The architecture decisions that the skills refer to are in
 [docs/adr/](../docs/adr/000-intro.md).

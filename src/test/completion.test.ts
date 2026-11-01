@@ -146,7 +146,7 @@ describe("suggestions", () => {
     const markdown = hoverMarkdown(budget, ["spec", "config", "period"]);
     assert.ok(
       markdown?.startsWith('**period**: `"hour" | "day" | "week" | "month"`'),
-      markdown,
+      markdown ?? "no hover markdown",
     );
     assert.match(markdown ?? "", /`spec\.config\.period`/);
   });

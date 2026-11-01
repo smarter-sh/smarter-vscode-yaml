@@ -6,6 +6,14 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 
 
 
+## [0.3.1](https://github.com/smarter-sh/smarter-vscode-yaml/compare/v0.3.0...v0.3.1) (2026-10-22)
+
+### Bug Fixes
+
+* **contract:** sync the bundled contract with smarter v0.25.1 ([8b6c9ae](https://github.com/smarter-sh/smarter-vscode-yaml/commit/8b6c9aeeb3b046665b278593e5f69f57313fa686))
+* **contract:** sync the bundled contract with smarter v0.27.1 ([1fa3cbf](https://github.com/smarter-sh/smarter-vscode-yaml/commit/1fa3cbfc4a18f98bfaf3b45aa8a53228d19062b0))
+* **contract:** sync the bundled contract with smarter v0.36.6 ([e2cca3c](https://github.com/smarter-sh/smarter-vscode-yaml/commit/e2cca3c3934de50d0ccb474127fecf38b25968f2))
+
 ## [0.3.0](https://github.com/smarter-sh/smarter-vscode-yaml/compare/v0.2.0...v0.3.0) (2026-10-14)
 
 ### Features

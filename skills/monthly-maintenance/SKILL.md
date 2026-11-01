@@ -48,19 +48,19 @@ needs `src/core/docs.ts`, a new cli operation may deserve a command.
 For each area with changes, read the diffs, not only the subjects:
 `git -C ../smarter diff <base>..origin/main -- <path>`.
 
-| Area in the report            | What to check, and what to change here                                                                               |
-| ----------------------------- | -------------------------------------------------------------------------------------------------------------------- |
-| Api contract                  | Synced in step 2                                                                                                     |
-| SAM manifest models           | New `Literal`s (completion picks them up), renamed fields (users' manifests break: say so in the README)             |
-| Cli api views and urls        | Changed responses or errors: `src/core/api.ts` and its fake-fetch tests                                              |
-| Request body parsing          | The platform still reads YAML with PyYAML `safe_load`? If not, ADR-006 and `PARSE_OPTIONS` change                    |
-| Authentication                | The `Authorization: Token` header, a new scheme                                                                      |
-| Resource docs pages           | A page added, renamed or removed: `PAGES` in `src/core/docs.ts` (its test checks every kind has one)                 |
-| The extension's docs page     | Someone edited it on the platform: keep the edit, and keep `README.md` consistent                                    |
-| The console's manifest editor | A feature users now expect here too, e.g. locked fields, a new check                                                 |
-| ADRs                          | A platform ADR that one of `docs/adr/` follows changed                                                               |
-| Skills                        | A platform skill that one here adapts changed (`smarter-git-commits`, `smarter-api-testing`, `smarter-code-quality`) |
-| Lint standard                 | Hooks or `codespell.txt` changed                                                                                     |
+| Area in the report            | What to check, and what to change here                                                                                                                                      |
+| ----------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Api contract                  | Synced in step 2                                                                                                                                                            |
+| SAM manifest models           | New `Literal`s (completion picks them up), renamed fields (users' manifests break: say so in the README)                                                                    |
+| Cli api views and urls        | Changed responses or errors: `src/core/api.ts` and its fake-fetch tests                                                                                                     |
+| Request body parsing          | The platform still reads YAML with PyYAML `safe_load`? If not, ADR-006 and `PARSE_OPTIONS` change                                                                           |
+| Authentication                | The `Authorization: Token` header, a new scheme                                                                                                                             |
+| Resource docs pages           | A page added, renamed or removed: `PAGES` in `src/core/docs.ts` (its test checks every kind has one)                                                                        |
+| The extension's docs page     | Someone edited it on the platform: keep the edit, and keep `README.md` consistent                                                                                           |
+| The console's manifest editor | A feature users now expect here too, e.g. locked fields, a new check                                                                                                        |
+| ADRs                          | A platform ADR that one of `docs/adr/` follows changed                                                                                                                      |
+| Skills                        | A platform skill that one here adapts changed (`smarter-git-commits`, `smarter-api-testing`, `smarter-code-quality`, `smarter-ci-failures`, `smarter-project-repositories`) |
+| Lint standard                 | Hooks or `codespell.txt` changed                                                                                                                                            |
 
 The smarter cli (`../smarter-cli`) is a separate repository. If its config file
 format changed (`cmd/root.go`, `cmd/api.go`), `src/core/cliConfig.ts` follows.

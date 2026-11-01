@@ -6,7 +6,8 @@
 //   node skills/smarter-vscode-testing/scripts/scan-manifests.js [folder ...]
 //
 // The default folders are the Smarter repositories beside this one: ../smarter (its built-in data,
-// test fixtures and docs examples), ../examples and ../smarter-python/tests/data. Prints one line per
+// test fixtures and docs examples), ../example-manifests and ../stackademy (the example data every
+// platform loads), and ../smarter-python/tests/data. A missing folder is skipped. Prints one line per
 // problem, `file: [severity] code message`, then a count per code on stderr. Read-only.
 "use strict";
 
@@ -53,9 +54,12 @@ async function main() {
   const folders =
     process.argv.length > 2
       ? process.argv.slice(2)
-      : ["smarter", "examples", "smarter-python/tests/data"].map((f) =>
-          path.join(parent, f),
-        );
+      : [
+          "smarter",
+          "example-manifests",
+          "stackademy",
+          "smarter-python/tests/data",
+        ].map((f) => path.join(parent, f));
   const counts = {};
   let files = 0;
   for (const folder of folders) {
