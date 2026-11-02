@@ -1936,6 +1936,18 @@ export interface components {
              */
             phone: string | null;
             /**
+             * Slackinvitedat
+             * @description AccountContact.slack_invited_at: when its email address was sent the Slack invitation, if ever.
+             * @default null
+             */
+            slackInvitedAt: string | null;
+            /**
+             * Unsubscribedat
+             * @description AccountContact.unsubscribed_at: when its email address unsubscribed from the welcome and Slack invitation emails, if it did.
+             * @default null
+             */
+            unsubscribedAt: string | null;
+            /**
              * Updatedat
              * @description TimestampedModel.updated_at.
              * @default null
@@ -1946,6 +1958,12 @@ export interface components {
              * @description AccountContact.welcomed: whether it was sent the welcome email.
              */
             welcomed: boolean;
+            /**
+             * Welcomedat
+             * @description AccountContact.welcomed_at: when it was sent the welcome email, if ever.
+             * @default null
+             */
+            welcomedAt: string | null;
         };
         /**
          * AccountApiProfile
