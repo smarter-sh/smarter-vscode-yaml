@@ -409,7 +409,7 @@ export function registerCommands(deps: Deps): vscode.Disposable[] {
       let url = choice.url;
       if (!url) {
         url = await vscode.window.showInputBox({
-          title: "Smarter platform url",
+          title: "Smarter installation url",
           value: current,
           validateInput: (value) => {
             try {

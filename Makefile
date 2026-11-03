@@ -58,7 +58,7 @@ test:
 test-integration:
 	npm run test:integration
 
-# Copy the smarter platform's api contract from ../smarter, and regenerate the api's types
+# Copy the Smarter Project's api contract from ../smarter, and regenerate the api's types
 contracts:
 	scripts/sync-contracts.sh ../smarter $(SMARTER_REF)
 	npm run contract:types
