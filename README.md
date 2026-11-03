@@ -47,7 +47,7 @@ Press `Ctrl+.` (`Cmd+.` on macOS) on a problem to fix it: rename a misspelled ke
 - Hover over a key for its type, whether it is required, its description and default. Hover over the kind for a link to its documentation.
 - In an empty YAML file, type `smarter` to insert the example manifest of any kind.
 
-### Work with your Smarter platform
+### Work with your Smarter installation
 
 With an API key, the extension runs the Smarter cli api's commands for the manifest in the editor:
 
@@ -75,7 +75,7 @@ API keys are kept in VS Code's secret storage (your operating system's keychain)
 
 | Setting                      | Default                  | Description                                                                                                                                                    |
 | ---------------------------- | ------------------------ | -------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `smarterYaml.rootUrl`        | `https://ubc.smarter.sh` | The Smarter platform's url, e.g. `http://localhost:9357` for a local development platform.                                                                     |
+| `smarterYaml.rootUrl`        | `https://ubc.smarter.sh` | The Smarter installation's url, e.g. `http://localhost:9357` for a local development platform.                                                                 |
 | `smarterYaml.schemaSource`   | `platform`               | `platform` reads each kind's schema from the platform, so it matches the version you apply to, and falls back to the bundled schemas. `bundled` works offline. |
 | `smarterYaml.validateOnSave` | `false`                  | Also validate on the platform when you save a manifest. Needs an API key.                                                                                      |
 | `smarterYaml.unknownKeys`    | `warning`                | How to report a key that the schema doesn't declare: `warning`, `information` or `off`.                                                                        |
@@ -86,7 +86,7 @@ The extension's log is in the **Output** panel, under **Smarter**.
 
 ## The Smarter api contract
 
-The extension is built on the api contract that the Smarter platform publishes in [`smarter/smarter/apps/api/v1/contract/`](https://github.com/smarter-sh/smarter/tree/main/smarter/smarter/apps/api/v1/contract), and copies it into [`contract/`](contract/):
+The extension is built on the api contract that the Smarter Project publishes in [`smarter/smarter/apps/api/v1/contract/`](https://github.com/smarter-sh/smarter/tree/main/smarter/smarter/apps/api/v1/contract), and copies it into [`contract/`](contract/):
 
 - `contract/sam/<Kind>.schema.json`: the JSON Schema of every kind, bundled with the extension for offline use. They are the same schemas that each platform serves at `/api/v1/cli/json-schema/<Kind>/`.
 - `contract/sam/<Kind>.example.json`: an example manifest of every kind, for New Manifest and the `smarter` completions.

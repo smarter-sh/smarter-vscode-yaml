@@ -8,7 +8,7 @@ description: Start here for any change to smarter-vscode-yaml, the Smarter Manif
 The extension is to Smarter manifests what Red Hat's YAML extension is to
 Kubernetes manifests, plus the `smarter` cli's commands: it validates a manifest
 as you type, completes and documents its keys, fixes common mistakes, and
-validates, applies, deploys and opens resources on a Smarter platform.
+validates, applies, deploys and opens resources on a Smarter installation.
 
 The platform is [smarter-sh/smarter](https://github.com/smarter-sh/smarter),
 usually checked out beside this repository as `../smarter`. Its local dev server

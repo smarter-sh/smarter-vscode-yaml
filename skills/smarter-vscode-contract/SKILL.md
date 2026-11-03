@@ -1,6 +1,6 @@
 ---
 name: smarter-vscode-contract
-description: Use when the Smarter platform's api contract changes and the extension must follow it - a new, renamed or removed SAM kind, a changed manifest schema or example, a new or changed cli operation in openapi.json - or when a test says the bundled contract is out of date. Covers scripts/sync-contracts.sh, regenerating src/contract/openapi.d.ts, what else a new kind touches (docs links, README), how to read the diff, and which problems belong in the platform rather than here.
+description: Use when the Smarter Project's api contract changes and the extension must follow it - a new, renamed or removed SAM kind, a changed manifest schema or example, a new or changed cli operation in openapi.json - or when a test says the bundled contract is out of date. Covers scripts/sync-contracts.sh, regenerating src/contract/openapi.d.ts, what else a new kind touches (docs links, README), how to read the diff, and which problems belong in the platform rather than here.
 ---
 
 # Following the Platform's Contract

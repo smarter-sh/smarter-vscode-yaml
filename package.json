@@ -171,7 +171,7 @@
           "type": "string",
           "default": "https://ubc.smarter.sh",
           "format": "uri",
-          "markdownDescription": "The url of the Smarter platform that the extension reads schemas from, and validates and applies manifests on. For example `https://ubc.smarter.sh`, or `http://localhost:9357` for a local development platform. Each platform has its own API key: see **Smarter: Set API Key**."
+          "markdownDescription": "The url of the Smarter installation that the extension reads schemas from, and validates and applies manifests on. For example `https://ubc.smarter.sh`, or `http://localhost:9357` for a local development platform. Each platform has its own API key: see **Smarter: Set API Key**."
         },
         "smarterYaml.schemaSource": {
           "type": "string",

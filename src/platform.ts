@@ -1,5 +1,5 @@
 /**
- * The Smarter platform that the extension talks to: its url, its api key, and a status bar item
+ * The Smarter installation that the extension talks to: its url, its api key, and a status bar item
  * that shows which platform and account they are.
  *
  * Api keys are kept in VS Code's SecretStorage (the OS keychain), one per platform url. When there
@@ -33,7 +33,7 @@ export class Platform implements vscode.Disposable {
       vscode.StatusBarAlignment.Right,
       100,
     );
-    this.statusBar.name = "Smarter Platform";
+    this.statusBar.name = "Smarter Installation";
     this.statusBar.command = "smarter.selectPlatform";
     this.disposables.push(
       this.statusBar,
@@ -170,7 +170,7 @@ export class Platform implements vscode.Disposable {
   private render(): void {
     this.statusBar.text = `$(cloud) Smarter: ${this.host}`;
     const tooltip = new vscode.MarkdownString(undefined, true);
-    tooltip.appendMarkdown(`**Smarter platform**: ${this.rootUrl}  \n`);
+    tooltip.appendMarkdown(`**Smarter installation**: ${this.rootUrl}  \n`);
     tooltip.appendMarkdown(
       `cli environment: \`${cliEnvironment(this.rootUrl)}\`  \n`,
     );

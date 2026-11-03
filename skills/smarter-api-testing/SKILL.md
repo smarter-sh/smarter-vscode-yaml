@@ -1,9 +1,9 @@
 ---
 name: smarter-api-testing
-description: Use when the smarter-vscode-yaml extension must be tried against a real Smarter platform - to learn a cli api operation's real request and response before the extension uses it, to confirm a change to the api client, schema store or a platform command end to end, or to reproduce a user's bug. Explains the throwaway api key on the local platform, the probe script, curl for raw responses, trying the extension itself in an Extension Development Host, and cleaning up.
+description: Use when the smarter-vscode-yaml extension must be tried against a real Smarter installation - to learn a cli api operation's real request and response before the extension uses it, to confirm a change to the api client, schema store or a platform command end to end, or to reproduce a user's bug. Explains the throwaway api key on the local platform, the probe script, curl for raw responses, trying the extension itself in an Extension Development Host, and cleaning up.
 ---
 
-# Probing the Smarter Platform
+# Probing a Smarter Installation
 
 The extension's api client is typed by the contract, but types don't prove
 behavior. Before you call an operation for the first time, and after any change

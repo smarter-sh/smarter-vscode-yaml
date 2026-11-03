@@ -11,7 +11,7 @@ and committed. They are developer tooling, like the `Makefile` and
 `.pre-commit-config.yaml`. They aren't packaged into the extension
 (`.vscodeignore` excludes them), and no extension code reads them.
 
-They are adapted from the Smarter platform's skills, in
+They are adapted from the Smarter Project's skills, in
 [smarter-sh/smarter/skills](https://github.com/smarter-sh/smarter/tree/main/skills),
 and follow the Python SDK's adaptation of them, in
 [smarter-sh/smarter-python/skills](https://github.com/smarter-sh/smarter-python/tree/main/skills),

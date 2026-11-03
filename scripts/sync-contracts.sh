@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# Copy the Smarter platform's published api contract into the extension.
+# Copy the Smarter Project's published api contract into the extension.
 #
 # The platform commits its api contract, generated from its Pydantic models, in
 # smarter/smarter/apps/api/v1/contract/:

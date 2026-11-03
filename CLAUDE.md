@@ -5,7 +5,7 @@ Guidance for Claude Code (and other coding agents) working in this repository.
 smarter-vscode-yaml is the Smarter Manifest extension for VS Code (Marketplace
 id `Querium.smarter-manifest`). It validates, completes and documents Smarter's
 YAML manifests (`apiVersion: smarter.sh/v1`) as you type, and validates, applies,
-deploys and opens them on a Smarter platform through its cli api. The platform
+deploys and opens them on a Smarter installation through its cli api. The platform
 is [smarter-sh/smarter](https://github.com/smarter-sh/smarter), usually checked
 out beside this repository as `../smarter`.
 

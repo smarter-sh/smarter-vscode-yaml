@@ -1,6 +1,6 @@
 ---
 name: monthly-maintenance
-description: Use when asked to do smarter-vscode-yaml's monthly maintenance, or either half of it - (1) bring the extension back in step with the Smarter platform by reviewing the platform's commits since the extension last followed it, syncing the api contract, and changing the extension, its tests and docs as needed, and (2) update the npm dependencies, retest, repackage, and, if everything passes, write a "fix" git commit. Covers finding the baseline, reading the delta by area, the dependency rules (the @types/vscode pin, major versions), and the commit messages.
+description: Use when asked to do smarter-vscode-yaml's monthly maintenance, or either half of it - (1) bring the extension back in step with the Smarter Project by reviewing the platform's commits since the extension last followed it, syncing the api contract, and changing the extension, its tests and docs as needed, and (2) update the npm dependencies, retest, repackage, and, if everything passes, write a "fix" git commit. Covers finding the baseline, reading the delta by area, the dependency rules (the @types/vscode pin, major versions), and the commit messages.
 ---
 
 # Monthly Maintenance
