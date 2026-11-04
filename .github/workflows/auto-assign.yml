@@ -4,15 +4,18 @@ on:
     types: [opened]
   pull_request:
     types: [opened]
+permissions:
+  contents: read
 jobs:
   run:
     runs-on: ubuntu-latest
+    timeout-minutes: 5
     permissions:
-      issues: write
-      pull-requests: write
+      issues: write # assigns the new issue
+      pull-requests: write # assigns the new pull request
     steps:
       - name: "Auto-assign issue"
-        uses: pozil/auto-assign-issue@v4.0.1
+        uses: pozil/auto-assign-issue@af6beea6bdf1e8eb373f061c5bc168681fc6d011 # v4.0.1
         with:
           repo-token: ${{ secrets.GITHUB_TOKEN }}
           assignees: lpm0073

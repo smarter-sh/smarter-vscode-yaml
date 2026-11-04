@@ -17,17 +17,21 @@ on:
     - cron: "0 0 * * 3"
   workflow_dispatch:
 
+permissions:
+  contents: read
+
 jobs:
   evaluate_precommit_config:
     runs-on: ubuntu-latest
+    timeout-minutes: 5
 
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4.4.0
         with:
           persist-credentials: false
 
       - name: Cache NPM dependencies
-        uses: actions/cache@v4
+        uses: actions/cache@0057852bfaa89a56745cba8c7296529d2fc39830 # v4.3.0
         with:
           path: ~/.npm
           key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
@@ -35,7 +39,7 @@ jobs:
             ${{ runner.os }}-node
 
       - name: Cache Python dependencies
-        uses: actions/cache@v4
+        uses: actions/cache@0057852bfaa89a56745cba8c7296529d2fc39830 # v4.3.0
         with:
           path: ~/.cache/pip
           key: ${{ runner.os }}-pip-${{ hashFiles('./smarter/requirements/**/*.txt') }}
@@ -43,7 +47,7 @@ jobs:
             ${{ runner.os }}-pip
 
       - name: Set up Python
-        uses: actions/setup-python@v5
+        uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065 # v5.6.0
         with:
           python-version: "3.11"
 
@@ -65,7 +69,7 @@ jobs:
           SITE_PACKAGES_PATH: ${{ env.SITE_PACKAGES_PATH }}
 
       - name: Setup Node.js environment
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4.4.0
         with:
           node-version: "20.9.0"
 
