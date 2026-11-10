@@ -844,6 +844,26 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/llm-clients/{id}/provider-request/": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /**
+         * A chat session's request to the LLM provider
+         * @description The chat session's conversation, as the request body that Smarter sends to the LLM provider's v1/chat/completions api: the model, temperature, token limit and tools of its latest prompt (or the LLMClient's, before its first prompt), and its system, user, assistant and tool messages, without Smarter's own messages, fields, api url or key. It can be sent with curl, or to the Prompt Passthrough api. Only a user who may read the LLMClient receives it, never a deployed LLMClient's own host.
+         */
+        post: operations["llmclient_provider_request"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/llmhosts/": {
         parameters: {
             query?: never;
@@ -3791,6 +3811,12 @@ export interface components {
              */
             defaultModel: string | null;
             /**
+             * Defaultreasoningeffort
+             * @description LLMClient.default_reasoning_effort.
+             * @default null
+             */
+            defaultReasoningEffort: ("none" | "minimal" | "low" | "medium" | "high" | "xhigh") | null;
+            /**
              * Defaultsystemrole
              * @description The system prompt of a new chat session, with the current date and time.
              * @default null
@@ -3913,6 +3939,11 @@ export interface components {
              * @default null
              */
             sandboxUrl: string | null;
+            /**
+             * Staffonly
+             * @description LLMClient.staff_only: whether only the platform's own staff may see and use it.
+             */
+            staffOnly: boolean;
             /**
              * Styles
              * @description LLMClient.styles: the chat's CSS styles.
@@ -6519,6 +6550,81 @@ export interface components {
             updated_at: string | null;
         };
         /**
+         * PromptChatApiProviderRequest
+         * @description The chat session's conversation, as the request body that Smarter sends to the LLM provider.
+         *
+         *     It is a request to an OpenAI-compatible ``v1/chat/completions`` api, without any of Smarter's own
+         *     content: no ``smarter`` or ``smarter_error`` messages, no ``smarter_*`` fields, no api url or key.
+         *     It can be sent with curl, or pasted into the Prompt Passthrough page. Its messages are the whole
+         *     conversation, including the latest answer, so that a prompt engineer can add the next user
+         *     message. Its model, temperature, token limit and tools are those of the session's latest
+         *     prompt, or the LLMClient's, before its first prompt.
+         *
+         *     The provider request api, ``/api/v1/llm-clients/<hashed_id>/provider-request/``, returns it, to
+         *     the workbench only. Fields without a value are left out.
+         */
+        PromptChatApiProviderRequest: {
+            /**
+             * Max Completion Tokens
+             * @default null
+             */
+            max_completion_tokens: number | null;
+            /**
+             * Messages
+             * @description The conversation's system, user, assistant and tool messages.
+             */
+            messages?: components["schemas"]["PromptChatApiMessage"][];
+            /**
+             * Model
+             * @description The LLM's model, e.g. gpt-4o-mini.
+             * @default null
+             */
+            model: string | null;
+            /**
+             * Reasoning Effort
+             * @description none, for a model that requires it with tools.
+             * @default null
+             */
+            reasoning_effort: string | null;
+            /**
+             * Temperature
+             * @default null
+             */
+            temperature: number | null;
+            /**
+             * Tool Choice
+             * @description auto, when the request has tools.
+             * @default null
+             */
+            tool_choice: string | null;
+            /**
+             * Tools
+             * @description The function definitions that the LLM may call, in the OpenAI format.
+             * @default null
+             */
+            tools: {
+                [key: string]: components["schemas"]["JsonValue"];
+            }[] | null;
+        } & {
+            [key: string]: unknown;
+        };
+        /**
+         * PromptChatApiProviderRequestResponse
+         * @description The provider request api's response.
+         */
+        PromptChatApiProviderRequestResponse: {
+            /**
+             * Api
+             * @description The api version, e.g. "smarter.sh/v1".
+             */
+            api: string;
+            data: components["schemas"]["PromptChatApiProviderRequest"];
+            /** @description The journal's command and thing. */
+            metadata?: components["schemas"]["PromptChatApiJournalMetadata"];
+        } & {
+            [key: string]: unknown;
+        };
+        /**
          * PromptChatApiRefusalPart
          * @description An assistant message's refusal part.
          */
@@ -7308,7 +7414,7 @@ export interface components {
             accountNumber: string | null;
             /**
              * Annotations
-             * @description Annotations, as in Kubernetes: a map of keys to string values that clients and integrations attach to a resource for their own purposes, e.g. to associate it with a resource in another system. A key is an optional DNS-subdomain prefix that names its owner, then a slash and a name of one or more slash-separated segments, e.g. 'acme.com/crm-account-id'. The prefix 'smarter.sh' and its subdomains are reserved for the Smarter platform. Values are strings: unquoted YAML scalars such as true, 42 or dates are converted to strings, and structured data belongs in a JSON string. All annotations together are limited to 256 KiB. The list of one-key maps of older manifests, e.g. [{'acme.com/crm-account-id': 'A-10042'}], is also accepted.
+             * @description Annotations, as in Kubernetes: a map of keys to string values that clients and integrations attach to a resource for their own purposes, e.g. to associate it with a resource in another system. A key is an optional DNS-subdomain prefix that names its owner, then a slash and a name of one or more slash-separated segments, e.g. 'acme.com/crm-account-id'. The prefix 'smarter.sh' and its subdomains are reserved for the Smarter Project. Values are strings: unquoted YAML scalars such as true, 42 or dates are converted to strings, and structured data belongs in a JSON string. All annotations together are limited to 256 KiB. The list of one-key maps of older manifests, e.g. [{'acme.com/crm-account-id': 'A-10042'}], is also accepted.
              * @example {
              *       "acme.com/crm-account-id": "A-10042",
              *       "smarter.sh/llmclient/use-case": "customer support"
@@ -7340,7 +7446,7 @@ export interface components {
         };
         /**
          * SAMAccountSpec
-         * @description Smarter API Account Manifest Account.spec
+         * @description Smarter API Account Manifest Account.spec.
          */
         SAMAccountSpec: {
             /** @description Account.spec.config[object]. The configuration for the Account. */
@@ -7348,7 +7454,7 @@ export interface components {
         };
         /**
          * SAMAccountSpecConfig
-         * @description Smarter API Account Manifest Account.spec.config
+         * @description Smarter API Account Manifest Account.spec.config.
          */
         SAMAccountSpecConfig: {
             /**
@@ -7478,7 +7584,7 @@ export interface components {
         };
         /**
          * SAMApiConnectionSpec
-         * @description Smarter API Api Connection Manifest ApiConnection.spec
+         * @description Smarter API Api Connection Manifest ApiConnection.spec.
          */
         SAMApiConnectionSpec: {
             /** @description ApiConnection.spec.selector[obj]: the selector logic to use for the ApiConnection */
@@ -7558,7 +7664,7 @@ export interface components {
         SAMBudgetMetadata: {
             /**
              * Annotations
-             * @description Annotations, as in Kubernetes: a map of keys to string values that clients and integrations attach to a resource for their own purposes, e.g. to associate it with a resource in another system. A key is an optional DNS-subdomain prefix that names its owner, then a slash and a name of one or more slash-separated segments, e.g. 'acme.com/crm-account-id'. The prefix 'smarter.sh' and its subdomains are reserved for the Smarter platform. Values are strings: unquoted YAML scalars such as true, 42 or dates are converted to strings, and structured data belongs in a JSON string. All annotations together are limited to 256 KiB. The list of one-key maps of older manifests, e.g. [{'acme.com/crm-account-id': 'A-10042'}], is also accepted.
+             * @description Annotations, as in Kubernetes: a map of keys to string values that clients and integrations attach to a resource for their own purposes, e.g. to associate it with a resource in another system. A key is an optional DNS-subdomain prefix that names its owner, then a slash and a name of one or more slash-separated segments, e.g. 'acme.com/crm-account-id'. The prefix 'smarter.sh' and its subdomains are reserved for the Smarter Project. Values are strings: unquoted YAML scalars such as true, 42 or dates are converted to strings, and structured data belongs in a JSON string. All annotations together are limited to 256 KiB. The list of one-key maps of older manifests, e.g. [{'acme.com/crm-account-id': 'A-10042'}], is also accepted.
              * @example {
              *       "acme.com/crm-account-id": "A-10042",
              *       "smarter.sh/llmclient/use-case": "customer support"
@@ -7796,7 +7902,7 @@ export interface components {
         SAMConnectionCommonMetadata: {
             /**
              * Annotations
-             * @description Annotations, as in Kubernetes: a map of keys to string values that clients and integrations attach to a resource for their own purposes, e.g. to associate it with a resource in another system. A key is an optional DNS-subdomain prefix that names its owner, then a slash and a name of one or more slash-separated segments, e.g. 'acme.com/crm-account-id'. The prefix 'smarter.sh' and its subdomains are reserved for the Smarter platform. Values are strings: unquoted YAML scalars such as true, 42 or dates are converted to strings, and structured data belongs in a JSON string. All annotations together are limited to 256 KiB. The list of one-key maps of older manifests, e.g. [{'acme.com/crm-account-id': 'A-10042'}], is also accepted.
+             * @description Annotations, as in Kubernetes: a map of keys to string values that clients and integrations attach to a resource for their own purposes, e.g. to associate it with a resource in another system. A key is an optional DNS-subdomain prefix that names its owner, then a slash and a name of one or more slash-separated segments, e.g. 'acme.com/crm-account-id'. The prefix 'smarter.sh' and its subdomains are reserved for the Smarter Project. Values are strings: unquoted YAML scalars such as true, 42 or dates are converted to strings, and structured data belongs in a JSON string. All annotations together are limited to 256 KiB. The list of one-key maps of older manifests, e.g. [{'acme.com/crm-account-id': 'A-10042'}], is also accepted.
              * @example {
              *       "acme.com/crm-account-id": "A-10042",
              *       "smarter.sh/llmclient/use-case": "customer support"
@@ -7897,7 +8003,7 @@ export interface components {
         SAMCustomDomainMetadata: {
             /**
              * Annotations
-             * @description Annotations, as in Kubernetes: a map of keys to string values that clients and integrations attach to a resource for their own purposes, e.g. to associate it with a resource in another system. A key is an optional DNS-subdomain prefix that names its owner, then a slash and a name of one or more slash-separated segments, e.g. 'acme.com/crm-account-id'. The prefix 'smarter.sh' and its subdomains are reserved for the Smarter platform. Values are strings: unquoted YAML scalars such as true, 42 or dates are converted to strings, and structured data belongs in a JSON string. All annotations together are limited to 256 KiB. The list of one-key maps of older manifests, e.g. [{'acme.com/crm-account-id': 'A-10042'}], is also accepted.
+             * @description Annotations, as in Kubernetes: a map of keys to string values that clients and integrations attach to a resource for their own purposes, e.g. to associate it with a resource in another system. A key is an optional DNS-subdomain prefix that names its owner, then a slash and a name of one or more slash-separated segments, e.g. 'acme.com/crm-account-id'. The prefix 'smarter.sh' and its subdomains are reserved for the Smarter Project. Values are strings: unquoted YAML scalars such as true, 42 or dates are converted to strings, and structured data belongs in a JSON string. All annotations together are limited to 256 KiB. The list of one-key maps of older manifests, e.g. [{'acme.com/crm-account-id': 'A-10042'}], is also accepted.
              * @example {
              *       "acme.com/crm-account-id": "A-10042",
              *       "smarter.sh/llmclient/use-case": "customer support"
@@ -8066,7 +8172,7 @@ export interface components {
         SAMGuardrailMetadata: {
             /**
              * Annotations
-             * @description Annotations, as in Kubernetes: a map of keys to string values that clients and integrations attach to a resource for their own purposes, e.g. to associate it with a resource in another system. A key is an optional DNS-subdomain prefix that names its owner, then a slash and a name of one or more slash-separated segments, e.g. 'acme.com/crm-account-id'. The prefix 'smarter.sh' and its subdomains are reserved for the Smarter platform. Values are strings: unquoted YAML scalars such as true, 42 or dates are converted to strings, and structured data belongs in a JSON string. All annotations together are limited to 256 KiB. The list of one-key maps of older manifests, e.g. [{'acme.com/crm-account-id': 'A-10042'}], is also accepted.
+             * @description Annotations, as in Kubernetes: a map of keys to string values that clients and integrations attach to a resource for their own purposes, e.g. to associate it with a resource in another system. A key is an optional DNS-subdomain prefix that names its owner, then a slash and a name of one or more slash-separated segments, e.g. 'acme.com/crm-account-id'. The prefix 'smarter.sh' and its subdomains are reserved for the Smarter Project. Values are strings: unquoted YAML scalars such as true, 42 or dates are converted to strings, and structured data belongs in a JSON string. All annotations together are limited to 256 KiB. The list of one-key maps of older manifests, e.g. [{'acme.com/crm-account-id': 'A-10042'}], is also accepted.
              * @example {
              *       "acme.com/crm-account-id": "A-10042",
              *       "smarter.sh/llmclient/use-case": "customer support"
@@ -8612,7 +8718,7 @@ export interface components {
         SAMLLMClientMetadata: {
             /**
              * Annotations
-             * @description Annotations, as in Kubernetes: a map of keys to string values that clients and integrations attach to a resource for their own purposes, e.g. to associate it with a resource in another system. A key is an optional DNS-subdomain prefix that names its owner, then a slash and a name of one or more slash-separated segments, e.g. 'acme.com/crm-account-id'. The prefix 'smarter.sh' and its subdomains are reserved for the Smarter platform. Values are strings: unquoted YAML scalars such as true, 42 or dates are converted to strings, and structured data belongs in a JSON string. All annotations together are limited to 256 KiB. The list of one-key maps of older manifests, e.g. [{'acme.com/crm-account-id': 'A-10042'}], is also accepted.
+             * @description Annotations, as in Kubernetes: a map of keys to string values that clients and integrations attach to a resource for their own purposes, e.g. to associate it with a resource in another system. A key is an optional DNS-subdomain prefix that names its owner, then a slash and a name of one or more slash-separated segments, e.g. 'acme.com/crm-account-id'. The prefix 'smarter.sh' and its subdomains are reserved for the Smarter Project. Values are strings: unquoted YAML scalars such as true, 42 or dates are converted to strings, and structured data belongs in a JSON string. All annotations together are limited to 256 KiB. The list of one-key maps of older manifests, e.g. [{'acme.com/crm-account-id': 'A-10042'}], is also accepted.
              * @example {
              *       "acme.com/crm-account-id": "A-10042",
              *       "smarter.sh/llmclient/use-case": "customer support"
@@ -8649,7 +8755,7 @@ export interface components {
         SAMLLMClientSpec: {
             /**
              * Apikey
-             * @description LLMClient.spec.apiKey[str]. Optional. The name of the API key that this llmclient uses for authentication. Example: 'my_api_key'. API keys are only necessary for llmclients that are not public facing. This is the name of the API key that is used to authenticate the llmclient with the Smarter API. API keys are issued by a Smarter platform administrator and are used to authenticate the llmclient with the Smarter API.
+             * @description LLMClient.spec.apiKey[str]. Optional. The name of the API key that this llmclient uses for authentication. Example: 'my_api_key'. API keys are only necessary for llmclients that are not public facing. This is the name of the API key that is used to authenticate the llmclient with the Smarter API. API keys are issued by an administrator of the Smarter installation and are used to authenticate the llmclient with the Smarter API.
              * @default null
              */
             apiKey: string | null;
@@ -8675,7 +8781,7 @@ export interface components {
             mcpClients: string[] | null;
             /**
              * Plugins
-             * @description LLMClient.spec.searchTerms[list]. Optional. The Plugins to add to the LLMClient. Plugins are a proprietary extensibility model for tool calling and are not the same as OpenAI plugins. See https://docs.smarter.sh/plugins/ for more information.
+             * @description LLMClient.spec.searchTerms[list]. Optional. The Plugins to add to the LLMClient. Plugins are a proprietary extensibility model for tool calling and are not the same as OpenAI plugins. See https://docs.smarter.sh/smarter-resources/smarter-llmtool.html for more information.
              * @default null
              */
             plugins: string[] | null;
@@ -8695,7 +8801,7 @@ export interface components {
             /** @description LLMClient.spec.configuration.prompt[object]. Required. The LLMClient's LLM provider, model and system prompt, the text of its chat, and where it is published. */
             prompt: components["schemas"]["SAMLLMClientSpecConfigPrompt"];
             /**
-             * @description LLMClient.spec.configuration.styles[object]. Optional. The look of the LLMClient's chat, in the Smarter workbench and on every page that embeds it: its logo, background image, fonts and colors. See https://docs.smarter.sh/en/latest/smarter-resources/llmclient/styles.html
+             * @description LLMClient.spec.configuration.styles[object]. Optional. The look of the LLMClient's chat, in the Smarter workbench and on every page that embeds it: its logo, background image, fonts and colors. See https://docs.smarter.sh/smarter-resources/llmclient/styles.html
              * @default null
              */
             styles: components["schemas"]["SAMLLMClientSpecConfigStyles"] | null;
@@ -8710,7 +8816,7 @@ export interface components {
         SAMLLMClientSpecConfigPrompt: {
             /**
              * Allowedorigins
-             * @description LLMClient.spec.configuration.prompt.allowed_origins[list[str]]. Optional. The origins of the web pages that may call this llmclient from a browser, with the @smarter.sh/ui-chat React component, in addition to those that the Smarter platform allows. An origin is a scheme, a host and an optional port, without a path or a wildcard. Example: ['https://www.example.com', 'http://localhost:5173'].
+             * @description LLMClient.spec.configuration.prompt.allowed_origins[list[str]]. Optional. The origins of the web pages that may call this llmclient from a browser, with the @smarter.sh/ui-chat React component, in addition to those that the Smarter installation allows. An origin is a scheme, a host and an optional port, without a path or a wildcard. Example: ['https://www.example.com', 'http://localhost:5173'].
              */
             allowedOrigins?: string[] | null;
             /**
@@ -8774,6 +8880,12 @@ export interface components {
              */
             defaultModel: string | null;
             /**
+             * Defaultreasoningeffort
+             * @description LLMClient.spec.configuration.prompt.default_reasoning_effort[str]. Optional. How much a reasoning model reasons before it answers: none, minimal, low, medium, high or xhigh. When it is not set, the model reasons at its own default effort. Each model supports some of these values, and models that don't reason, e.g. gpt-4o, support none of them: an effort that the model doesn't support is left out, with a warning in the chat's sandbox mode. Some models use function tools only with none, e.g. gpt-6-luna, so the requests that offer the llmclient's tools use none, and the final answer uses this effort. A reasoning model ignores defaultTemperature at any effort but none. Example: high.
+             * @default null
+             */
+            defaultReasoningEffort: ("none" | "minimal" | "low" | "medium" | "high" | "xhigh") | null;
+            /**
              * Defaultsystemrole
              * @description LLMClient.spec.configuration.prompt.default_system_role[str]. Optional. The default system prompt to use for the llmclient. This defaults to the following value:
              *     You are a helpful llmclient. When given the opportunity to utilize function calling, you should always do so. This will allow you to provide the best possible responses to the user. If you are unable to provide a response, you should prompt the user for more information. If you are still unable to provide a response, you should inform the user that you are unable to help them at this time..
@@ -8800,6 +8912,12 @@ export interface components {
              * @default null
              */
             provider: string | null;
+            /**
+             * Staffonly
+             * @description LLMClient.spec.configuration.prompt.staff_only[bool]. Optional. Whether only the platform's own staff may see and use the llmclient: the staff users of the Smarter account that runs the platform, not the admins of other accounts. Defaults to False. A staff-only llmclient is in no other user's lists, workbench or apis, including at its deployed url, and only the platform's staff may apply one. Use it for an llmclient whose tools read what only staff may see, e.g. one with the smarter_operations MCPClient, of the MCPServer's staff-only tools.
+             * @default false
+             */
+            staffOnly: boolean;
             /**
              * Subdomain
              * @description LLMClient.spec.configuration.prompt.subdomain[str]. Optional. The subdomain to use for the llmclient for published public urls. Example: https://<subdomain>.3141-5926-5359.api.example.com
@@ -9292,7 +9410,7 @@ export interface components {
         SAMLLMHostComputeMetadata: {
             /**
              * Annotations
-             * @description Annotations, as in Kubernetes: a map of keys to string values that clients and integrations attach to a resource for their own purposes, e.g. to associate it with a resource in another system. A key is an optional DNS-subdomain prefix that names its owner, then a slash and a name of one or more slash-separated segments, e.g. 'acme.com/crm-account-id'. The prefix 'smarter.sh' and its subdomains are reserved for the Smarter platform. Values are strings: unquoted YAML scalars such as true, 42 or dates are converted to strings, and structured data belongs in a JSON string. All annotations together are limited to 256 KiB. The list of one-key maps of older manifests, e.g. [{'acme.com/crm-account-id': 'A-10042'}], is also accepted.
+             * @description Annotations, as in Kubernetes: a map of keys to string values that clients and integrations attach to a resource for their own purposes, e.g. to associate it with a resource in another system. A key is an optional DNS-subdomain prefix that names its owner, then a slash and a name of one or more slash-separated segments, e.g. 'acme.com/crm-account-id'. The prefix 'smarter.sh' and its subdomains are reserved for the Smarter Project. Values are strings: unquoted YAML scalars such as true, 42 or dates are converted to strings, and structured data belongs in a JSON string. All annotations together are limited to 256 KiB. The list of one-key maps of older manifests, e.g. [{'acme.com/crm-account-id': 'A-10042'}], is also accepted.
              * @example {
              *       "acme.com/crm-account-id": "A-10042",
              *       "smarter.sh/llmclient/use-case": "customer support"
@@ -9598,7 +9716,7 @@ export interface components {
         SAMLLMHostMetadata: {
             /**
              * Annotations
-             * @description Annotations, as in Kubernetes: a map of keys to string values that clients and integrations attach to a resource for their own purposes, e.g. to associate it with a resource in another system. A key is an optional DNS-subdomain prefix that names its owner, then a slash and a name of one or more slash-separated segments, e.g. 'acme.com/crm-account-id'. The prefix 'smarter.sh' and its subdomains are reserved for the Smarter platform. Values are strings: unquoted YAML scalars such as true, 42 or dates are converted to strings, and structured data belongs in a JSON string. All annotations together are limited to 256 KiB. The list of one-key maps of older manifests, e.g. [{'acme.com/crm-account-id': 'A-10042'}], is also accepted.
+             * @description Annotations, as in Kubernetes: a map of keys to string values that clients and integrations attach to a resource for their own purposes, e.g. to associate it with a resource in another system. A key is an optional DNS-subdomain prefix that names its owner, then a slash and a name of one or more slash-separated segments, e.g. 'acme.com/crm-account-id'. The prefix 'smarter.sh' and its subdomains are reserved for the Smarter Project. Values are strings: unquoted YAML scalars such as true, 42 or dates are converted to strings, and structured data belongs in a JSON string. All annotations together are limited to 256 KiB. The list of one-key maps of older manifests, e.g. [{'acme.com/crm-account-id': 'A-10042'}], is also accepted.
              * @example {
              *       "acme.com/crm-account-id": "A-10042",
              *       "smarter.sh/llmclient/use-case": "customer support"
@@ -10071,7 +10189,7 @@ export interface components {
         SAMMCPClientMetadata: {
             /**
              * Annotations
-             * @description Annotations, as in Kubernetes: a map of keys to string values that clients and integrations attach to a resource for their own purposes, e.g. to associate it with a resource in another system. A key is an optional DNS-subdomain prefix that names its owner, then a slash and a name of one or more slash-separated segments, e.g. 'acme.com/crm-account-id'. The prefix 'smarter.sh' and its subdomains are reserved for the Smarter platform. Values are strings: unquoted YAML scalars such as true, 42 or dates are converted to strings, and structured data belongs in a JSON string. All annotations together are limited to 256 KiB. The list of one-key maps of older manifests, e.g. [{'acme.com/crm-account-id': 'A-10042'}], is also accepted.
+             * @description Annotations, as in Kubernetes: a map of keys to string values that clients and integrations attach to a resource for their own purposes, e.g. to associate it with a resource in another system. A key is an optional DNS-subdomain prefix that names its owner, then a slash and a name of one or more slash-separated segments, e.g. 'acme.com/crm-account-id'. The prefix 'smarter.sh' and its subdomains are reserved for the Smarter Project. Values are strings: unquoted YAML scalars such as true, 42 or dates are converted to strings, and structured data belongs in a JSON string. All annotations together are limited to 256 KiB. The list of one-key maps of older manifests, e.g. [{'acme.com/crm-account-id': 'A-10042'}], is also accepted.
              * @example {
              *       "acme.com/crm-account-id": "A-10042",
              *       "smarter.sh/llmclient/use-case": "customer support"
@@ -10349,7 +10467,7 @@ export interface components {
         SAMOrchestratorMetadata: {
             /**
              * Annotations
-             * @description Annotations, as in Kubernetes: a map of keys to string values that clients and integrations attach to a resource for their own purposes, e.g. to associate it with a resource in another system. A key is an optional DNS-subdomain prefix that names its owner, then a slash and a name of one or more slash-separated segments, e.g. 'acme.com/crm-account-id'. The prefix 'smarter.sh' and its subdomains are reserved for the Smarter platform. Values are strings: unquoted YAML scalars such as true, 42 or dates are converted to strings, and structured data belongs in a JSON string. All annotations together are limited to 256 KiB. The list of one-key maps of older manifests, e.g. [{'acme.com/crm-account-id': 'A-10042'}], is also accepted.
+             * @description Annotations, as in Kubernetes: a map of keys to string values that clients and integrations attach to a resource for their own purposes, e.g. to associate it with a resource in another system. A key is an optional DNS-subdomain prefix that names its owner, then a slash and a name of one or more slash-separated segments, e.g. 'acme.com/crm-account-id'. The prefix 'smarter.sh' and its subdomains are reserved for the Smarter Project. Values are strings: unquoted YAML scalars such as true, 42 or dates are converted to strings, and structured data belongs in a JSON string. All annotations together are limited to 256 KiB. The list of one-key maps of older manifests, e.g. [{'acme.com/crm-account-id': 'A-10042'}], is also accepted.
              * @example {
              *       "acme.com/crm-account-id": "A-10042",
              *       "smarter.sh/llmclient/use-case": "customer support"
@@ -10465,7 +10583,7 @@ export interface components {
         SAMPluginCommonMetadata: {
             /**
              * Annotations
-             * @description Annotations, as in Kubernetes: a map of keys to string values that clients and integrations attach to a resource for their own purposes, e.g. to associate it with a resource in another system. A key is an optional DNS-subdomain prefix that names its owner, then a slash and a name of one or more slash-separated segments, e.g. 'acme.com/crm-account-id'. The prefix 'smarter.sh' and its subdomains are reserved for the Smarter platform. Values are strings: unquoted YAML scalars such as true, 42 or dates are converted to strings, and structured data belongs in a JSON string. All annotations together are limited to 256 KiB. The list of one-key maps of older manifests, e.g. [{'acme.com/crm-account-id': 'A-10042'}], is also accepted.
+             * @description Annotations, as in Kubernetes: a map of keys to string values that clients and integrations attach to a resource for their own purposes, e.g. to associate it with a resource in another system. A key is an optional DNS-subdomain prefix that names its owner, then a slash and a name of one or more slash-separated segments, e.g. 'acme.com/crm-account-id'. The prefix 'smarter.sh' and its subdomains are reserved for the Smarter Project. Values are strings: unquoted YAML scalars such as true, 42 or dates are converted to strings, and structured data belongs in a JSON string. All annotations together are limited to 256 KiB. The list of one-key maps of older manifests, e.g. [{'acme.com/crm-account-id': 'A-10042'}], is also accepted.
              * @example {
              *       "acme.com/crm-account-id": "A-10042",
              *       "smarter.sh/llmclient/use-case": "customer support"
@@ -10649,7 +10767,7 @@ export interface components {
         SAMPromptMetadata: {
             /**
              * Annotations
-             * @description Annotations, as in Kubernetes: a map of keys to string values that clients and integrations attach to a resource for their own purposes, e.g. to associate it with a resource in another system. A key is an optional DNS-subdomain prefix that names its owner, then a slash and a name of one or more slash-separated segments, e.g. 'acme.com/crm-account-id'. The prefix 'smarter.sh' and its subdomains are reserved for the Smarter platform. Values are strings: unquoted YAML scalars such as true, 42 or dates are converted to strings, and structured data belongs in a JSON string. All annotations together are limited to 256 KiB. The list of one-key maps of older manifests, e.g. [{'acme.com/crm-account-id': 'A-10042'}], is also accepted.
+             * @description Annotations, as in Kubernetes: a map of keys to string values that clients and integrations attach to a resource for their own purposes, e.g. to associate it with a resource in another system. A key is an optional DNS-subdomain prefix that names its owner, then a slash and a name of one or more slash-separated segments, e.g. 'acme.com/crm-account-id'. The prefix 'smarter.sh' and its subdomains are reserved for the Smarter Project. Values are strings: unquoted YAML scalars such as true, 42 or dates are converted to strings, and structured data belongs in a JSON string. All annotations together are limited to 256 KiB. The list of one-key maps of older manifests, e.g. [{'acme.com/crm-account-id': 'A-10042'}], is also accepted.
              * @example {
              *       "acme.com/crm-account-id": "A-10042",
              *       "smarter.sh/llmclient/use-case": "customer support"
@@ -10776,7 +10894,7 @@ export interface components {
         SAMProviderMetadata: {
             /**
              * Annotations
-             * @description Annotations, as in Kubernetes: a map of keys to string values that clients and integrations attach to a resource for their own purposes, e.g. to associate it with a resource in another system. A key is an optional DNS-subdomain prefix that names its owner, then a slash and a name of one or more slash-separated segments, e.g. 'acme.com/crm-account-id'. The prefix 'smarter.sh' and its subdomains are reserved for the Smarter platform. Values are strings: unquoted YAML scalars such as true, 42 or dates are converted to strings, and structured data belongs in a JSON string. All annotations together are limited to 256 KiB. The list of one-key maps of older manifests, e.g. [{'acme.com/crm-account-id': 'A-10042'}], is also accepted.
+             * @description Annotations, as in Kubernetes: a map of keys to string values that clients and integrations attach to a resource for their own purposes, e.g. to associate it with a resource in another system. A key is an optional DNS-subdomain prefix that names its owner, then a slash and a name of one or more slash-separated segments, e.g. 'acme.com/crm-account-id'. The prefix 'smarter.sh' and its subdomains are reserved for the Smarter Project. Values are strings: unquoted YAML scalars such as true, 42 or dates are converted to strings, and structured data belongs in a JSON string. All annotations together are limited to 256 KiB. The list of one-key maps of older manifests, e.g. [{'acme.com/crm-account-id': 'A-10042'}], is also accepted.
              * @example {
              *       "acme.com/crm-account-id": "A-10042",
              *       "smarter.sh/llmclient/use-case": "customer support"
@@ -11013,7 +11131,7 @@ export interface components {
         SAMProxyMetadata: {
             /**
              * Annotations
-             * @description Annotations, as in Kubernetes: a map of keys to string values that clients and integrations attach to a resource for their own purposes, e.g. to associate it with a resource in another system. A key is an optional DNS-subdomain prefix that names its owner, then a slash and a name of one or more slash-separated segments, e.g. 'acme.com/crm-account-id'. The prefix 'smarter.sh' and its subdomains are reserved for the Smarter platform. Values are strings: unquoted YAML scalars such as true, 42 or dates are converted to strings, and structured data belongs in a JSON string. All annotations together are limited to 256 KiB. The list of one-key maps of older manifests, e.g. [{'acme.com/crm-account-id': 'A-10042'}], is also accepted.
+             * @description Annotations, as in Kubernetes: a map of keys to string values that clients and integrations attach to a resource for their own purposes, e.g. to associate it with a resource in another system. A key is an optional DNS-subdomain prefix that names its owner, then a slash and a name of one or more slash-separated segments, e.g. 'acme.com/crm-account-id'. The prefix 'smarter.sh' and its subdomains are reserved for the Smarter Project. Values are strings: unquoted YAML scalars such as true, 42 or dates are converted to strings, and structured data belongs in a JSON string. All annotations together are limited to 256 KiB. The list of one-key maps of older manifests, e.g. [{'acme.com/crm-account-id': 'A-10042'}], is also accepted.
              * @example {
              *       "acme.com/crm-account-id": "A-10042",
              *       "smarter.sh/llmclient/use-case": "customer support"
@@ -11201,7 +11319,7 @@ export interface components {
         SAMSecretMetadata: {
             /**
              * Annotations
-             * @description Annotations, as in Kubernetes: a map of keys to string values that clients and integrations attach to a resource for their own purposes, e.g. to associate it with a resource in another system. A key is an optional DNS-subdomain prefix that names its owner, then a slash and a name of one or more slash-separated segments, e.g. 'acme.com/crm-account-id'. The prefix 'smarter.sh' and its subdomains are reserved for the Smarter platform. Values are strings: unquoted YAML scalars such as true, 42 or dates are converted to strings, and structured data belongs in a JSON string. All annotations together are limited to 256 KiB. The list of one-key maps of older manifests, e.g. [{'acme.com/crm-account-id': 'A-10042'}], is also accepted.
+             * @description Annotations, as in Kubernetes: a map of keys to string values that clients and integrations attach to a resource for their own purposes, e.g. to associate it with a resource in another system. A key is an optional DNS-subdomain prefix that names its owner, then a slash and a name of one or more slash-separated segments, e.g. 'acme.com/crm-account-id'. The prefix 'smarter.sh' and its subdomains are reserved for the Smarter Project. Values are strings: unquoted YAML scalars such as true, 42 or dates are converted to strings, and structured data belongs in a JSON string. All annotations together are limited to 256 KiB. The list of one-key maps of older manifests, e.g. [{'acme.com/crm-account-id': 'A-10042'}], is also accepted.
              * @example {
              *       "acme.com/crm-account-id": "A-10042",
              *       "smarter.sh/llmclient/use-case": "customer support"
@@ -11233,7 +11351,7 @@ export interface components {
         };
         /**
          * SAMSecretSpec
-         * @description Smarter API Secret Manifest Secret.spec
+         * @description Smarter API Secret Manifest Secret.spec.
          */
         SAMSecretSpec: {
             /** @description Secret.spec.config[object]. The configuration for the Secret. */
@@ -11241,7 +11359,7 @@ export interface components {
         };
         /**
          * SAMSecretSpecConfig
-         * @description Smarter API Secret Manifest Secret.spec.config
+         * @description Smarter API Secret Manifest Secret.spec.config.
          */
         SAMSecretSpecConfig: {
             /**
@@ -11340,7 +11458,7 @@ export interface components {
         };
         /**
          * SAMSmarterAuthToken
-         * @description Smarter API Manifest - SmarterAuthToken
+         * @description Smarter API Manifest - SmarterAuthToken.
          */
         SAMSmarterAuthToken: {
             /**
@@ -11370,7 +11488,7 @@ export interface components {
         SAMSmarterAuthTokenMetadata: {
             /**
              * Annotations
-             * @description Annotations, as in Kubernetes: a map of keys to string values that clients and integrations attach to a resource for their own purposes, e.g. to associate it with a resource in another system. A key is an optional DNS-subdomain prefix that names its owner, then a slash and a name of one or more slash-separated segments, e.g. 'acme.com/crm-account-id'. The prefix 'smarter.sh' and its subdomains are reserved for the Smarter platform. Values are strings: unquoted YAML scalars such as true, 42 or dates are converted to strings, and structured data belongs in a JSON string. All annotations together are limited to 256 KiB. The list of one-key maps of older manifests, e.g. [{'acme.com/crm-account-id': 'A-10042'}], is also accepted.
+             * @description Annotations, as in Kubernetes: a map of keys to string values that clients and integrations attach to a resource for their own purposes, e.g. to associate it with a resource in another system. A key is an optional DNS-subdomain prefix that names its owner, then a slash and a name of one or more slash-separated segments, e.g. 'acme.com/crm-account-id'. The prefix 'smarter.sh' and its subdomains are reserved for the Smarter Project. Values are strings: unquoted YAML scalars such as true, 42 or dates are converted to strings, and structured data belongs in a JSON string. All annotations together are limited to 256 KiB. The list of one-key maps of older manifests, e.g. [{'acme.com/crm-account-id': 'A-10042'}], is also accepted.
              * @example {
              *       "acme.com/crm-account-id": "A-10042",
              *       "smarter.sh/llmclient/use-case": "customer support"
@@ -11402,7 +11520,7 @@ export interface components {
         };
         /**
          * SAMSmarterAuthTokenSpec
-         * @description Smarter API SmarterAuthToken Manifest SmarterAuthToken.spec
+         * @description Smarter API SmarterAuthToken Manifest SmarterAuthToken.spec.
          */
         SAMSmarterAuthTokenSpec: {
             /** @description SmarterAuthToken.spec.config[object]. The configuration for the SmarterAuthToken. */
@@ -11410,7 +11528,7 @@ export interface components {
         };
         /**
          * SAMSmarterAuthTokenSpecConfig
-         * @description Smarter API SmarterAuthToken Manifest SmarterAuthToken.spec.config
+         * @description Smarter API SmarterAuthToken Manifest SmarterAuthToken.spec.config.
          */
         SAMSmarterAuthTokenSpecConfig: {
             /**
@@ -11487,7 +11605,7 @@ export interface components {
         };
         /**
          * SAMSqlConnectionSpec
-         * @description Smarter API Sql Connection Manifest Connection.spec
+         * @description Smarter API Sql Connection Manifest Connection.spec.
          */
         SAMSqlConnectionSpec: {
             /** @description SqlConnection.spec.selector[obj]: the selector logic to use for the SqlConnection */
@@ -11592,7 +11710,7 @@ export interface components {
         SAMUserMetadata: {
             /**
              * Annotations
-             * @description Annotations, as in Kubernetes: a map of keys to string values that clients and integrations attach to a resource for their own purposes, e.g. to associate it with a resource in another system. A key is an optional DNS-subdomain prefix that names its owner, then a slash and a name of one or more slash-separated segments, e.g. 'acme.com/crm-account-id'. The prefix 'smarter.sh' and its subdomains are reserved for the Smarter platform. Values are strings: unquoted YAML scalars such as true, 42 or dates are converted to strings, and structured data belongs in a JSON string. All annotations together are limited to 256 KiB. The list of one-key maps of older manifests, e.g. [{'acme.com/crm-account-id': 'A-10042'}], is also accepted.
+             * @description Annotations, as in Kubernetes: a map of keys to string values that clients and integrations attach to a resource for their own purposes, e.g. to associate it with a resource in another system. A key is an optional DNS-subdomain prefix that names its owner, then a slash and a name of one or more slash-separated segments, e.g. 'acme.com/crm-account-id'. The prefix 'smarter.sh' and its subdomains are reserved for the Smarter Project. Values are strings: unquoted YAML scalars such as true, 42 or dates are converted to strings, and structured data belongs in a JSON string. All annotations together are limited to 256 KiB. The list of one-key maps of older manifests, e.g. [{'acme.com/crm-account-id': 'A-10042'}], is also accepted.
              * @example {
              *       "acme.com/crm-account-id": "A-10042",
              *       "smarter.sh/llmclient/use-case": "customer support"
@@ -11740,7 +11858,7 @@ export interface components {
         SAMVectorsearchMetadata: {
             /**
              * Annotations
-             * @description Annotations, as in Kubernetes: a map of keys to string values that clients and integrations attach to a resource for their own purposes, e.g. to associate it with a resource in another system. A key is an optional DNS-subdomain prefix that names its owner, then a slash and a name of one or more slash-separated segments, e.g. 'acme.com/crm-account-id'. The prefix 'smarter.sh' and its subdomains are reserved for the Smarter platform. Values are strings: unquoted YAML scalars such as true, 42 or dates are converted to strings, and structured data belongs in a JSON string. All annotations together are limited to 256 KiB. The list of one-key maps of older manifests, e.g. [{'acme.com/crm-account-id': 'A-10042'}], is also accepted.
+             * @description Annotations, as in Kubernetes: a map of keys to string values that clients and integrations attach to a resource for their own purposes, e.g. to associate it with a resource in another system. A key is an optional DNS-subdomain prefix that names its owner, then a slash and a name of one or more slash-separated segments, e.g. 'acme.com/crm-account-id'. The prefix 'smarter.sh' and its subdomains are reserved for the Smarter Project. Values are strings: unquoted YAML scalars such as true, 42 or dates are converted to strings, and structured data belongs in a JSON string. All annotations together are limited to 256 KiB. The list of one-key maps of older manifests, e.g. [{'acme.com/crm-account-id': 'A-10042'}], is also accepted.
              * @example {
              *       "acme.com/crm-account-id": "A-10042",
              *       "smarter.sh/llmclient/use-case": "customer support"
@@ -12003,7 +12121,7 @@ export interface components {
         SAMVectorstoreMetadata: {
             /**
              * Annotations
-             * @description Annotations, as in Kubernetes: a map of keys to string values that clients and integrations attach to a resource for their own purposes, e.g. to associate it with a resource in another system. A key is an optional DNS-subdomain prefix that names its owner, then a slash and a name of one or more slash-separated segments, e.g. 'acme.com/crm-account-id'. The prefix 'smarter.sh' and its subdomains are reserved for the Smarter platform. Values are strings: unquoted YAML scalars such as true, 42 or dates are converted to strings, and structured data belongs in a JSON string. All annotations together are limited to 256 KiB. The list of one-key maps of older manifests, e.g. [{'acme.com/crm-account-id': 'A-10042'}], is also accepted.
+             * @description Annotations, as in Kubernetes: a map of keys to string values that clients and integrations attach to a resource for their own purposes, e.g. to associate it with a resource in another system. A key is an optional DNS-subdomain prefix that names its owner, then a slash and a name of one or more slash-separated segments, e.g. 'acme.com/crm-account-id'. The prefix 'smarter.sh' and its subdomains are reserved for the Smarter Project. Values are strings: unquoted YAML scalars such as true, 42 or dates are converted to strings, and structured data belongs in a JSON string. All annotations together are limited to 256 KiB. The list of one-key maps of older manifests, e.g. [{'acme.com/crm-account-id': 'A-10042'}], is also accepted.
              * @example {
              *       "acme.com/crm-account-id": "A-10042",
              *       "smarter.sh/llmclient/use-case": "customer support"
@@ -14746,6 +14864,45 @@ export interface operations {
                 };
                 content: {
                     "application/json": components["schemas"]["LLMClientPromptErrorResponse"];
+                };
+            };
+        };
+    };
+    llmclient_provider_request: {
+        parameters: {
+            query?: {
+                /** @description The chat session's key. The platform looks for it in this parameter, then in the request body, a header and a cookie, in that order. */
+                session_key?: string;
+            };
+            header?: never;
+            path: {
+                /** @description The LLMClient's numeric id, e.g. 12, or its hashed id, e.g. rMTAwMDAxMgx. */
+                id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: {
+            content: {
+                "application/json": components["schemas"]["PromptChatApiConfigRequest"];
+            };
+        };
+        responses: {
+            /** @description The request body. */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["PromptChatApiProviderRequestResponse"];
+                };
+            };
+            /** @description An error, e.g. 404 for an LLMClient that does not exist, or that the user may not read. */
+            default: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["PromptChatApiErrorResponse"];
                 };
             };
         };
