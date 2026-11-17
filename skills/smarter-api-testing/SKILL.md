@@ -20,7 +20,7 @@ throwaway resources that you created.
 ## 1. Create a throwaway key
 
 ```console
-docker exec smarter-app bash -c 'cd /home/smarter_user/smarter && python manage.py shell -c "
+docker exec smarter-api bash -c 'cd /home/smarter_user/smarter && python manage.py shell -c "
 from smarter.lib.drf.models import SmarterAuthToken
 from smarter.apps.account.utils import smarter_cached_objects as s
 from smarter.apps.account.models import UserProfile
@@ -84,7 +84,7 @@ user what to try, or cover it with an integration test.
 ## 5. Clean up
 
 ```console
-docker exec smarter-app bash -c 'cd /home/smarter_user/smarter && python manage.py shell -c "
+docker exec smarter-api bash -c 'cd /home/smarter_user/smarter && python manage.py shell -c "
 from smarter.lib.drf.models import SmarterAuthToken
 print(SmarterAuthToken.objects.filter(name=\"vscode_probe\", description=\"DELETE ME\").delete())
 "' 2>/dev/null
