@@ -64,6 +64,70 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/accounts/data-exports/": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * Data exports
+         * @description What the user may export: the address that the link is emailed to, how long the link works, how many exports are left today, and the latest export. Requires an api key. Every user may call it, for their own data only.
+         */
+        get: operations["data_export_overview"];
+        put?: never;
+        /**
+         * Start a data export
+         * @description Start building a zip file of the manifest of every resource that the user owns, in every account they belong to, with Secrets' values redacted. A link to it is emailed to the user when it is ready. Answers 202 with the new export, 200 with the export that is already in progress, and 429 when the user has no email address or has started too many exports today. Requires an api key. Every user may call it, for their own data only.
+         */
+        post: operations["data_export_start"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/accounts/data-exports/{export_id}/": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * A data export
+         * @description A data export's progress, by its id. Requires an api key. Every user may call it, for their own data only.
+         */
+        get: operations["data_export_retrieve"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/accounts/usage/": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * Token usage
+         * @description The tokens and cost of the user's LLM requests over a window of time, one point per hour, day or month, oldest first, counting the current hour's charges. Cached for five minutes. Requires an api key. Every user may call it, for their own data only.
+         */
+        get: operations["token_usage"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/accounts/user-profiles/": {
         parameters: {
             query?: never;
@@ -484,6 +548,266 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/extensions/": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * List extensions
+         * @description The installed extensions, by display name, whether the registry is enabled, and how many updates it has. Requires an api key. A user who is not a superuser sees only the extensions that their account may use, and receives their settings, the accounts that may use them and the platform admin's Secrets as empty lists, and who installed each version as null.
+         */
+        get: operations["extension_list"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/extensions/check-updates/": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /**
+         * Check for extension updates
+         * @description Download the registry's index, and record each installed extension's newest compatible version. Only superusers may call it: others get a 403.
+         */
+        post: operations["extension_check_updates"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/extensions/install/": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /**
+         * Install an extension
+         * @description Install, or update, an extension from the registry. It is installed disabled: configure its settings, then enable it. Only superusers may call it: others get a 403.
+         */
+        post: operations["extension_install"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/extensions/registry/": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * The extension registry
+         * @description The registry's extensions, with what each offers on this platform: install, update, or nothing, and why. Read from the cached index, unless a superuser asks to refresh it. Requires an api key. A user who is not a superuser sees only the extensions that their account may use, and receives their settings, the accounts that may use them and the platform admin's Secrets as empty lists, and who installed each version as null.
+         */
+        get: operations["extension_registry"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/extensions/upload/": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /**
+         * Upload an extension
+         * @description Install, or update, an extension from its .zip archive, as multipart/form-data. It is installed disabled. Only superusers may call it: others get a 403.
+         */
+        post: operations["extension_upload"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/extensions/{slug}/": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * An extension
+         * @description An installed extension: its documentation, tools, settings, versions, resources, switches and availability. Requires an api key. A user who is not a superuser sees only the extensions that their account may use, and receives their settings, the accounts that may use them and the platform admin's Secrets as empty lists, and who installed each version as null.
+         */
+        get: operations["extension_retrieve"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/extensions/{slug}/availability/": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /**
+         * Set an extension's availability
+         * @description Make the extension available to every account, or to the given accounts only. Only superusers may call it: others get a 403.
+         */
+        post: operations["extension_availability"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/extensions/{slug}/configure/": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /**
+         * Configure an extension
+         * @description Change some of the extension's settings. A secret setting is given a value, which is saved encrypted in a Secret of the platform admin, or one of the platform admin's Secrets, or neither, which clears it. Settings that are left out don't change. Only superusers may call it: others get a 403.
+         */
+        post: operations["extension_configure"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/extensions/{slug}/disable/": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /**
+         * Disable an extension
+         * @description Disable the extension. Only superusers may call it: others get a 403.
+         */
+        post: operations["extension_disable"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/extensions/{slug}/enable/": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /**
+         * Enable an extension
+         * @description Enable the extension, after checking that it is compatible, that it loads, and that its required settings are set. Its tools are then offered to the LLMClients that use it. Only superusers may call it: others get a 403.
+         */
+        post: operations["extension_enable"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/extensions/{slug}/rollback/": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /**
+         * Roll an extension back
+         * @description Make one of the extension's earlier installed versions the one that runs. Only superusers may call it: others get a 403.
+         */
+        post: operations["extension_rollback"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/extensions/{slug}/uninstall/": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /**
+         * Uninstall an extension
+         * @description Uninstall the extension, and delete its versions and settings. The response's extension is null. Only superusers may call it: others get a 403.
+         */
+        post: operations["extension_uninstall"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/extensions/{slug}/update/": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /**
+         * Update an extension
+         * @description Install the registry's newest compatible version of the extension. Only superusers may call it: others get a 403.
+         */
+        post: operations["extension_update"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/guardrails/": {
         parameters: {
             query?: never;
@@ -593,7 +917,7 @@ export interface paths {
         };
         /**
          * A journal entry
-         * @description A journal entry, by its key, with its request and response documents. The request document holds the caller's headers, including its api key. Requires an api key of a superuser: the REST api's views refuse other users with a 403. Other users read their resources with the cli api's get and describe.
+         * @description A journal entry, by its key, with its request and response documents. The request document holds the request's url, an allowlist of its headers and its body, with its credentials redacted: never the caller's cookies or api key. Requires an api key of a superuser: the REST api's views refuse other users with a 403. Other users read their resources with the cli api's get and describe.
          */
         get: operations["journal_retrieve"];
         put?: never;
@@ -1172,7 +1496,7 @@ export interface paths {
             cookie?: never;
         };
         /**
-         * List orchestrators
+         * List Orchestrators
          * @description The Orchestrators that the user may read, by name. Requires an api key of a superuser: the REST api's views refuse other users with a 403. Other users read their resources with the cli api's get and describe.
          */
         get: operations["orchestrator_list"];
@@ -1196,6 +1520,50 @@ export interface paths {
          * @description An Orchestrator, by its id or hashed id. Requires an api key of a superuser: the REST api's views refuse other users with a 403. Other users read their resources with the cli api's get and describe.
          */
         get: operations["orchestrator_retrieve"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/orchestrators/{id}/runs/": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * List the runs of an Orchestrator
+         * @description The newest runs of an Orchestrator that the user started, up to 20, newest first, each with its steps. A superuser gets every user's. Requires an api key.
+         */
+        get: operations["orchestrator_run_list"];
+        put?: never;
+        /**
+         * Start a run of an Orchestrator
+         * @description Start a run of an Orchestrator that the user may read, toward an objective. It answers 202 with the run, pending, which the platform then executes, one step at a time: poll the run until its status is succeeded, failed or max_iterations_exceeded. Each step calls a harness LLMClient as its owner, and is charged to it. The user must be able to read every harness LLMClient, or the run is refused with 403. A strategy that can't run yet is refused with 400. Requires an api key.
+         */
+        post: operations["orchestrator_run"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/orchestrators/{id}/runs/{run_id}/": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * A run of an Orchestrator
+         * @description A run of an Orchestrator, with its steps and, once it succeeded, its result. Only the user who started it, or a superuser, may read it: anyone else gets 404. Requires an api key.
+         */
+        get: operations["orchestrator_run_retrieve"];
         put?: never;
         post?: never;
         delete?: never;
@@ -1512,8 +1880,8 @@ export interface paths {
             cookie?: never;
         };
         /**
-         * List vectorsearches
-         * @description The Vectorsearchs that the user may read, by name. Requires an api key of a superuser: the REST api's views refuse other users with a 403. Other users read their resources with the cli api's get and describe.
+         * List Vectorsearches
+         * @description The Vectorsearches that the user may read, by name. Requires an api key of a superuser: the REST api's views refuse other users with a 403. Other users read their resources with the cli api's get and describe.
          */
         get: operations["vectorsearch_list"];
         put?: never;
@@ -1538,6 +1906,26 @@ export interface paths {
         get: operations["vectorsearch_retrieve"];
         put?: never;
         post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/vectorsearches/{id}/vectorsearch/": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /**
+         * Run a Vectorsearch
+         * @description Search the Vectorsearch's vectorstore with a query, and the Vectorsearch's own configuration: its search type, k, score threshold, mmr settings and metadata filter. Answers 400 when the Vectorsearch is disabled, and 402 when a budget forbids it. Requires an api key. The response includes only what the user may read: their account's resources, and the platform's built-in ones.
+         */
+        post: operations["vectorsearch_run"];
         delete?: never;
         options?: never;
         head?: never;
@@ -2023,6 +2411,12 @@ export interface components {
              */
             id: number;
             /**
+             * Isaccountadmin
+             * @description UserProfile.is_account_admin: whether the user administers this account, and only this one, without access to the Django admin site.
+             * @default false
+             */
+            isAccountAdmin: boolean;
+            /**
              * Istest
              * @description UserProfile.is_test: whether a test created it.
              */
@@ -2105,7 +2499,7 @@ export interface components {
             id: number;
             /**
              * Isstaff
-             * @description User.is_staff: whether the user administers their account.
+             * @description User.is_staff: staff, who administer each of their accounts and may open the Django admin.
              */
             isStaff: boolean;
             /**
@@ -2132,6 +2526,28 @@ export interface components {
         AccountApiUserProfile: {
             account: components["schemas"]["AccountApiAccount"];
             user: components["schemas"]["AccountApiUser"];
+        };
+        /**
+         * AccountRef
+         * @description An account, for the extension's availability.
+         */
+        AccountRef: {
+            /** Accountnumber */
+            accountNumber: string;
+            /** Companyname */
+            companyName: string;
+            /** Id */
+            id: number;
+        };
+        /**
+         * ActionResponse
+         * @description The result of an action: what happened, and the extension as it now is, if it still exists.
+         */
+        ActionResponse: {
+            /** @default null */
+            extension: components["schemas"]["ExtensionDetail"] | null;
+            /** Message */
+            message: string;
         };
         /**
          * ApiConnection
@@ -2246,6 +2662,16 @@ export interface components {
              * @default null
              */
             urlParams: components["schemas"]["UrlParam"][] | null;
+        };
+        /**
+         * AvailabilityRequest
+         * @description A request to change which accounts may use an extension.
+         */
+        AvailabilityRequest: {
+            /** Accountids */
+            accountIds?: number[];
+            /** Allaccounts */
+            allAccounts: boolean;
         };
         /**
          * CliApiApplied
@@ -2842,6 +3268,28 @@ export interface components {
             [key: string]: unknown;
         };
         /**
+         * ConfigureRequest
+         * @description A request to change some of an extension's settings.
+         *
+         *     Settings that are left out don't change.
+         */
+        ConfigureRequest: {
+            /**
+             * Secrets
+             * @description Secret settings' values, by name.
+             */
+            secrets?: {
+                [key: string]: components["schemas"]["SecretInput"];
+            };
+            /**
+             * Values
+             * @description Non-secret settings' values, by name; null resets one to its default.
+             */
+            values?: {
+                [key: string]: string | number | boolean | null;
+            };
+        };
+        /**
          * Connection
          * @description Smarter API - generic SQL Connection class.
          */
@@ -2957,6 +3405,460 @@ export interface components {
              * @default null
              */
             username: string | null;
+        };
+        /**
+         * DataExportOverviewResponse
+         * @description What the Download My Data dialog tells the user before they start: where the link goes, and the limits.
+         */
+        DataExportOverviewResponse: {
+            /**
+             * Email
+             * @description The address that the link is emailed to, or empty if there is none.
+             * @default
+             */
+            email: string;
+            /**
+             * Exportslefttoday
+             * @description How many more the user may start now.
+             */
+            exportsLeftToday: number;
+            /**
+             * Exportsperday
+             * @description The most exports that a user may start in 24 hours.
+             */
+            exportsPerDay: number;
+            /**
+             * @description The user's most recent export, or None if they never started one.
+             * @default null
+             */
+            latest: components["schemas"]["DataExportStatusResponse"] | null;
+            /**
+             * Linkhours
+             * @description How many hours the emailed link works.
+             */
+            linkHours: number;
+        };
+        /**
+         * DataExportStatusResponse
+         * @description A data export's progress, as the web console's Download My Data dialog reads it.
+         */
+        DataExportStatusResponse: {
+            /**
+             * Createdat
+             * Format: date-time
+             * @description When the export was started, in ISO 8601.
+             */
+            createdAt: string;
+            /**
+             * Email
+             * @description The address that the link is emailed to.
+             * @default
+             */
+            email: string;
+            /**
+             * Error
+             * @description Why the export failed, or an empty string.
+             * @default
+             */
+            error: string;
+            /**
+             * Expiresat
+             * Format: date-time
+             * @description When the emailed link expires, in ISO 8601.
+             * @default null
+             */
+            expiresAt: string | null;
+            /**
+             * Failedcount
+             * @description How many resources had no manifest.
+             * @default 0
+             */
+            failedCount: number;
+            /**
+             * Id
+             * @description The export's id.
+             */
+            id: number;
+            /**
+             * Manifestcount
+             * @description How many manifests have been written so far.
+             * @default 0
+             */
+            manifestCount: number;
+            /**
+             * Resourcecount
+             * @description How many resources the user owns.
+             * @default 0
+             */
+            resourceCount: number;
+            /**
+             * Sizebytes
+             * @description The size of the zip file.
+             * @default 0
+             */
+            sizeBytes: number;
+            /**
+             * Status
+             * @description Where the export is.
+             * @enum {string}
+             */
+            status: "queued" | "running" | "succeeded" | "failed";
+            /**
+             * Step
+             * @description The step that the export is on.
+             * @enum {string}
+             */
+            step: "queued" | "inventory" | "manifests" | "archive" | "upload" | "email" | "done";
+        };
+        /**
+         * ExtensionDetail
+         * @description An installed extension, as its detail page shows it.
+         */
+        ExtensionDetail: {
+            /**
+             * Accounts
+             * @description The accounts that may use it, when not all accounts may.
+             */
+            accounts: components["schemas"]["AccountRef"][];
+            /** Allaccounts */
+            allAccounts: boolean;
+            /**
+             * Availablesecrets
+             * @description The platform admin's Secrets, for secret settings.
+             */
+            availableSecrets: components["schemas"]["SecretRef"][];
+            /** Description */
+            description: string;
+            /**
+             * Detailurl
+             * @description The url of the extension's detail page.
+             */
+            detailUrl: string;
+            /** Displayname */
+            displayName: string;
+            /**
+             * Docshtml
+             * @description The extension's documentation, as HTML rendered safely.
+             * @default
+             */
+            docsHtml: string;
+            /** Enabled */
+            enabled: boolean;
+            /**
+             * Error
+             * @description The last error from loading the extension or running its lifecycle hooks.
+             * @default
+             */
+            error: string;
+            /**
+             * Homepage
+             * @default null
+             */
+            homepage: string | null;
+            /** Id */
+            id: number;
+            /**
+             * Installedversion
+             * @default null
+             */
+            installedVersion: string | null;
+            /**
+             * Latestcheckedat
+             * @default null
+             */
+            latestCheckedAt: string | null;
+            /**
+             * Latestversion
+             * @description The newest compatible version in the registry.
+             * @default null
+             */
+            latestVersion: string | null;
+            /**
+             * License
+             * @default null
+             */
+            license: string | null;
+            /**
+             * Loaderror
+             * @description Why the extension's code does not load, if it does not.
+             * @default null
+             */
+            loadError: string | null;
+            /**
+             * Missingsettings
+             * @description Required settings that block enabling the extension.
+             */
+            missingSettings: string[];
+            /**
+             * Publisher
+             * @description The publisher's registry id, or an uploaded archive's authors.
+             */
+            publisher: string;
+            /** Resources */
+            resources: components["schemas"]["ExtensionResource"][];
+            /** Settings */
+            settings: components["schemas"]["ExtensionSetting"][];
+            /**
+             * Slug
+             * @description The extension's slug, e.g. weather.
+             */
+            slug: string;
+            /**
+             * Source
+             * @enum {string}
+             */
+            source: "registry" | "upload";
+            /** Switches */
+            switches: components["schemas"]["ExtensionSwitch"][];
+            /** Tools */
+            tools: components["schemas"]["ExtensionTool"][];
+            /**
+             * Trustbadge
+             * @enum {string}
+             */
+            trustBadge: "official" | "verified" | "community" | "unverified";
+            /**
+             * Trustbadgelabel
+             * @description The badge, as people read it, e.g. Official Smarter Extension.
+             */
+            trustBadgeLabel: string;
+            /** Updateavailable */
+            updateAvailable: boolean;
+            /** Versions */
+            versions: components["schemas"]["ExtensionVersionInfo"][];
+        };
+        /**
+         * ExtensionDetailResponse
+         * @description An extension's detail page.
+         */
+        ExtensionDetailResponse: {
+            extension: components["schemas"]["ExtensionDetail"];
+        };
+        /**
+         * ExtensionListResponse
+         * @description The Extensions list: the installed extensions, and the state of the registry.
+         */
+        ExtensionListResponse: {
+            /** Objects */
+            objects: components["schemas"]["ExtensionSummary"][];
+            /**
+             * Registryenabled
+             * @description Whether the registry's public key is configured.
+             */
+            registryEnabled: boolean;
+            /**
+             * Updatesavailable
+             * @description How many installed extensions have an update in the registry.
+             */
+            updatesAvailable: number;
+        };
+        /**
+         * ExtensionResource
+         * @description A SAM resource that an extension created.
+         */
+        ExtensionResource: {
+            /** Kind */
+            kind: string;
+            /**
+             * Managed
+             * @description Whether it came from the package's manifests/ directory.
+             */
+            managed: boolean;
+            /** Name */
+            name: string;
+            /**
+             * Owner
+             * @description The username of the resource's owner.
+             */
+            owner: string;
+            /**
+             * Version
+             * @description The extension version that created or last applied it.
+             */
+            version: string;
+        };
+        /**
+         * ExtensionSetting
+         * @description One of an extension's settings: its declaration, and its configured value.
+         */
+        ExtensionSetting: {
+            /**
+             * Choices
+             * @default null
+             */
+            choices: string[] | null;
+            /**
+             * Default
+             * @default null
+             */
+            default: string | number | boolean | null;
+            /** Description */
+            description: string;
+            /**
+             * Isset
+             * @description Whether the setting has a configured value, or a Secret.
+             */
+            isSet: boolean;
+            /** Name */
+            name: string;
+            /** Required */
+            required: boolean;
+            /**
+             * Secretid
+             * @description The id of a secret setting's Secret.
+             * @default null
+             */
+            secretId: number | null;
+            /**
+             * Secretname
+             * @description The name of a secret setting's Secret.
+             * @default null
+             */
+            secretName: string | null;
+            /**
+             * Type
+             * @enum {string}
+             */
+            type: "string" | "integer" | "float" | "boolean" | "url" | "choice" | "secret";
+            /**
+             * Value
+             * @description The configured value. Always null for a secret setting.
+             * @default null
+             */
+            value: string | number | boolean | null;
+        };
+        /**
+         * ExtensionSummary
+         * @description An installed extension, as the Extensions list shows it.
+         */
+        ExtensionSummary: {
+            /** Description */
+            description: string;
+            /**
+             * Detailurl
+             * @description The url of the extension's detail page.
+             */
+            detailUrl: string;
+            /** Displayname */
+            displayName: string;
+            /** Enabled */
+            enabled: boolean;
+            /**
+             * Error
+             * @description The last error from loading the extension or running its lifecycle hooks.
+             * @default
+             */
+            error: string;
+            /** Id */
+            id: number;
+            /**
+             * Installedversion
+             * @default null
+             */
+            installedVersion: string | null;
+            /**
+             * Latestcheckedat
+             * @default null
+             */
+            latestCheckedAt: string | null;
+            /**
+             * Latestversion
+             * @description The newest compatible version in the registry.
+             * @default null
+             */
+            latestVersion: string | null;
+            /**
+             * Publisher
+             * @description The publisher's registry id, or an uploaded archive's authors.
+             */
+            publisher: string;
+            /**
+             * Slug
+             * @description The extension's slug, e.g. weather.
+             */
+            slug: string;
+            /**
+             * Source
+             * @enum {string}
+             */
+            source: "registry" | "upload";
+            /**
+             * Trustbadge
+             * @enum {string}
+             */
+            trustBadge: "official" | "verified" | "community" | "unverified";
+            /**
+             * Trustbadgelabel
+             * @description The badge, as people read it, e.g. Official Smarter Extension.
+             */
+            trustBadgeLabel: string;
+            /** Updateavailable */
+            updateAvailable: boolean;
+        };
+        /**
+         * ExtensionSwitch
+         * @description A waffle switch that an extension owns.
+         */
+        ExtensionSwitch: {
+            /** Active */
+            active: boolean;
+            /** Description */
+            description: string;
+            /**
+             * Name
+             * @description The switch's full name, e.g. ext_weather_verbose.
+             */
+            name: string;
+        };
+        /**
+         * ExtensionTool
+         * @description One of an extension's tools, as the LLM sees it.
+         */
+        ExtensionTool: {
+            /** Description */
+            description: string;
+            /**
+             * Functionname
+             * @description The name the LLM sees, e.g. ext_weather_get_weather.
+             */
+            functionName: string;
+            /**
+             * Name
+             * @description The tool's name in the extension, e.g. get_weather.
+             */
+            name: string;
+            /** @description The JSON Schema of the tool's arguments. */
+            parameters: components["schemas"]["JsonValue"];
+        };
+        /**
+         * ExtensionVersionInfo
+         * @description One installed version of an extension.
+         */
+        ExtensionVersionInfo: {
+            /**
+             * Createdat
+             * @default null
+             */
+            createdAt: string | null;
+            /** Id */
+            id: number;
+            /**
+             * Installedby
+             * @description The username of the superuser who installed it.
+             * @default null
+             */
+            installedBy: string | null;
+            /**
+             * Isinstalled
+             * @description Whether it is the version that runs.
+             */
+            isInstalled: boolean;
+            /** Sha256 */
+            sha256: string;
+            /** Sourceurl */
+            sourceUrl: string;
+            /** Version */
+            version: string;
         };
         /**
          * GuardrailApiEvaluateRequest
@@ -3503,6 +4405,20 @@ export interface components {
              * @default true
              */
             spellcheck: boolean;
+        };
+        /**
+         * InstallRequest
+         * @description A request to install, or update, an extension from the registry.
+         */
+        InstallRequest: {
+            /** Slug */
+            slug: string;
+            /**
+             * Version
+             * @description The version; the newest compatible version if null.
+             * @default null
+             */
+            version: string | null;
         };
         /** @description A JSON Schema (https://json-schema.org/draft/2020-12/schema). */
         JsonSchema: {
@@ -5348,6 +6264,139 @@ export interface components {
              * @default null
              */
             version: string | null;
+        };
+        /**
+         * OrchestratorApiRun
+         * @description A run of an Orchestrator: an attempt at an objective, its status, its steps and its result (ADR-037).
+         *
+         *     A run starts ``pending``, and a Celery task executes it, so a client polls it until its status is final:
+         *     ``succeeded``, ``failed``, ``cancelled`` or ``max_iterations_exceeded``.
+         */
+        OrchestratorApiRun: {
+            /**
+             * Completedat
+             * @description When it ended.
+             * @default null
+             */
+            completedAt: string | null;
+            /**
+             * Createdat
+             * @description When the run was requested.
+             * @default null
+             */
+            createdAt: string | null;
+            /**
+             * Errormessage
+             * @description Why the run failed, or stopped, if it did.
+             * @default null
+             */
+            errorMessage: string | null;
+            /**
+             * Id
+             * @description The run's primary key.
+             */
+            id: number;
+            /**
+             * Iterationcount
+             * @description How many steps the run has taken.
+             */
+            iterationCount: number;
+            /**
+             * Objective
+             * @description OrchestrationRun.objective.
+             */
+            objective: string;
+            /**
+             * Orchestrator
+             * @description The Orchestrator's id.
+             */
+            orchestrator: number;
+            /**
+             * Result
+             * @description The run's result: its last step's text, once it succeeded.
+             * @default null
+             */
+            result: string | null;
+            /**
+             * Startedat
+             * @description When its execution began.
+             * @default null
+             */
+            startedAt: string | null;
+            /**
+             * @description Who started the run.
+             * @default null
+             */
+            startedBy: components["schemas"]["AccountApiUserProfile"] | null;
+            /**
+             * Status
+             * @description OrchestrationRun.status.
+             * @enum {string}
+             */
+            status: "pending" | "running" | "succeeded" | "failed" | "cancelled" | "max_iterations_exceeded";
+            /**
+             * Steps
+             * @description Its steps, in order.
+             */
+            steps?: components["schemas"]["OrchestratorApiStep"][];
+        };
+        /**
+         * OrchestratorApiRunRequest
+         * @description The body of a request that starts a run: what the run is to achieve.
+         */
+        OrchestratorApiRunRequest: {
+            /**
+             * Objective
+             * @description What the run is to achieve, e.g. Prepare the board pack for Q4 2025. Every step receives it.
+             */
+            objective: string;
+        };
+        /**
+         * OrchestratorApiStep
+         * @description One step of a run: one call of a harness LLMClient, as its owner.
+         *
+         *     Its messages, tokens and charges are those of its Prompt session, which the LLMClient's owner may read.
+         */
+        OrchestratorApiStep: {
+            /**
+             * Accountnumber
+             * @description The account that the LLMClient belongs to.
+             */
+            accountNumber: string;
+            /**
+             * Createdat
+             * @description When the step ended.
+             * @default null
+             */
+            createdAt: string | null;
+            /**
+             * Errormessage
+             * @description Why the step failed, if it did.
+             * @default null
+             */
+            errorMessage: string | null;
+            /**
+             * Llmclient
+             * @description The harness LLMClient's name.
+             */
+            llmclient: string;
+            /**
+             * Role
+             * @description The harness's role.
+             * @enum {string}
+             */
+            role: "planner" | "executor" | "critic" | "router" | "summarizer" | "tool_caller";
+            /**
+             * Sequence
+             * @description OrchestrationStep.sequence: the step's position in the run.
+             */
+            sequence: number;
+            /**
+             * Status
+             * @description OrchestrationStep.status.
+             * @enum {string}
+             */
+            status: "succeeded" | "failed" | "skipped";
         };
         /**
          * Parameter
@@ -7346,6 +8395,120 @@ export interface components {
             url: string;
         };
         /**
+         * RegistryExtension
+         * @description An extension in the registry, as the Browse tab shows it.
+         */
+        RegistryExtension: {
+            /**
+             * Action
+             * @enum {string}
+             */
+            action: "install" | "update" | "installed" | "uploaded" | "incompatible";
+            /** Description */
+            description: string;
+            /**
+             * Detailurl
+             * @description The installed extension's detail page, if it is installed.
+             * @default null
+             */
+            detailUrl: string | null;
+            /** Displayname */
+            displayName: string;
+            /**
+             * Docshtml
+             * @description The extension's documentation, as HTML rendered safely.
+             * @default
+             */
+            docsHtml: string;
+            /**
+             * Homepage
+             * @default null
+             */
+            homepage: string | null;
+            /**
+             * Installedversion
+             * @default null
+             */
+            installedVersion: string | null;
+            /**
+             * Latestversion
+             * @description The newest version compatible with this platform.
+             * @default null
+             */
+            latestVersion: string | null;
+            /**
+             * License
+             * @default null
+             */
+            license: string | null;
+            /**
+             * Publisher
+             * @description The publisher's name.
+             */
+            publisher: string;
+            /**
+             * Publisherurl
+             * @default null
+             */
+            publisherUrl: string | null;
+            /** Slug */
+            slug: string;
+            /**
+             * Trustbadge
+             * @enum {string}
+             */
+            trustBadge: "official" | "verified" | "community" | "unverified";
+            /** Trustbadgelabel */
+            trustBadgeLabel: string;
+            /**
+             * Versions
+             * @description Every released version, newest first.
+             */
+            versions: components["schemas"]["RegistryVersionInfo"][];
+        };
+        /**
+         * RegistryResponse
+         * @description The registry's extensions, or why they cannot be listed.
+         */
+        RegistryResponse: {
+            /**
+             * Enabled
+             * @description Whether the registry's public key is configured.
+             */
+            enabled: boolean;
+            /**
+             * Error
+             * @description Why the registry cannot be read, if it cannot.
+             * @default null
+             */
+            error: string | null;
+            /** Objects */
+            objects: components["schemas"]["RegistryExtension"][];
+        };
+        /**
+         * RegistryVersionInfo
+         * @description A released version of a registry extension.
+         */
+        RegistryVersionInfo: {
+            /**
+             * Compatible
+             * @description Whether it works with this platform's Smarter version.
+             */
+            compatible: boolean;
+            /**
+             * Releasedat
+             * @default null
+             */
+            releasedAt: string | null;
+            /**
+             * Requiressmarter
+             * @default null
+             */
+            requiresSmarter: string | null;
+            /** Version */
+            version: string;
+        };
+        /**
          * RequestHeader
          * @description Model for storing HTTP request headers.
          */
@@ -7375,6 +8538,14 @@ export interface components {
             detail: string;
         } & {
             [key: string]: unknown;
+        };
+        /**
+         * RollbackRequest
+         * @description A request to make an earlier version the one that runs.
+         */
+        RollbackRequest: {
+            /** Versionid */
+            versionId: number;
         };
         /**
          * SAMAccount
@@ -7408,7 +8579,7 @@ export interface components {
         SAMAccountMetadata: {
             /**
              * Accountnumber
-             * @description Account.metadata.accountNumber[str]. Your preassigned 12-digit account number for your Smarter Account in the format '####-####-####'. Read only.
+             * @description Account.metadata.accountNumber[str]. The 12-digit number of the Smarter Account, in the format '####-####-####'. Applying a manifest that creates the account gives it this number, so that an organization's accounts have the same numbers on every platform; omitted, a new account gets a random one. It never changes: a manifest whose number differs from its existing account's is refused.
              * @default null
              */
             accountNumber: string | null;
@@ -7499,6 +8670,12 @@ export interface components {
              */
             language: string;
             /**
+             * Parent
+             * @description Account.spec.configuration.parent[str]. Optional. The account number of the Account above this one in its organization, e.g. a department's company. Omitted means directly under the Smarter account, the root of the account tree.
+             * @default null
+             */
+            parent: string | null;
+            /**
              * Phonenumber
              * @description Account.spec.configuration.phoneNumber[str]. The primary phone number for the Account.
              * @default null
@@ -7510,6 +8687,12 @@ export interface components {
              * @default null
              */
             postalCode: string | null;
+            /**
+             * Sharescope
+             * @description Account.spec.configuration.shareScope[str]. Optional. The account number of this Account or one of its ancestors, whose whole subtree may read this account's resources, e.g. an IT department that shares its Secrets and Connections with its company. Omitted means that the account shares nothing.
+             * @default null
+             */
+            shareScope: string | null;
             /**
              * State
              * @description Account.spec.configuration.state[str]. The state for the Account.
@@ -8459,7 +9642,9 @@ export interface components {
          * @description A journal entry, as the journal's REST api returns it by its key: with its request and response documents.
          *
          *     It is the output of :class:`smarter.lib.journal.serializers.SAMJournalSerializer`, in camelCase.
-         *     The request document holds the caller's headers and cookies, including its api key.
+         *     The request document holds the request's url, an allowlist of its headers, and its body, with its
+         *     credentials redacted: never the caller's cookies or api key. See
+         *     :class:`~smarter.lib.django.http.serializers.HttpAnonymousRequestSerializer`.
          */
         SAMJournalApiEntry: {
             /**
@@ -10426,10 +11611,18 @@ export interface components {
          * @description A single LLMClient (Harness) membership within the Orchestrator.
          *
          *     Mirrors smarter.apps.orchestrator.models.OrchestratorHarness. The
-         *     llmClientName is a reference by name, not by primary key — resolved
-         *     against the account's existing LLMClients at apply time.
+         *     llmClientName is a reference by name, not by primary key, resolved at
+         *     apply time: in accountNumber's account if given, which may be another
+         *     account, e.g. a department's, otherwise the nearest of the owner's account
+         *     tree (ADR-036, ADR-037).
          */
         SAMOrchestratorHarnessConfig: {
+            /**
+             * Accountnumber
+             * @description The account that the LLMClient belongs to, e.g. a department's, which the Orchestrator's owner must be able to read. Defaults to the nearest LLMClient of that name in the owner's account tree (ADR-036).
+             * @default null
+             */
+            accountNumber: string | null;
             /**
              * Config
              * @description Per-membership overrides (e.g. temperature, system prompt fragment, tool allowlist).
@@ -10728,12 +11921,11 @@ export interface components {
         SAMPluginStaticSpecData: {
             /**
              * Staticdata
-             * @description Plugin.spec.data.staticData[obj]: The static data returned by the Plugin when the class is 'static'. LLM's are adept at understanding the context of json data structures. Try to provide granular and specific data elements.
-             * @default null
+             * @description Plugin.spec.data.staticData[obj]: Required. The static data returned by the Plugin when the class is 'static'. LLM's are adept at understanding the context of json data structures. Try to provide granular and specific data elements.
              */
             staticData: {
                 [key: string]: unknown;
-            } | null;
+            };
         };
         /**
          * SAMPrompt
@@ -11580,7 +12772,7 @@ export interface components {
         };
         /**
          * SAMSqlConnection
-         * @description Smarter API Manifest - SqlConnection Model
+         * @description Smarter API Manifest - SqlConnection Model.
          */
         SAMSqlConnection: {
             /**
@@ -11704,6 +12896,23 @@ export interface components {
             status: components["schemas"]["SAMUserStatus"] | null;
         };
         /**
+         * SAMUserAccountMembership
+         * @description Smarter API User Manifest User.spec.accounts[]: the user's membership of one account.
+         */
+        SAMUserAccountMembership: {
+            /**
+             * Accountnumber
+             * @description User.spec.accounts.accountNumber[str]. The number of an account that the User belongs to.
+             */
+            accountNumber: string;
+            /**
+             * Isaccountadmin
+             * @description User.spec.accounts.isAccountAdmin[bool]. Optional. Whether the User administers this account, and only this one: manages every resource in it. Default: false.
+             * @default false
+             */
+            isAccountAdmin: boolean;
+        };
+        /**
          * SAMUserMetadata
          * @description Smarter API User Manifest - Metadata class.
          */
@@ -11750,6 +12959,12 @@ export interface components {
          * @description Smarter API User Manifest User.spec.
          */
         SAMUserSpec: {
+            /**
+             * Accounts
+             * @description User.spec.accounts[list]. Optional. The accounts that the User belongs to, e.g. the departments of an organization, each with whether the user administers it. Omitted, the user belongs to the account of whoever applies the manifest. Apply adds each membership that is missing and updates the others, but never removes one, which would delete every resource that the user owns in that account. A superuser may list any account; anyone else only accounts that they administer.
+             * @default null
+             */
+            accounts: components["schemas"]["SAMUserAccountMembership"][] | null;
             /** @description User.spec.config[object]. The configuration for the User. */
             config: components["schemas"]["SAMUserSpecConfig"];
         };
@@ -11786,6 +13001,12 @@ export interface components {
              * @default null
              */
             lastName: string | null;
+            /**
+             * Passwordsecret
+             * @description User.spec.configuration.passwordSecret[str]. Optional. The name of a Secret whose value becomes the User's password, each time the manifest is applied, e.g. the published password of a demonstration user. A manifest never holds a password itself. Only a superuser may set it.
+             * @default null
+             */
+            passwordSecret: string | null;
         };
         /**
          * SAMUserStatus
@@ -12530,6 +13751,34 @@ export interface components {
             ready: boolean;
         };
         /**
+         * SecretInput
+         * @description The new value of a secret setting: an existing Secret, a value to save in a new one, or neither, to clear it.
+         */
+        SecretInput: {
+            /**
+             * Secretid
+             * @description One of the platform admin's Secrets.
+             * @default null
+             */
+            secretId: number | null;
+            /**
+             * Value
+             * @description A value, saved in the Secret extension_<slug>_<setting>.
+             * @default null
+             */
+            value: string | null;
+        };
+        /**
+         * SecretRef
+         * @description A Secret of the platform's admin, which a secret setting can use.
+         */
+        SecretRef: {
+            /** Id */
+            id: number;
+            /** Name */
+            name: string;
+        };
+        /**
          * SkillData
          * @description Smarter API - SkillPlugin.spec.skillData: an Agent Skill.
          *
@@ -12613,6 +13862,65 @@ export interface components {
             value: unknown;
         };
         /**
+         * TokenUsagePoint
+         * @description The tokens and cost of one period of the Token Usage chart.
+         */
+        TokenUsagePoint: {
+            /**
+             * Completion Tokens
+             * @description The tokens of the completions.
+             */
+            completion_tokens: number;
+            /**
+             * Period Start
+             * Format: date-time
+             * @description The start of the period, in UTC.
+             */
+            period_start: string;
+            /**
+             * Prompt Tokens
+             * @description The tokens of the prompts.
+             */
+            prompt_tokens: number;
+            /**
+             * Records
+             * @description How many charges the period has.
+             */
+            records: number;
+            /**
+             * Total Cost
+             * @description The period's cost, in US dollars.
+             */
+            total_cost: number;
+            /**
+             * Total Tokens
+             * @description Every token of the period.
+             */
+            total_tokens: number;
+        };
+        /**
+         * TokenUsageSeries
+         * @description The Token Usage chart's points for one window, oldest first.
+         */
+        TokenUsageSeries: {
+            /**
+             * Period
+             * @description The period of each point.
+             * @enum {string}
+             */
+            period: "hour" | "day" | "month";
+            /**
+             * Periodicity
+             * @description The window, e.g. 24_hours. See TokenUsageWindow.
+             */
+            periodicity: string;
+            /**
+             * Points
+             * @description One point per period, oldest first.
+             */
+            points: components["schemas"]["TokenUsagePoint"][];
+        };
+        /**
          * UrlParam
          * @description Model for storing url param k-v pairs.
          */
@@ -12627,6 +13935,45 @@ export interface components {
              * @description The value for the key.
              */
             value: string | number | boolean;
+        };
+        /**
+         * VectorsearchApiResults
+         * @description The results of a run of a Vectorsearch, most similar first.
+         */
+        VectorsearchApiResults: {
+            /** Results */
+            results: components["schemas"]["VectorstoreApiSearchResult"][];
+            /**
+             * Vectorsearch
+             * @description The Vectorsearch's name.
+             */
+            vectorsearch: string;
+            /**
+             * Vectorstore
+             * @description The name of the vectorstore that it searched.
+             */
+            vectorstore: string;
+        };
+        /**
+         * VectorsearchApiRun
+         * @description The request body of a run of a Vectorsearch: the query, and optionally more metadata to match.
+         *
+         *     How to search (the search type, ``k`` and the rest) is the Vectorsearch's own configuration.
+         */
+        VectorsearchApiRun: {
+            /**
+             * Filter
+             * @description Metadata that every result must match, besides the Vectorsearch's own metadataFilter, which wins where both name the same key.
+             * @default null
+             */
+            filter: {
+                [key: string]: components["schemas"]["JsonValue"];
+            } | null;
+            /**
+             * Query
+             * @description The text to find similar chunks of.
+             */
+            query: string;
         };
         /**
          * VectorsearchApiVectorsearch
@@ -13557,6 +14904,146 @@ export interface operations {
             };
         };
     };
+    data_export_overview: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description The overview. */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["DataExportOverviewResponse"];
+                };
+            };
+            /** @description An error, e.g. 404 for a row that does not exist, or that the user may not read. */
+            default: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["RestApiErrorResponse"];
+                };
+            };
+        };
+    };
+    data_export_start: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description The export that is already in progress. */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["DataExportStatusResponse"];
+                };
+            };
+            /** @description The export, which was started now. */
+            202: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["DataExportStatusResponse"];
+                };
+            };
+            /** @description Refused: the user has no email address to send the link to, or has started too many exports today. The detail says which. Retrying doesn't help until tomorrow. */
+            429: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["RestApiErrorResponse"];
+                };
+            };
+            /** @description An error, e.g. 401 without a valid api key. */
+            default: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["RestApiErrorResponse"];
+                };
+            };
+        };
+    };
+    data_export_retrieve: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                /** @description The export's id. */
+                export_id: number;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description The export's progress. */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["DataExportStatusResponse"];
+                };
+            };
+            /** @description An error, e.g. 404 for a row that does not exist, or that the user may not read. */
+            default: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["RestApiErrorResponse"];
+                };
+            };
+        };
+    };
+    token_usage: {
+        parameters: {
+            query?: {
+                /** @description The window: e.g. 24_hours is the current hour and the 23 before it. */
+                periodicity?: "12_hours" | "24_hours" | "7_days" | "1_month" | "1_year";
+            };
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description The window's points. */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["TokenUsageSeries"];
+                };
+            };
+            /** @description An error, e.g. 404 for a row that does not exist, or that the user may not read. */
+            default: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["RestApiErrorResponse"];
+                };
+            };
+        };
+    };
     user_profile_list: {
         parameters: {
             query?: never;
@@ -14250,6 +15737,437 @@ export interface operations {
             };
         };
     };
+    extension_list: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description The installed extensions. */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ExtensionListResponse"];
+                };
+            };
+            /** @description An error, e.g. 404 for a row that does not exist, or that the user may not read. */
+            default: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["RestApiErrorResponse"];
+                };
+            };
+        };
+    };
+    extension_check_updates: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Success. */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ActionResponse"];
+                };
+            };
+            /** @description An error, e.g. 400 for an invalid request, 403 for a user who is not a superuser, or 404 for a row that does not exist. */
+            default: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["RestApiErrorResponse"];
+                };
+            };
+        };
+    };
+    extension_install: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** @description The extension's slug, and optionally its version. */
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["InstallRequest"];
+            };
+        };
+        responses: {
+            /** @description Success. */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ActionResponse"];
+                };
+            };
+            /** @description An error, e.g. 400 for an invalid request, 403 for a user who is not a superuser, or 404 for a row that does not exist. */
+            default: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["RestApiErrorResponse"];
+                };
+            };
+        };
+    };
+    extension_registry: {
+        parameters: {
+            query?: {
+                /** @description Download the registry's index again, rather than read the cache. Superusers only. */
+                refresh?: boolean;
+            };
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description The registry's extensions. */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["RegistryResponse"];
+                };
+            };
+            /** @description An error, e.g. 404 for a row that does not exist, or that the user may not read. */
+            default: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["RestApiErrorResponse"];
+                };
+            };
+        };
+    };
+    extension_upload: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "multipart/form-data": {
+                    /** @description The extension's .zip archive, of at most 10 MiB. */
+                    archive: string;
+                };
+            };
+        };
+        responses: {
+            /** @description Success. */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ActionResponse"];
+                };
+            };
+            /** @description An error, e.g. 400 for an invalid request, 403 for a user who is not a superuser, or 404 for a row that does not exist. */
+            default: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["RestApiErrorResponse"];
+                };
+            };
+        };
+    };
+    extension_retrieve: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                /** @description The extension's slug, e.g. weather. */
+                slug: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description The extension. */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ExtensionDetailResponse"];
+                };
+            };
+            /** @description An error, e.g. 404 for a row that does not exist, or that the user may not read. */
+            default: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["RestApiErrorResponse"];
+                };
+            };
+        };
+    };
+    extension_availability: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                /** @description The extension's slug, e.g. weather. */
+                slug: string;
+            };
+            cookie?: never;
+        };
+        /** @description Every account, or the ids of the accounts. */
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["AvailabilityRequest"];
+            };
+        };
+        responses: {
+            /** @description Success. */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ActionResponse"];
+                };
+            };
+            /** @description An error, e.g. 400 for an invalid request, 403 for a user who is not a superuser, or 404 for a row that does not exist. */
+            default: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["RestApiErrorResponse"];
+                };
+            };
+        };
+    };
+    extension_configure: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                /** @description The extension's slug, e.g. weather. */
+                slug: string;
+            };
+            cookie?: never;
+        };
+        /** @description The settings' new values, by name. */
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["ConfigureRequest"];
+            };
+        };
+        responses: {
+            /** @description Success. */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ActionResponse"];
+                };
+            };
+            /** @description An error, e.g. 400 for an invalid request, 403 for a user who is not a superuser, or 404 for a row that does not exist. */
+            default: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["RestApiErrorResponse"];
+                };
+            };
+        };
+    };
+    extension_disable: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                /** @description The extension's slug, e.g. weather. */
+                slug: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Success. */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ActionResponse"];
+                };
+            };
+            /** @description An error, e.g. 400 for an invalid request, 403 for a user who is not a superuser, or 404 for a row that does not exist. */
+            default: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["RestApiErrorResponse"];
+                };
+            };
+        };
+    };
+    extension_enable: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                /** @description The extension's slug, e.g. weather. */
+                slug: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Success. */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ActionResponse"];
+                };
+            };
+            /** @description An error, e.g. 400 for an invalid request, 403 for a user who is not a superuser, or 404 for a row that does not exist. */
+            default: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["RestApiErrorResponse"];
+                };
+            };
+        };
+    };
+    extension_rollback: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                /** @description The extension's slug, e.g. weather. */
+                slug: string;
+            };
+            cookie?: never;
+        };
+        /** @description The id of the version, from the extension's versions. */
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["RollbackRequest"];
+            };
+        };
+        responses: {
+            /** @description Success. */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ActionResponse"];
+                };
+            };
+            /** @description An error, e.g. 400 for an invalid request, 403 for a user who is not a superuser, or 404 for a row that does not exist. */
+            default: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["RestApiErrorResponse"];
+                };
+            };
+        };
+    };
+    extension_uninstall: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                /** @description The extension's slug, e.g. weather. */
+                slug: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Success. */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ActionResponse"];
+                };
+            };
+            /** @description An error, e.g. 400 for an invalid request, 403 for a user who is not a superuser, or 404 for a row that does not exist. */
+            default: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["RestApiErrorResponse"];
+                };
+            };
+        };
+    };
+    extension_update: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                /** @description The extension's slug, e.g. weather. */
+                slug: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Success. */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ActionResponse"];
+                };
+            };
+            /** @description An error, e.g. 400 for an invalid request, 403 for a user who is not a superuser, or 404 for a row that does not exist. */
+            default: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["RestApiErrorResponse"];
+                };
+            };
+        };
+    };
     guardrail_list: {
         parameters: {
             query?: never;
@@ -14268,7 +16186,7 @@ export interface operations {
                     "application/json": components["schemas"]["GuardrailApiGuardrail"][];
                 };
             };
-            /** @description An error, e.g. 404 for a row that does not exist, or 403 for a user who is not a superuser. */
+            /** @description An error, e.g. 404 for a row that does not exist, or that the user may not read. */
             default: {
                 headers: {
                     [name: string]: unknown;
@@ -14300,7 +16218,7 @@ export interface operations {
                     "application/json": components["schemas"]["GuardrailApiGuardrail"];
                 };
             };
-            /** @description An error, e.g. 404 for a row that does not exist, or 403 for a user who is not a superuser. */
+            /** @description An error, e.g. 404 for a row that does not exist, or that the user may not read. */
             default: {
                 headers: {
                     [name: string]: unknown;
@@ -14373,7 +16291,7 @@ export interface operations {
                     "application/json": components["schemas"]["GuardrailApiEvents"];
                 };
             };
-            /** @description An error, e.g. 404 for a row that does not exist, or 403 for a user who is not a superuser. */
+            /** @description An error, e.g. 404 for a row that does not exist, or that the user may not read. */
             default: {
                 headers: {
                     [name: string]: unknown;
@@ -14925,7 +16843,7 @@ export interface operations {
                     "application/json": components["schemas"]["LLMHostApiLLMHost"][];
                 };
             };
-            /** @description An error, e.g. 404 for a row that does not exist, or 403 for a user who is not a superuser. */
+            /** @description An error, e.g. 404 for a row that does not exist, or that the user may not read. */
             default: {
                 headers: {
                     [name: string]: unknown;
@@ -14963,7 +16881,7 @@ export interface operations {
                     "application/json": components["schemas"]["LLMHostApiDiscovery"];
                 };
             };
-            /** @description An error, e.g. 404 for a row that does not exist, or 403 for a user who is not a superuser. */
+            /** @description An error, e.g. 404 for a row that does not exist, or that the user may not read. */
             default: {
                 headers: {
                     [name: string]: unknown;
@@ -15003,7 +16921,7 @@ export interface operations {
                     "application/json": components["schemas"]["LLMHostApiDraftManifest"];
                 };
             };
-            /** @description An error, e.g. 404 for a row that does not exist, or 403 for a user who is not a superuser. */
+            /** @description An error, e.g. 404 for a row that does not exist, or that the user may not read. */
             default: {
                 headers: {
                     [name: string]: unknown;
@@ -15032,7 +16950,7 @@ export interface operations {
                     "application/json": components["schemas"]["LLMHostApiReport"];
                 };
             };
-            /** @description An error, e.g. 404 for a row that does not exist, or 403 for a user who is not a superuser. */
+            /** @description An error, e.g. 404 for a row that does not exist, or that the user may not read. */
             default: {
                 headers: {
                     [name: string]: unknown;
@@ -15064,7 +16982,7 @@ export interface operations {
                     "application/json": components["schemas"]["LLMHostApiLLMHost"];
                 };
             };
-            /** @description An error, e.g. 404 for a row that does not exist, or 403 for a user who is not a superuser. */
+            /** @description An error, e.g. 404 for a row that does not exist, or that the user may not read. */
             default: {
                 headers: {
                     [name: string]: unknown;
@@ -15131,7 +17049,7 @@ export interface operations {
                     "application/json": components["schemas"]["LLMHostApiLogs"];
                 };
             };
-            /** @description An error, e.g. 404 for a row that does not exist, or 403 for a user who is not a superuser. */
+            /** @description An error, e.g. 404 for a row that does not exist, or that the user may not read. */
             default: {
                 headers: {
                     [name: string]: unknown;
@@ -15163,7 +17081,7 @@ export interface operations {
                     "application/json": components["schemas"]["LLMHostApiPlan"];
                 };
             };
-            /** @description An error, e.g. 404 for a row that does not exist, or 403 for a user who is not a superuser. */
+            /** @description An error, e.g. 404 for a row that does not exist, or that the user may not read. */
             default: {
                 headers: {
                     [name: string]: unknown;
@@ -15195,7 +17113,7 @@ export interface operations {
                     "application/json": components["schemas"]["LLMHostApiStatus"];
                 };
             };
-            /** @description An error, e.g. 404 for a row that does not exist, or 403 for a user who is not a superuser. */
+            /** @description An error, e.g. 404 for a row that does not exist, or that the user may not read. */
             default: {
                 headers: {
                     [name: string]: unknown;
@@ -15259,7 +17177,7 @@ export interface operations {
                     "application/json": components["schemas"]["MCPClientApiMCPClient"][];
                 };
             };
-            /** @description An error, e.g. 404 for a row that does not exist, or 403 for a user who is not a superuser. */
+            /** @description An error, e.g. 404 for a row that does not exist, or that the user may not read. */
             default: {
                 headers: {
                     [name: string]: unknown;
@@ -15291,7 +17209,7 @@ export interface operations {
                     "application/json": components["schemas"]["MCPClientApiMCPClient"];
                 };
             };
-            /** @description An error, e.g. 404 for a row that does not exist, or 403 for a user who is not a superuser. */
+            /** @description An error, e.g. 404 for a row that does not exist, or that the user may not read. */
             default: {
                 headers: {
                     [name: string]: unknown;
@@ -15470,6 +17388,108 @@ export interface operations {
             };
         };
     };
+    orchestrator_run_list: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                /** @description The Orchestrator's numeric id, e.g. 12, or its hashed id, e.g. rMTAwMDAxMgx. */
+                id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description The list. */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["OrchestratorApiRun"][];
+                };
+            };
+            /** @description An error, e.g. 404 for a row that does not exist, or that the user may not read. */
+            default: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["RestApiErrorResponse"];
+                };
+            };
+        };
+    };
+    orchestrator_run: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                /** @description The Orchestrator's numeric id, e.g. 12, or its hashed id, e.g. rMTAwMDAxMgx. */
+                id: string;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["OrchestratorApiRunRequest"];
+            };
+        };
+        responses: {
+            /** @description Success. */
+            202: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["OrchestratorApiRun"];
+                };
+            };
+            /** @description An error, e.g. 400 for an invalid request, or 404 for a row that the user may not read or own. */
+            default: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["RestApiErrorResponse"];
+                };
+            };
+        };
+    };
+    orchestrator_run_retrieve: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                /** @description The Orchestrator's numeric id, e.g. 12, or its hashed id, e.g. rMTAwMDAxMgx. */
+                id: string;
+                /** @description The run's id. */
+                run_id: number;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description The row. */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["OrchestratorApiRun"];
+                };
+            };
+            /** @description An error, e.g. 404 for a row that does not exist, or that the user may not read. */
+            default: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["RestApiErrorResponse"];
+                };
+            };
+        };
+    };
     plugin_list: {
         parameters: {
             query?: never;
@@ -15488,7 +17508,7 @@ export interface operations {
                     "application/json": components["schemas"]["PluginApiPluginMeta"][];
                 };
             };
-            /** @description An error, e.g. 404 for a row that does not exist, or 403 for a user who is not a superuser. */
+            /** @description An error, e.g. 404 for a row that does not exist, or that the user may not read. */
             default: {
                 headers: {
                     [name: string]: unknown;
@@ -15520,7 +17540,7 @@ export interface operations {
                     "application/json": components["schemas"]["SAMManifest"];
                 };
             };
-            /** @description An error, e.g. 404 for a row that does not exist, or 403 for a user who is not a superuser. */
+            /** @description An error, e.g. 404 for a row that does not exist, or that the user may not read. */
             default: {
                 headers: {
                     [name: string]: unknown;
@@ -15549,7 +17569,7 @@ export interface operations {
                     "application/json": components["schemas"]["PromptHistoryApiPluginUsage"][];
                 };
             };
-            /** @description An error, e.g. 404 for a row that does not exist, or 403 for a user who is not a superuser. */
+            /** @description An error, e.g. 404 for a row that does not exist, or that the user may not read. */
             default: {
                 headers: {
                     [name: string]: unknown;
@@ -15581,7 +17601,7 @@ export interface operations {
                     "application/json": components["schemas"]["PromptHistoryApiPluginUsage"];
                 };
             };
-            /** @description An error, e.g. 404 for a row that does not exist, or 403 for a user who is not a superuser. */
+            /** @description An error, e.g. 404 for a row that does not exist, or that the user may not read. */
             default: {
                 headers: {
                     [name: string]: unknown;
@@ -15610,7 +17630,7 @@ export interface operations {
                     "application/json": components["schemas"]["PromptHistoryApiSession"][];
                 };
             };
-            /** @description An error, e.g. 404 for a row that does not exist, or 403 for a user who is not a superuser. */
+            /** @description An error, e.g. 404 for a row that does not exist, or that the user may not read. */
             default: {
                 headers: {
                     [name: string]: unknown;
@@ -15642,7 +17662,7 @@ export interface operations {
                     "application/json": components["schemas"]["PromptHistoryApiSession"];
                 };
             };
-            /** @description An error, e.g. 404 for a row that does not exist, or 403 for a user who is not a superuser. */
+            /** @description An error, e.g. 404 for a row that does not exist, or that the user may not read. */
             default: {
                 headers: {
                     [name: string]: unknown;
@@ -15671,7 +17691,7 @@ export interface operations {
                     "application/json": components["schemas"]["PromptHistoryApiToolCall"][];
                 };
             };
-            /** @description An error, e.g. 404 for a row that does not exist, or 403 for a user who is not a superuser. */
+            /** @description An error, e.g. 404 for a row that does not exist, or that the user may not read. */
             default: {
                 headers: {
                     [name: string]: unknown;
@@ -15703,7 +17723,7 @@ export interface operations {
                     "application/json": components["schemas"]["PromptHistoryApiToolCall"];
                 };
             };
-            /** @description An error, e.g. 404 for a row that does not exist, or 403 for a user who is not a superuser. */
+            /** @description An error, e.g. 404 for a row that does not exist, or that the user may not read. */
             default: {
                 headers: {
                     [name: string]: unknown;
@@ -15732,7 +17752,7 @@ export interface operations {
                     "application/json": components["schemas"]["ProviderApiProvider"][];
                 };
             };
-            /** @description An error, e.g. 404 for a row that does not exist, or 403 for a user who is not a superuser. */
+            /** @description An error, e.g. 404 for a row that does not exist, or that the user may not read. */
             default: {
                 headers: {
                     [name: string]: unknown;
@@ -15764,7 +17784,7 @@ export interface operations {
                     "application/json": components["schemas"]["ProviderApiProvider"];
                 };
             };
-            /** @description An error, e.g. 404 for a row that does not exist, or 403 for a user who is not a superuser. */
+            /** @description An error, e.g. 404 for a row that does not exist, or that the user may not read. */
             default: {
                 headers: {
                     [name: string]: unknown;
@@ -15796,7 +17816,7 @@ export interface operations {
                     "application/json": components["schemas"]["ProviderApiModel"][];
                 };
             };
-            /** @description An error, e.g. 404 for a row that does not exist, or 403 for a user who is not a superuser. */
+            /** @description An error, e.g. 404 for a row that does not exist, or that the user may not read. */
             default: {
                 headers: {
                     [name: string]: unknown;
@@ -15830,7 +17850,7 @@ export interface operations {
                     "application/json": components["schemas"]["ProviderApiModel"];
                 };
             };
-            /** @description An error, e.g. 404 for a row that does not exist, or 403 for a user who is not a superuser. */
+            /** @description An error, e.g. 404 for a row that does not exist, or that the user may not read. */
             default: {
                 headers: {
                     [name: string]: unknown;
@@ -15859,7 +17879,7 @@ export interface operations {
                     "application/json": components["schemas"]["ProxyApiProxies"];
                 };
             };
-            /** @description An error, e.g. 404 for a row that does not exist, or 403 for a user who is not a superuser. */
+            /** @description An error, e.g. 404 for a row that does not exist, or that the user may not read. */
             default: {
                 headers: {
                     [name: string]: unknown;
@@ -15992,6 +18012,52 @@ export interface operations {
             };
         };
     };
+    vectorsearch_run: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                /** @description The Vectorsearch's numeric id, e.g. 12, or its hashed id, e.g. rMTAwMDAxMgx. */
+                id: string;
+            };
+            cookie?: never;
+        };
+        /** @description The query, and optionally more metadata that every result must match. */
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["VectorsearchApiRun"];
+            };
+        };
+        responses: {
+            /** @description Success. */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["VectorsearchApiResults"];
+                };
+            };
+            /** @description Refused: a budget locks the Vectorsearch, the user's profile or their account. */
+            402: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["RestApiErrorResponse"];
+                };
+            };
+            /** @description An error, e.g. 400 for an invalid request, or 404 for a row that the user may not read or own. */
+            default: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["RestApiErrorResponse"];
+                };
+            };
+        };
+    };
     vectorstore_list: {
         parameters: {
             query?: never;
@@ -16010,7 +18076,7 @@ export interface operations {
                     "application/json": components["schemas"]["VectorstoreApiVectorstore"][];
                 };
             };
-            /** @description An error, e.g. 404 for a row that does not exist, or 403 for a user who is not a superuser. */
+            /** @description An error, e.g. 404 for a row that does not exist, or that the user may not read. */
             default: {
                 headers: {
                     [name: string]: unknown;
@@ -16042,7 +18108,7 @@ export interface operations {
                     "application/json": components["schemas"]["VectorstoreApiVectorstore"];
                 };
             };
-            /** @description An error, e.g. 404 for a row that does not exist, or 403 for a user who is not a superuser. */
+            /** @description An error, e.g. 404 for a row that does not exist, or that the user may not read. */
             default: {
                 headers: {
                     [name: string]: unknown;
@@ -16106,7 +18172,7 @@ export interface operations {
                     "application/json": components["schemas"]["VectorstoreApiDocuments"];
                 };
             };
-            /** @description An error, e.g. 404 for a row that does not exist, or 403 for a user who is not a superuser. */
+            /** @description An error, e.g. 404 for a row that does not exist, or that the user may not read. */
             default: {
                 headers: {
                     [name: string]: unknown;
@@ -16251,7 +18317,7 @@ export interface operations {
                     "application/json": components["schemas"]["VectorstoreApiSnapshots"];
                 };
             };
-            /** @description An error, e.g. 404 for a row that does not exist, or 403 for a user who is not a superuser. */
+            /** @description An error, e.g. 404 for a row that does not exist, or that the user may not read. */
             default: {
                 headers: {
                     [name: string]: unknown;
@@ -16349,7 +18415,7 @@ export interface operations {
                     "application/json": components["schemas"]["VectorstoreApiStatus"];
                 };
             };
-            /** @description An error, e.g. 404 for a row that does not exist, or 403 for a user who is not a superuser. */
+            /** @description An error, e.g. 404 for a row that does not exist, or that the user may not read. */
             default: {
                 headers: {
                     [name: string]: unknown;
