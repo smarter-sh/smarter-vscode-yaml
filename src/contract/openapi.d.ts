@@ -308,6 +308,26 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/cli/documents/{kind}/": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /**
+         * A resource's documents
+         * @description List, add or remove the documents of a resource that has them, a Vectorstore. Without a body or remove, it lists them, for anyone who may read the Vectorstore. With files, text or a url, it adds them: their text is extracted now, and they are loaded in the background, once the Vectorstore is ready. With remove, it removes one, in the background. Only the Vectorstore's owner, an account admin, may add or remove documents. Other kinds answer 501.
+         */
+        post: operations["documents"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/cli/example-manifest/{kind}/": {
         parameters: {
             query?: never;
@@ -2702,6 +2722,55 @@ export interface components {
             /** @description A human-readable summary of the result. */
             message?: string;
         };
+        /**
+         * CliApiDocuments
+         * @description The ``data`` of a ``documents`` response: a Vectorstore's documents after the command, and what it changed.
+         *
+         *     Without files, text or a url, the command lists the documents. With them, it adds them, and with
+         *     ``remove``, it removes one. Each document is the REST api's
+         *     :class:`~smarter.apps.vectorstore.contract.models.VectorstoreApiDocument`.
+         */
+        CliApiDocuments: {
+            /**
+             * Added
+             * @description The documents that were added.
+             */
+            added?: components["schemas"]["VectorstoreApiDocument"][];
+            /**
+             * Documents
+             * @description The Vectorstore's documents, newest first, after the command.
+             */
+            documents: components["schemas"]["VectorstoreApiDocument"][];
+            /**
+             * Duplicates
+             * @description The documents that weren't added, because the Vectorstore has one with the same content.
+             */
+            duplicates?: components["schemas"]["VectorstoreApiDocument"][];
+            /**
+             * Queued
+             * @description Whether the added documents are queued to be loaded. A Vectorstore that isn't ready loads them once its deploy is ready.
+             * @default null
+             */
+            queued: boolean | null;
+            /**
+             * @description The document that is being removed, with its chunks, in the background.
+             * @default null
+             */
+            removed: components["schemas"]["VectorstoreApiDocument"] | null;
+            /**
+             * Vectorstore
+             * @description The Vectorstore's name.
+             */
+            vectorstore: string;
+        } & {
+            [key: string]: unknown;
+        };
+        /** @description The response of documents. */
+        CliApiDocumentsResponse: components["schemas"]["SAMJournalApiEnvelope"] & {
+            data: components["schemas"]["CliApiDocuments"];
+            /** @description A human-readable summary of the result. */
+            message?: string;
+        };
         /** @description A journaled error response. */
         CliApiErrorResponse: components["schemas"]["SAMJournalApiEnvelope"] & components["schemas"]["SAMJournalApiErrorResponse"];
         /**
@@ -4887,7 +4956,7 @@ export interface components {
             tlsCertificateIssuanceStatus: ("No Certificate" | "Requested" | "Issued" | "Failed") | null;
             /**
              * Tools
-             * @description Everything that the LLMClient adds to a prompt: its extensions, plugins, MCPClients and guardrails, in that order.
+             * @description Everything that the LLMClient adds to a prompt: its extensions, plugins, MCPClients, Vectorsearches and guardrails, in that order.
              */
             tools: components["schemas"]["LLMClientApiTool"][];
             /**
@@ -4922,6 +4991,11 @@ export interface components {
             urlLlmclient: string | null;
             /** @description The LLMClient's owner. */
             userProfile: components["schemas"]["AccountApiUserProfile"];
+            /**
+             * Vectorsearches
+             * @description The LLMClient's Vectorsearches.
+             */
+            vectorsearches: components["schemas"]["LLMClientApiVectorsearchRef"][];
             /**
              * Version
              * @description MetaDataModel.version, e.g. 1.0.0.
@@ -4993,7 +5067,7 @@ export interface components {
         };
         /**
          * LLMClientApiTool
-         * @description Something that an LLMClient adds to a prompt: an extension, plugin, MCPClient or guardrail.
+         * @description Something that an LLMClient adds to a prompt: an extension, plugin, MCPClient, Vectorsearch or guardrail.
          */
         LLMClientApiTool: {
             /**
@@ -5006,10 +5080,26 @@ export interface components {
              * @description Extension, or the linked resource's manifest kind.
              * @enum {string}
              */
-            kind: "Extension" | "Plugin" | "MCPClient" | "Guardrail";
+            kind: "Extension" | "Plugin" | "MCPClient" | "Vectorsearch" | "Guardrail";
             /**
              * Name
              * @description The extension's slug, or the linked resource's name.
+             */
+            name: string;
+        };
+        /**
+         * LLMClientApiVectorsearchRef
+         * @description A Vectorsearch of an LLMClient, in the LLMClient's own response: the LLMClientVectorsearches' id, and the Vectorsearch's name.
+         */
+        LLMClientApiVectorsearchRef: {
+            /**
+             * Id
+             * @description LLMClientVectorsearches.id.
+             */
+            id: number;
+            /**
+             * Name
+             * @description The Vectorsearch's name, Vectorsearch.name.
              */
             name: string;
         };
@@ -8897,7 +8987,7 @@ export interface components {
         SAMBudgetSpecConfig: {
             /**
              * Absolutelimit
-             * @description Budget.spec.config.absoluteLimit: the most that may be spent in total, from when the budget is attached. 0 means no limit.
+             * @description Budget.spec.config.absoluteLimit: the most that may be spent in total, from when the budget is attached, in USD to the cent, or in tokens. 0 means no limit.
              * @default 0
              */
             absoluteLimit: number | string;
@@ -8929,7 +9019,7 @@ export interface components {
             period: "hour" | "day" | "week" | "month";
             /**
              * Periodiclimit
-             * @description Budget.spec.config.periodicLimit: the most that may be spent in a billing period. 0 means no limit.
+             * @description Budget.spec.config.periodicLimit: the most that may be spent in a billing period, in USD to the cent, or in tokens. 0 means no limit.
              * @default 0
              */
             periodicLimit: number | string;
@@ -9652,7 +9742,7 @@ export interface components {
              * @description SAMJournal.command.
              * @enum {string}
              */
-            command: "apply" | "prompt" | "chat_config" | "delete" | "deploy" | "describe" | "get" | "journal" | "logs" | "example_manifest" | "status" | "json_schema" | "version" | "undeploy" | "validate" | "whoami" | "resources";
+            command: "apply" | "prompt" | "chat_config" | "delete" | "deploy" | "describe" | "get" | "journal" | "logs" | "example_manifest" | "status" | "json_schema" | "version" | "undeploy" | "validate" | "whoami" | "resources" | "documents";
             /**
              * Createdat
              * @description SAMJournal.created_at.
@@ -9699,7 +9789,7 @@ export interface components {
              * @description SAMJournal.command.
              * @enum {string}
              */
-            command: "apply" | "prompt" | "chat_config" | "delete" | "deploy" | "describe" | "get" | "journal" | "logs" | "example_manifest" | "status" | "json_schema" | "version" | "undeploy" | "validate" | "whoami" | "resources";
+            command: "apply" | "prompt" | "chat_config" | "delete" | "deploy" | "describe" | "get" | "journal" | "logs" | "example_manifest" | "status" | "json_schema" | "version" | "undeploy" | "validate" | "whoami" | "resources" | "documents";
             /**
              * Createdat
              * @description SAMJournal.created_at.
@@ -9970,6 +10060,12 @@ export interface components {
              * @default null
              */
             plugins: string[] | null;
+            /**
+             * Vectorsearches
+             * @description LLMClient.spec.vectorsearches[list]. Optional. The names of the Vectorsearches that the LLMClient offers the LLM, each as a tool that searches the documents of its Vectorstore. Example: ['stackademy_handbook']. Each must be a Vectorsearch that you own, or that is shared with you. The LLM calls one with a search query of its own, and answers from the passages that it returns.
+             * @default null
+             */
+            vectorsearches: string[] | null;
         };
         /**
          * SAMLLMClientSpecConfig
@@ -10087,10 +10183,10 @@ export interface components {
             defaultTemperature: number | null;
             /**
              * Deployed
-             * @description LLMClient.spec.configuration.prompt.deployed[bool]. Required. Whether the llmclient is deployed. Deployed means that the llmclient is available for use outside the Smarter Prompt Engineer Workbench. Published llmclients have their own subdomain, Kubernetes ingress, and TLS/SSL certificate.
-             * @default false
+             * @description LLMClient.spec.configuration.prompt.deployed[bool]. Optional. Whether the llmclient is deployed. Deployed means that the llmclient is available for use outside the Smarter Prompt Engineer Workbench, at its own url. true deploys it and false undeploys it, as smarter deploy and smarter undeploy do. Leave it out to keep the llmclient's deployed state as it is, e.g. when a deployed llmclient's manifest is applied again.
+             * @default null
              */
-            deployed: boolean;
+            deployed: boolean | null;
             /**
              * Provider
              * @description LLMClient.spec.configuration.prompt.provider[str]. Optional. The provider to use for the llmclient.
@@ -13242,6 +13338,50 @@ export interface components {
             status: components["schemas"]["SAMVectorstoreStatus"] | null;
         };
         /**
+         * SAMVectorstoreCondition
+         * @description One of the things that a Vectorstore's database needs before it is ready, and whether it has it.
+         *
+         *     A deploy has several independent points of failure, e.g. a refused api key, a volume that isn't
+         *     bound, or a server whose image can't be pulled. Each is a condition, as in Kubernetes: its
+         *     ``status`` is ``True`` when it is met, ``False`` when it isn't, and ``Unknown`` before it is
+         *     checked. A Pinecone or Qdrant Cloud Vectorstore has the conditions ``Credentials`` and ``Index``,
+         *     and a self-hosted one also ``Volume`` and ``Server``.
+         *
+         *     Read only.
+         */
+        SAMVectorstoreCondition: {
+            /**
+             * Lasttransitiontime
+             * @description Vectorstore.status.condition.lastTransitionTime: when its status last changed.
+             * @default null
+             */
+            lastTransitionTime: string | null;
+            /**
+             * Message
+             * @description Vectorstore.status.condition.message: what was found, for a person.
+             * @default
+             */
+            message: string;
+            /**
+             * Reason
+             * @description Vectorstore.status.condition.reason: one word, e.g. Bound or ImagePullBackOff.
+             * @default
+             */
+            reason: string;
+            /**
+             * Status
+             * @description Vectorstore.status.condition.status: True if it is met, False if it isn't, Unknown before it is checked.
+             * @enum {string}
+             */
+            status: "True" | "False" | "Unknown";
+            /**
+             * Type
+             * @description Vectorstore.status.condition.type: Credentials, Volume, Server or Index.
+             * @enum {string}
+             */
+            type: "Credentials" | "Volume" | "Server" | "Index";
+        };
+        /**
          * SAMVectorstoreEmbeddings
          * @description Vectorstore.spec.embeddings: how documents and queries are turned into vectors.
          */
@@ -13493,6 +13633,17 @@ export interface components {
              */
             apiKeySecret: string | null;
             /**
+             * Attempt
+             * @description Vectorstore.status.attempt: the number of checks that its last deploy has made.
+             * @default null
+             */
+            attempt: number | null;
+            /**
+             * Conditions
+             * @description Vectorstore.status.conditions: what its database needs to be ready, as of its last deploy or check.
+             */
+            conditions?: components["schemas"]["SAMVectorstoreCondition"][];
+            /**
              * Created
              * Format: date-time
              * @description The date in which this resource was created. Read only.
@@ -13535,6 +13686,12 @@ export interface components {
              */
             lastCheckedAt: string | null;
             /**
+             * Lasterror
+             * @description Vectorstore.status.lastError: the last error of its last deploy, which may have been retried since.
+             * @default null
+             */
+            lastError: string | null;
+            /**
              * Lastmaintenanceat
              * @description Vectorstore.status.lastMaintenanceAt: when its maintenance last ran. Read only.
              * @default null
@@ -13547,8 +13704,14 @@ export interface components {
              */
             lastSnapshotAt: string | null;
             /**
+             * Maxattempts
+             * @description Vectorstore.status.maxAttempts: the checks that a deploy makes before it fails.
+             * @default null
+             */
+            maxAttempts: number | null;
+            /**
              * Message
-             * @description Vectorstore.status.message: why, if it failed.
+             * @description Vectorstore.status.message: what is happening, e.g. what a deploy waits for, or why it failed.
              * @default null
              */
             message: string | null;
@@ -13558,6 +13721,12 @@ export interface components {
              * @description The date in which this resource was most recently changed. Read only.
              */
             modified: string;
+            /**
+             * Nextretryat
+             * @description Vectorstore.status.nextRetryAt: when a deploy in progress checks again.
+             * @default null
+             */
+            nextRetryAt: string | null;
             /**
              * Recordlocator
              * @description recordLocator[String]: An optional identifier used to locate the resource record associated with this manifest. Read only.
@@ -14142,6 +14311,43 @@ export interface components {
             url: string | null;
         };
         /**
+         * VectorstoreApiCondition
+         * @description One of the things that a vectorstore's database needs before it is ready, and whether it has it.
+         *
+         *     The same as the Vectorstore manifest's ``status.conditions``: see
+         *     :class:`smarter.apps.vectorstore.manifest.models.vectorstore.status.SAMVectorstoreCondition`.
+         */
+        VectorstoreApiCondition: {
+            /**
+             * Lasttransitiontime
+             * @description When its status last changed.
+             * @default null
+             */
+            lastTransitionTime: string | null;
+            /**
+             * Message
+             * @description What was found, for a person.
+             */
+            message: string;
+            /**
+             * Reason
+             * @description One word, e.g. Bound or ImagePullBackOff.
+             */
+            reason: string;
+            /**
+             * Status
+             * @description True if it is met, False if it isn't, Unknown before it is checked.
+             * @enum {string}
+             */
+            status: "True" | "False" | "Unknown";
+            /**
+             * Type
+             * @description Credentials, Volume, Server or Index.
+             * @enum {string}
+             */
+            type: "Credentials" | "Volume" | "Server" | "Index";
+        };
+        /**
          * VectorstoreApiDocument
          * @description A document of a vectorstore: a :class:`smarter.apps.vectorstore.models.VectorstoreDocument`, without its content.
          */
@@ -14513,6 +14719,12 @@ export interface components {
              */
             apiKeySecret: string | null;
             /**
+             * Attempt
+             * @description The number of checks that its last deploy has made.
+             * @default null
+             */
+            attempt: number | null;
+            /**
              * Backend
              * @description The vector database.
              * @enum {string}
@@ -14523,6 +14735,11 @@ export interface components {
              * @description Whether the requesting user may delete the vectorstore now: they own it, and nothing uses it.
              */
             canDelete: boolean;
+            /**
+             * Conditions
+             * @description What its database needs to be ready, as of its last deploy or check.
+             */
+            conditions?: components["schemas"]["VectorstoreApiCondition"][];
             /**
              * Connection
              * @description The name of its ApiConnection, if any.
@@ -14617,6 +14834,12 @@ export interface components {
              */
             lastCheckedAt: string | null;
             /**
+             * Lasterror
+             * @description The last error of its last deploy, which may have been retried since.
+             * @default null
+             */
+            lastError: string | null;
+            /**
              * Lastmaintenanceat
              * @description When its maintenance last ran.
              * @default null
@@ -14634,6 +14857,12 @@ export interface components {
              */
             manifestUrl: string;
             /**
+             * Maxattempts
+             * @description The checks that a deploy makes before it fails.
+             * @default null
+             */
+            maxAttempts: number | null;
+            /**
              * Metric
              * @description The distance metric of its index.
              * @enum {string}
@@ -14644,6 +14873,12 @@ export interface components {
              * @description MetaDataModel.name, in snake_case.
              */
             name: string;
+            /**
+             * Nextretryat
+             * @description When a deploy in progress checks again.
+             * @default null
+             */
+            nextRetryAt: string | null;
             /**
              * Snapshotcount
              * @description The number of its snapshots.
@@ -15325,6 +15560,59 @@ export interface operations {
                 };
                 content: {
                     "application/json": components["schemas"]["CliApiManifestResponse"];
+                };
+            };
+            /** @description An error, e.g. 400 for an invalid manifest, 401 or 403 without a valid api key, 404 for a resource that does not exist. */
+            default: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["CliApiErrorResponse"];
+                };
+            };
+        };
+    };
+    documents: {
+        parameters: {
+            query: {
+                /** @description The resource's name, its manifest's metadata.name. */
+                name: string;
+                /** @description Remove this document, and its chunks: its id, or its name, e.g. its file name or url. */
+                remove?: string;
+            };
+            header?: never;
+            path: {
+                /** @description The resource's kind, as it is written in a manifest, e.g. Guardrail. Case-insensitive. */
+                kind: components["schemas"]["SAMKind"];
+            };
+            cookie?: never;
+        };
+        /** @description Documents to add. Without them, and without remove, the command lists the documents. */
+        requestBody?: {
+            content: {
+                "multipart/form-data": {
+                    /** @description Files to add, up to 50 MiB each: PDF, text, Markdown, CSV, JSON, YAML or HTML. */
+                    files?: string[];
+                    /** @description A JSON object, stored with every chunk of every document that is added. */
+                    metadata?: string;
+                    /** @description The name of the text's document. By default, text. */
+                    name?: string;
+                    /** @description Text to add, as a document. */
+                    text?: string;
+                    /** @description A public http or https url of a page or file to add. */
+                    url?: string;
+                };
+            };
+        };
+        responses: {
+            /** @description Success. */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["CliApiDocumentsResponse"];
                 };
             };
             /** @description An error, e.g. 400 for an invalid manifest, 401 or 403 without a valid api key, 404 for a resource that does not exist. */
