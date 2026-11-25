@@ -1,7 +1,9 @@
 ---
 #---------------------------------------------------------
-# - Create a semantical release
-# - Merge main into next, alpha, beta, and next-major
+# - Create a semantic release
+# - After a release, merge main into alpha and beta, so that the next pull
+#   request from alpha starts from the release commit (CHANGELOG.md and the
+#   version files) instead of conflicting with it
 #---------------------------------------------------------
 name: Merge to main
 
@@ -18,6 +20,8 @@ jobs:
     timeout-minutes: 5
     env:
       GITHUB_TOKEN: ${{ secrets.PAT }}
+    outputs:
+      new_release_published: ${{ steps.semantic.outputs.new_release_published }}
 
     steps:
       - uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6.1.0
@@ -68,3 +72,31 @@ jobs:
         if: steps.semantic.outputs.new_release_published == 'true'
         run: "git push https://x-access-token:${{ secrets.PAT }}@github.com/${GITHUB_REPOSITORY}.git HEAD:refs/heads/v${{steps.semantic.outputs.new_release_major_version}}"
         shell: bash
+
+  # After the release, not before: the release commit is what alpha and beta
+  # must have, or the next pull request from alpha conflicts with it.
+  merge-main:
+    needs: semantic-release
+    if: needs.semantic-release.outputs.new_release_published == 'true'
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6.1.0
+        with:
+          persist-credentials: false
+          token: ${{ secrets.PAT }}
+
+      - name: Merge main into alpha
+        uses: ./.github/actions/merge-branch
+        with:
+          github-token: ${{ secrets.PAT }}
+          source-branch: main
+          target-branch: alpha
+
+      - name: Merge main into beta
+        uses: ./.github/actions/merge-branch
+        with:
+          github-token: ${{ secrets.PAT }}
+          source-branch: main
+          target-branch: beta
