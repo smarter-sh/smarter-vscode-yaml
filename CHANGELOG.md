@@ -6,6 +6,42 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 
 
 
+## [0.3.7](https://github.com/smarter-sh/smarter-vscode-yaml/compare/v0.3.6...v0.3.7) (2026-11-25)
+
+### Bug Fixes
+
+* **contracts:** sync with smarter v0.48.0 ([4edbfba](https://github.com/smarter-sh/smarter-vscode-yaml/commit/4edbfba1c2981802714227e3f7dd7df04480ba93))
+
+## [0.3.6](https://github.com/smarter-sh/smarter-vscode-yaml/compare/v0.3.5...v0.3.6) (2026-11-17)
+
+### Bug Fixes
+
+* **contracts:** sync with smarter v0.46.5 ([caf3f10](https://github.com/smarter-sh/smarter-vscode-yaml/commit/caf3f10127d82f0f354bf402f9cbc3825a60cfdd))
+
+## [0.3.5](https://github.com/smarter-sh/smarter-vscode-yaml/compare/v0.3.4...v0.3.5) (2026-11-10)
+
+### Bug Fixes
+
+* **contracts:** sync with smarter v0.44.6 ([2070397](https://github.com/smarter-sh/smarter-vscode-yaml/commit/20703974656a65d2635fc51280a1c7261247ca50))
+
+## [0.3.4](https://github.com/smarter-sh/smarter-vscode-yaml/compare/v0.3.3...v0.3.4) (2026-11-03)
+
+### Bug Fixes
+
+* call it the Smarter Project, or a Smarter installation ([aacb90a](https://github.com/smarter-sh/smarter-vscode-yaml/commit/aacb90aad38a70e03238bd26b760ebeba042fb0d))
+
+## [0.3.3](https://github.com/smarter-sh/smarter-vscode-yaml/compare/v0.3.2...v0.3.3) (2026-11-02)
+
+### Bug Fixes
+
+* **contracts:** sync with smarter v0.41.0 ([70ef6a6](https://github.com/smarter-sh/smarter-vscode-yaml/commit/70ef6a60107a6db8f3f9c07fa03f1a937bbe2e1c))
+
+## [0.3.2](https://github.com/smarter-sh/smarter-vscode-yaml/compare/v0.3.1...v0.3.2) (2026-11-01)
+
+### Bug Fixes
+
+* **contracts:** sync with smarter v0.40.4 ([165d3fc](https://github.com/smarter-sh/smarter-vscode-yaml/commit/165d3fcf88c9aed646e845d58b49adfce06d9f34))
+
 ## [0.3.1](https://github.com/smarter-sh/smarter-vscode-yaml/compare/v0.3.0...v0.3.1) (2026-10-22)
 
 ### Bug Fixes

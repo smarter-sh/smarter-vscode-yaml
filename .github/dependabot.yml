@@ -9,10 +9,6 @@ updates:
       - "dependencies"
       - "javascript"
       - "automated pr"
-    assignees:
-      - "lpm0073"
-    reviewers:
-      - "lpm0073"
     ignore:
       # @types/vscode must not be newer than engines.vscode in package.json, or vsce refuses to
       # package the extension. Raise both together, by hand.
@@ -26,7 +22,3 @@ updates:
     labels:
       - "dependencies"
       - "automated pr"
-    assignees:
-      - "lpm0073"
-    reviewers:
-      - "lpm0073"
